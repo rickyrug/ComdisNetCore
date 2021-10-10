@@ -23,4 +23,6 @@ using Comdis.Comdis.Models;
         public DbSet<Comdis.Models.Bank> Bank { get; set; }
 
         public DbSet<Comdis.Comdis.Models.Customer> Customer { get; set; }
+
+        public DbSet<Comdis.Comdis.Models.Supplier> Supplier { get; set; }
     }

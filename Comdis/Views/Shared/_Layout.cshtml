@@ -33,6 +33,7 @@
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item" asp-area="" asp-controller="Products" asp-action="Index">Products</a>
                                 <a class="dropdown-item" asp-area="" asp-controller="Customer" asp-action="Index">Customer</a>
+                                <a class="dropdown-item" asp-area="" asp-controller="Supplier" asp-action="Index">Supplier</a>
 
                             </div>
                         </li>
@@ -41,8 +42,8 @@
             </div>
         </nav>
     </header>
-    <div class="container">
-        <main role="main" class="pb-3">
+    <div class="container-fluid">
+        <main role="main" class="">
             @RenderBody()
         </main>
     </div>
