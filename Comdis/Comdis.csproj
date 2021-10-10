@@ -11,6 +11,7 @@
     <None Remove="Microsoft.EntityFrameworkCore.Design" />
     <None Remove="Models\VM\" />
     <None Remove="Resources\" />
+    <None Remove="Commands\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="5.0.10" />
@@ -24,6 +25,7 @@
   <ItemGroup>
     <Folder Include="Models\VM\" />
     <Folder Include="Resources\" />
+    <Folder Include="Commands\" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Update="Resources\Resources.resx">
