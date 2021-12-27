@@ -25,4 +25,8 @@ using Comdis.Comdis.Models;
         public DbSet<Comdis.Comdis.Models.Customer> Customer { get; set; }
 
         public DbSet<Comdis.Comdis.Models.Supplier> Supplier { get; set; }
+
+        public DbSet<Comdis.Models.Sales> Sales { get; set; }
+
+        public DbSet<Comdis.Models.SalesItems> SalesItems { get; set; }
     }

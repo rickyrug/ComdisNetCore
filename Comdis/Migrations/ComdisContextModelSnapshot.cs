@@ -205,6 +205,91 @@ namespace Comdis.Migrations
                     b.ToTable("ProductCategory");
                 });
 
+            modelBuilder.Entity("Comdis.Models.Sales", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Comments")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("Cretead")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("DeliveryAdress")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("RequestedDeliveryDate")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int?>("SalesToPartyId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("Updated")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("UpdatedBy")
+                        .HasColumnType("TEXT");
+
+                    b.Property<decimal>("discount")
+                        .HasColumnType("TEXT");
+
+                    b.Property<decimal>("discount2")
+                        .HasColumnType("TEXT");
+
+                    b.Property<decimal>("discount3")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("SalesToPartyId");
+
+                    b.ToTable("Sales");
+                });
+
+            modelBuilder.Entity("Comdis.Models.SalesItems", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTime>("Cretead")
+                        .HasColumnType("TEXT");
+
+                    b.Property<decimal>("Price")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int?>("ProductId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<decimal>("Quantity")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int?>("SalesHeaderId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("Updated")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("UpdatedBy")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductId");
+
+                    b.HasIndex("SalesHeaderId");
+
+                    b.ToTable("SalesItems");
+                });
+
             modelBuilder.Entity("Comdis.Models.UOM", b =>
                 {
                     b.Property<int>("Id")
@@ -256,6 +341,30 @@ namespace Comdis.Migrations
                     b.Navigation("category");
 
                     b.Navigation("Uom");
+                });
+
+            modelBuilder.Entity("Comdis.Models.Sales", b =>
+                {
+                    b.HasOne("Comdis.Comdis.Models.Customer", "SalesToParty")
+                        .WithMany()
+                        .HasForeignKey("SalesToPartyId");
+
+                    b.Navigation("SalesToParty");
+                });
+
+            modelBuilder.Entity("Comdis.Models.SalesItems", b =>
+                {
+                    b.HasOne("Comdis.Models.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId");
+
+                    b.HasOne("Comdis.Models.Sales", "SalesHeader")
+                        .WithMany()
+                        .HasForeignKey("SalesHeaderId");
+
+                    b.Navigation("Product");
+
+                    b.Navigation("SalesHeader");
                 });
 #pragma warning restore 612, 618
         }
