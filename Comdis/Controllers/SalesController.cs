@@ -20,9 +20,11 @@ namespace Comdis.Controllers
         }
 
         // GET: Sales
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult>  Index()
         {
-            return View(await _context.Sales.ToListAsync());
+            return View(await _context.Sales.
+                                        Include(sales => sales.SalesToParty).
+                                        AsNoTracking().ToListAsync());
         }
 
         // GET: Sales/Details/5
@@ -55,7 +57,7 @@ namespace Comdis.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,RequestedDeliveryDate,DeliveryAdress,Comments,discount,discount2,discount3,SalesToPartyId,productID,quantity,price")] SalesVM sales)
+        public async Task<IActionResult> Create([Bind("Id,SalesToPartyId,RequestedDeliveryDate,DeliveryAdress,Comments,discount,discount2,discount3,SalesToPartyId,productID,quantity,price")] SalesVM sales)
         {
             if (ModelState.IsValid)
             {
@@ -80,23 +82,55 @@ namespace Comdis.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+
+            PopulateCustomerDropDown(sales.SalesToPartyId);
+
             return View(sales);
         }
 
         // GET: Sales/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public IActionResult Edit(int? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var sales = await _context.Sales.FindAsync(id);
+            var sales =_context.Sales.
+                                        Include(sales => sales.SalesToParty).
+                                        AsNoTracking().
+                                        FirstOrDefault(header => header.Id == id);
+
+
             if (sales == null)
             {
                 return NotFound();
             }
-            return View(sales);
+
+            if(sales.SalesToParty == null)
+            {
+                PopulateCustomerDropDown();
+
+            }
+            else
+            {
+                PopulateCustomerDropDown(sales.SalesToParty.Id);
+            }
+
+            SalesVM salesHeader = new SalesVM() {
+                     Comments = sales.Comments
+                    ,DeliveryAdress = sales.DeliveryAdress
+                    ,discount               = sales.discount
+                    ,discount2              = sales.discount2
+                    ,discount3              = sales.discount3
+                    ,Id                            = sales.Id
+                    ,RequestedDeliveryDate  = sales.RequestedDeliveryDate
+                    ,SalesToPartyId     = sales.SalesToParty.Id
+            };
+
+         
+            
+            return View(salesHeader);
         }
 
         // POST: Sales/Edit/5
@@ -104,7 +138,7 @@ namespace Comdis.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,RequestedDeliveryDate,DeliveryAdress,Comments,discount,discount2,discount3,CreatedBy,Cretead,UpdatedBy,Updated")] Sales sales)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,SalesToPartyId,RequestedDeliveryDate,DeliveryAdress,Comments,discount,discount2,discount3,CreatedBy,Cretead,UpdatedBy,Updated")] SalesVM sales)
         {
             if (id != sales.Id)
             {
@@ -115,8 +149,29 @@ namespace Comdis.Controllers
             {
                 try
                 {
-                    _context.Update(sales);
-                    await _context.SaveChangesAsync();
+
+                    var var_salesHeader = _context.Sales.Where(s => s.Id == sales.Id).FirstOrDefault();
+
+                   if(var_salesHeader != null)
+                    {
+
+                        var_salesHeader.discount = sales.discount;
+                        var_salesHeader.discount2 = sales.discount2;
+                        var_salesHeader.discount3 = sales.discount3;
+                        var_salesHeader.Comments = sales.Comments;
+                        var_salesHeader.RequestedDeliveryDate = sales.RequestedDeliveryDate;
+                        var_salesHeader.SalesToParty = _context.Customer.Find(sales.SalesToPartyId);
+                        var_salesHeader.Updated = DateTime.Now;
+                        var_salesHeader.UpdatedBy = "";
+                        
+
+
+                        _context.Update(var_salesHeader);
+                        await _context.SaveChangesAsync();
+
+                    }
+
+                   
                 }
                 catch (DbUpdateConcurrencyException)
                 {

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Comdis.Comdis.Models;
 
 namespace Comdis.Models
@@ -14,6 +15,9 @@ namespace Comdis.Models
         public decimal discount { get; set; }
         public decimal discount2 { get; set; }
         public decimal discount3 { get; set; }
+        public List<SalesItems> SalesItems { get; set; }
+
+
         public Sales(){ }
     }
 }

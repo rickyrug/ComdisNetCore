@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Comdis.Models;
+using Comdis.Models.VM;
 
 namespace Comdis.Controllers
 {
@@ -19,9 +20,12 @@ namespace Comdis.Controllers
         }
 
         // GET: SalesItems
-        public async Task<IActionResult> Index()
+        public IActionResult Index(int id)
         {
-            return View(await _context.SalesItems.ToListAsync());
+
+            ViewBag.So = id.ToString();
+
+            return View();
         }
 
         // GET: SalesItems/Details/5
@@ -142,6 +146,63 @@ namespace Comdis.Controllers
             _context.SalesItems.Remove(salesItems);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
+        }
+
+        [HttpPost]
+        public JsonResult GetSalesOrderItem(int id)
+        {
+            SalesVM SOI = new SalesVM();
+
+
+            var SO =   _context.Sales
+                                .Include(soi => soi.SalesItems)
+                                .ThenInclude(soi => soi.Product)
+                                .Include(cu => cu.SalesToParty)
+                                .AsNoTracking()
+                                .Where(sa => sa.Id == id).FirstOrDefault();
+
+
+            if(SO != null)
+            {
+                SOI.Comments            = SO.Comments;
+                SOI.DeliveryAdress     = SO.DeliveryAdress;
+                SOI.discount                = SO.discount;
+                SOI.discount2              = SO.discount2;
+                SOI.discount3              = SO.discount3;
+                SOI.Id = SO.Id;
+                SOI.RequestedDeliveryDate = SO.RequestedDeliveryDate;
+                SOI.SalesToPartyId = SO.SalesToParty.Id;
+                SOI.CustomerName = SO.SalesToParty.Name;
+                SOI.CreatedBy = SO.CreatedBy;
+                SOI.Cretead = SO.Cretead;
+                SOI.Updated = SO.Updated;
+                SOI.UpdatedBy = SO.UpdatedBy;
+             
+
+                if(SO.SalesItems != null)
+                {
+                    SOI.salesItem = new List<SalesItemVM>();
+                  
+                    foreach(var item in SO.SalesItems)
+                    {
+                        
+                        SOI.salesItem.Add(new SalesItemVM {
+                                Price = item.Price
+                            ,   ProductId = item.Product.Id
+                            ,   Quantity   = item.Quantity
+                            ,   Cretead = item.Cretead
+                            ,   CreatedBy = item.CreatedBy
+                            ,   Updated    = item.Updated
+                            ,   UpdatedBy = item.UpdatedBy
+                        });
+                    }
+                }
+            }
+
+
+            //var SOI =   _context.SalesItems.Where(soi=> soi.SalesHeader.Id == id).ToList();
+
+            return Json(SOI);
         }
 
         private bool SalesItemsExists(int id)

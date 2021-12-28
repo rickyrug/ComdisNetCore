@@ -26,6 +26,8 @@
     <Folder Include="Models\VM\" />
     <Folder Include="Resources\" />
     <Folder Include="Commands\" />
+    <Folder Include="wwwroot\js\Views\" />
+    <Folder Include="wwwroot\js\Views\SalesItems\" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Update="Resources\Resources.resx">
@@ -37,5 +39,9 @@
     <Compile Update="Resources\Resources.Designer.cs">
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Remove="wwwroot\js\Views\" />
+    <Content Remove="wwwroot\js\Views\SalesItems\" />
   </ItemGroup>
 </Project>
