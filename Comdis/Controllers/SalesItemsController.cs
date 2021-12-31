@@ -57,15 +57,33 @@ namespace Comdis.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Quantity,Price,CreatedBy,Cretead,UpdatedBy,Updated")] SalesItems salesItems)
+        public JsonResult Create([Bind("ProductName,Quantity,Price,SOId")] SalesItemVM salesItems)
         {
-            if (ModelState.IsValid)
+            
+            try
             {
-                _context.Add(salesItems);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                if (ModelState.IsValid)
+                {
+                    var var_so = _context.Sales.AsNoTracking().Where(so => so.Id == salesItems.SOId).FirstOrDefault();
+                    SalesItems newItem = new SalesItems();
+                    newItem.SalesHeader = var_so;
+                    newItem.Price = newItem.Price;
+                    newItem.Quantity = newItem.Quantity;
+
+
+                    _context.Add(newItem);
+                    _context.SaveChanges();
+                    return Json(newItem);
+                }
+
+                return Json(new SalesItems());
+
             }
-            return View(salesItems);
+            catch (Exception ex)
+            {
+                throw new Exception("Error When Creating Item" + ex.Message);
+            }
+            
         }
 
         // GET: SalesItems/Edit/5
@@ -148,61 +166,84 @@ namespace Comdis.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+
+        public IActionResult GetCreateItemView(int pSOI)
+        {
+            SalesItemVM soi = new SalesItemVM();
+
+            soi.SOId = pSOI;
+
+            return PartialView("_CreateSOI", soi);
+        }
+
+        
+
         [HttpPost]
         public JsonResult GetSalesOrderItem(int id)
         {
             SalesVM SOI = new SalesVM();
 
-
-            var SO =   _context.Sales
+            try
+            {
+                var SO = _context.Sales
                                 .Include(soi => soi.SalesItems)
                                 .ThenInclude(soi => soi.Product)
                                 .Include(cu => cu.SalesToParty)
                                 .AsNoTracking()
                                 .Where(sa => sa.Id == id).FirstOrDefault();
 
-
-            if(SO != null)
-            {
-                SOI.Comments            = SO.Comments;
-                SOI.DeliveryAdress     = SO.DeliveryAdress;
-                SOI.discount                = SO.discount;
-                SOI.discount2              = SO.discount2;
-                SOI.discount3              = SO.discount3;
-                SOI.Id = SO.Id;
-                SOI.RequestedDeliveryDate = SO.RequestedDeliveryDate;
-                SOI.SalesToPartyId = SO.SalesToParty.Id;
-                SOI.CustomerName = SO.SalesToParty.Name;
-                SOI.CreatedBy = SO.CreatedBy;
-                SOI.Cretead = SO.Cretead;
-                SOI.Updated = SO.Updated;
-                SOI.UpdatedBy = SO.UpdatedBy;
-             
-
-                if(SO.SalesItems != null)
+                if (SO != null)
                 {
-                    SOI.salesItem = new List<SalesItemVM>();
-                  
-                    foreach(var item in SO.SalesItems)
+                    SOI.Comments = SO.Comments;
+                    SOI.DeliveryAdress = SO.DeliveryAdress;
+                    SOI.discount = SO.discount;
+                    SOI.discount2 = SO.discount2;
+                    SOI.discount3 = SO.discount3;
+                    SOI.Id = SO.Id;
+                    SOI.RequestedDeliveryDate = SO.RequestedDeliveryDate;
+                    SOI.SalesToPartyId = SO.SalesToParty.Id;
+                    SOI.CustomerName = SO.SalesToParty.Name;
+                    SOI.CreatedBy = SO.CreatedBy;
+                    SOI.Cretead = SO.Cretead;
+                    SOI.Updated = SO.Updated;
+                    SOI.UpdatedBy = SO.UpdatedBy;
+
+
+                    if (SO.SalesItems != null)
                     {
-                        
-                        SOI.salesItem.Add(new SalesItemVM {
-                                Price = item.Price
-                            ,   ProductId = item.Product.Id
-                            ,   Quantity   = item.Quantity
-                            ,   Cretead = item.Cretead
-                            ,   CreatedBy = item.CreatedBy
-                            ,   Updated    = item.Updated
-                            ,   UpdatedBy = item.UpdatedBy
-                        });
+                        SOI.salesItem = new List<SalesItemVM>();
+
+                        foreach (var item in SO.SalesItems)
+                        {
+
+                            SOI.salesItem.Add(new SalesItemVM
+                            {
+                                Price = item.Price,
+                                ProductId = item.Product.Id,
+                                ProductName = item.Product.Name,
+                                Quantity = item.Quantity,
+                                Cretead = item.Cretead,
+                                CreatedBy = item.CreatedBy,
+                                Updated = item.Updated,
+                                UpdatedBy = item.UpdatedBy,
+                                uid = item.Id
+                            });
+                        }
                     }
                 }
+                return Json(SOI);
+            }
+            catch(Exception ex)
+            {
+                throw new Exception(ex.Message);
             }
 
+        }
 
-            //var SOI =   _context.SalesItems.Where(soi=> soi.SalesHeader.Id == id).ToList();
-
-            return Json(SOI);
+        [HttpPost]
+        public JsonResult deleteItem(int pId)
+        {
+            throw new Exception("Not implemented");
         }
 
         private bool SalesItemsExists(int id)

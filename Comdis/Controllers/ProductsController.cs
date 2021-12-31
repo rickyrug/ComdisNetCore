@@ -229,6 +229,16 @@ namespace Comdis.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+       public JsonResult GetProducts(string pQuery)
+        {
+            var productList = _context.Product
+                                            .Include(u => u.Uom)
+                                            .Include(c => c.category)
+                                            .AsNoTracking().Where(p=> p.Name.Contains(pQuery))
+                                            .ToList();
+            return Json(productList);
+        }
+
         private bool ProductExists(int id)
         {
             return _context.Product.Any(e => e.Id == id);
