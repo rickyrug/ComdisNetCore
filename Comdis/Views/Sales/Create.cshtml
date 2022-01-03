@@ -1,0 +1,89 @@
+@model Comdis.Models.VM.SalesVM
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>Sales</h4>
+<hr />
+<form asp-action="Create">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div class="row">
+        <div class="col-md-4">
+            <div class="form-group">
+                <div class="form-group">
+                    <label asp-for="SalesToPartyId" class="control-label"></label>
+                    <select asp-for="SalesToPartyId" class="form-control" asp-items="ViewBag.customerList">
+                        <option value="">-- Select Customer --</option>
+                    </select>
+                    <span asp-validation-for="SalesToPartyId" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-group">
+                <label asp-for="RequestedDeliveryDate" class="control-label"></label>
+                <input asp-for="RequestedDeliveryDate" class="form-control" />
+                <span asp-validation-for="RequestedDeliveryDate" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-group">
+                <label asp-for="DeliveryAdress" class="control-label"></label>
+                <input asp-for="DeliveryAdress" class="form-control" />
+                <span asp-validation-for="DeliveryAdress" class="text-danger"></span>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4">
+            <div class="form-group">
+                <label asp-for="discount" class="control-label"></label>
+                <input asp-for="discount" class="form-control" />
+                <span asp-validation-for="discount" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-group">
+                <label asp-for="discount2" class="control-label"></label>
+                <input asp-for="discount2" class="form-control" />
+                <span asp-validation-for="discount2" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-group">
+                <label asp-for="discount3" class="control-label"></label>
+                <input asp-for="discount3" class="form-control" />
+                <span asp-validation-for="discount3" class="text-danger"></span>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-10">
+            <div class="form-group">
+                <label asp-for="Comments" class="control-label"></label>
+                <input asp-for="Comments" class="form-control" />
+                <span asp-validation-for="Comments" class="text-danger"></span>
+            </div>
+        </div>
+    </div>
+    <hr />
+
+    <div class="row">
+        <div class="col-md-4">
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </div>
+    </div>
+</form>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

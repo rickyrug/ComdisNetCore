@@ -229,14 +229,28 @@ namespace Comdis.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-       public JsonResult GetProducts(string pQuery)
+       public JsonResult GetProducts(QuerySelect pParam)
         {
+
+            List<SelectObject> selectObj = new List<SelectObject>();
             var productList = _context.Product
                                             .Include(u => u.Uom)
                                             .Include(c => c.category)
-                                            .AsNoTracking().Where(p=> p.Name.Contains(pQuery))
+                                            .AsNoTracking().Where(p=> p.Name.Contains(pParam.search))
                                             .ToList();
-            return Json(productList);
+
+
+            
+
+            foreach(var product in productList)
+            {
+                selectObj.Add(new SelectObject() {
+                     id = product.Id
+                    ,text = product.Name
+                });
+            }
+
+            return Json(selectObj);
         }
 
         private bool ProductExists(int id)

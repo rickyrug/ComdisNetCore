@@ -1,0 +1,327 @@
+@model int
+
+@{ ViewData["Title"] = "Index"; }
+
+<h1>Add Items to SO  @ViewBag.So</h1>
+
+<div class="row">
+    <div class="col-md-3">
+        <div class="form-group row">
+            <label for="staticEmail" class="col-sm-2 col-form-label">Email</label>
+            <div class="col-sm-10">
+                <input type="text" readonly class="form-control-plaintext" id="staticEmail" value="email@example.com">
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="form-group row">
+            <label for="staticEmail" class="col-sm-2 col-form-label">Email</label>
+            <div class="col-sm-10">
+                <input type="text" readonly class="form-control-plaintext" id="staticEmail" value="email@example.com">
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="form-group row">
+            <label for="staticEmail" class="col-sm-2 col-form-label">Email</label>
+            <div class="col-sm-10">
+                <input type="text" readonly class="form-control-plaintext" id="staticEmail" value="email@example.com">
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="form-group row">
+            <label for="staticEmail" class="col-sm-2 col-form-label">Email</label>
+            <div class="col-sm-10">
+                <input type="text" readonly class="form-control-plaintext" id="staticEmail" value="email@example.com">
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-3">
+        <button class="btn btn-primary" id="btnAdd">Add</button>
+    </div>
+    <div class="col-md-3">
+        <button class="btn btn-success" id="btnSave" type="submit">Save</button>
+    </div>
+    <div class="col-md-3">
+        <button class="btn btn-info" id="btnPrint">Print</button>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+
+        <table class="table table-striped table-bordered" id="tblSalesOrderItems"></table>
+
+    </div>
+</div>
+<!-- Modal -->
+<div class="modal fade" id="modelView" tabindex="-1" aria-labelledby="modelViewLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modelViewLabel">Producto</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                 <div id="partialHtml">
+
+                 </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts
+{
+    <script>
+        toastr.options = {
+            "closeButton": true,
+            "debug": false,
+            "newestOnTop": false,
+            "progressBar": false,
+            "positionClass": "toast-top-right",
+            "preventDuplicates": false,
+            "onclick": null,
+            "showDuration": "300",
+            "hideDuration": "1000",
+            "timeOut": "5000",
+            "extendedTimeOut": "1000",
+            "showEasing": "swing",
+            "hideEasing": "linear",
+            "showMethod": "fadeIn",
+            "hideMethod": "fadeOut"
+        }
+
+        var urlGetInformationSOI = "@Url.Action("GetSalesOrderItem", "SalesItems")";
+        var urlDeleteItemSOI = "@Url.Action("deleteItem", "SalesItems")";
+        var urlPartialCreate = "@Url.Action("GetCreateItemView", "SalesItems")";
+        var urlProductList = "@Url.Action("GetProducts", "Products")";
+        var mainInfo;
+        var SO = "@ViewBag.So";
+        var tableData;
+
+        $(document).ready(function () {
+
+            $.post(
+                urlGetInformationSOI
+                , { id: SO }
+
+            ).done(function (data, res) {
+
+                if (res == "success") {
+
+                    mainInfo = data;
+
+                    if (data.salesItem.length > 0) {
+                        buildTableSOI(data.salesItem);
+                    } else
+                    {
+                        toastr.warning("Not available items!")
+                    }
+                }
+
+            }).fail(function (data, res) {
+
+                    toastr.error(data.statusText);
+                toastr.error(data.responseText);
+            });
+
+            $("#btnAdd").click(function () {
+               
+
+                tableData = $("#tblSalesOrderItems").DataTable();
+
+                $.get(urlPartialCreate, { pSOI: SO})
+                    .done(function (data, res) {
+
+                        $("#partialHtml").html(data);
+                        $('#modelView').modal('show');
+                        
+                    });
+
+               
+            });
+
+           $("#btnSave").click(function () {
+
+
+                tableData = $("#tblSalesOrderItems").DataTable();
+
+                var var_tableData = tableData.rows().data().toArray();
+                var rowhtml = "";
+                var errorMessage = "";
+                var hasError = false;
+                var globalError = false;
+
+               var serilizeForm = $('#formItems').serializeArray();
+               console.log(serilizeForm);
+
+               var arraySOIItems = [];
+              var soi;
+
+
+
+
+               $.each(serilizeForm, function (key, value) {
+
+
+
+
+
+               });
+               console.log(arraySOIItems);
+                    @*rowhtml = tableData.row(key).node();
+
+                    if (value.ProductId == 0)
+                    {
+
+                        $(rowhtml).find("#product").addClass("border-danger");
+
+
+                        errorMessage += `Row ${key}, Product Missing!</br>`;
+                        hasError = true;
+                    }
+
+                    if (value.price == 0)
+                    {
+                        $(rowhtml).find("#price").addClass("border-danger");
+                        errorMessage += `Row ${key}, Price Missing!</br>`;
+                        hasError = true;
+                    }
+
+                    if (value.quantity == 0)
+                    {
+                        $(rowhtml).find("#quantity").addClass("border-danger");
+                        errorMessage += `Row ${key}, Quantity Missing!</br>`;
+                        hasError = true;
+                    }
+
+                    if (hasError) {
+                        globalError = hasError;
+                        toastr.error(errorMessage, 'Items Validation!');
+                        hasError = false;
+                        errorMessage = "";
+                    }*@
+
+
+               if (globalError) {
+                   toastr.error("Please check Errors!", 'Items Validation!')
+               } else {
+                   toastr.success('SO Saved!', 'Save confirmation!')
+               }
+                });
+
+
+
+
+
+            });
+
+
+
+
+
+
+        function buildTableSOI(dataset)
+        {
+            tableData = $("#tblSalesOrderItems").DataTable({
+               // destroy: true,
+              //  select: true,
+             //   "processing": true,
+             //   stateSave: true,
+
+
+                data: dataset,
+                "columns": [
+                    {
+                        "title": "",
+                        "render": function (data, type, row) {
+
+                            return `<button id="btnEditItem"  type="button" class="btn btn-secondary" >Edit</button>
+                                        <button id="btnDelete" type="button" class="btn btn-secondary ">Delete</button>`;
+                        }
+                    }
+                    ,{
+                        "title": "Product",
+                        "render": function (data, type, row) {
+                            var name = row.productName;
+                            //return `<input type="text" class="form-control" id="product" name="product" value="${name}">`;
+                            return name;
+                        }
+                    },
+                    {
+                        "title": "Quantity",
+                        "render": function (data, type, row) {
+                            var quantity = row.quantity;
+                            //return `<input type="number" class="form-control" id="quantity" name="quantity" value="${quantity}">`;
+                          
+                            return quantity.toLocaleString("es-MX");
+                        }
+                    },
+                    {
+                        "title": "Price",
+                        "render": function (data, type, row) {
+                            var price = row.price;
+                            //return `<input type="number" class="form-control" id="price" name="price" value="${price}">`;
+                            return price.toLocaleString("es-MX", { style: "currency", currency:"MXN" });
+                        }
+                    },
+                    {
+                        "title": "SubTotal",
+                        "render": function (data, type, row) {
+                            var subtotal = row.price * row.quantity;
+                            return subtotal.toLocaleString("es-MX", { style: "currency", currency: "MXN", maximumFractionDigits: 2 });
+                        }
+                    }
+                ]
+
+            });
+
+        }
+
+        $("#tblSalesOrderItems").on("click", "#btnEditItem", function () {
+            var row = $(this).closest('tr');
+            var rowData = tableData.row(row).data();
+            $('#modelView').modal('show');
+
+
+
+            console.log(rowData);
+        });
+
+
+        $("#tblSalesOrderItems").on("click", "#btnDelete", function () {
+            var row = $(this).closest('tr');
+            var rowData = tableData.row(row).data();
+
+
+
+            $.post(urlDeleteItemSOI, { pId: rowData.uid })
+                .done(function (data, res) {
+                    if (res == "success") {
+                        tableData.row(row).remove().draw(false);
+                        toastr.success(`Item ${rowData.productName} Deleted!"`);
+
+                    }
+                })
+           .fail(function (data, res) {
+            toastr.error(data.statusText);
+            toastr.error(data.responseText);
+        });
+
+
+        });
+
+
+
+    </script>
+}
+

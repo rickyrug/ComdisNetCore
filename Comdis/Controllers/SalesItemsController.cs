@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Comdis.Models;
 using Comdis.Models.VM;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Comdis.Helpers;
 
 namespace Comdis.Controllers
 {
@@ -57,31 +59,57 @@ namespace Comdis.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public JsonResult Create([Bind("ProductName,Quantity,Price,SOId")] SalesItemVM salesItems)
+        public JsonResult Create([Bind("Quantity,Price,SOId,ProductId")] SalesItemVM salesItems)
         {
             
             try
             {
+                
+
+
                 if (ModelState.IsValid)
                 {
-                    var var_so = _context.Sales.AsNoTracking().Where(so => so.Id == salesItems.SOId).FirstOrDefault();
+                   // var var_so = _context.Sales.AsNoTracking().Where(so => so.Id == ).FirstOrDefault();
+                   // var var_product = _context.Product.AsNoTracking().Where(pro => pro.Id == salesItems.ProductId).FirstOrDefault();
                     SalesItems newItem = new SalesItems();
-                    newItem.SalesHeader = var_so;
-                    newItem.Price = newItem.Price;
-                    newItem.Quantity = newItem.Quantity;
+                    newItem.SalesHeader = _context.Sales.Find(salesItems.SOId);
+                    newItem.Product = _context.Product.Find(salesItems.ProductId);
+
+
+                    newItem.Price = salesItems.Price;
+                    newItem.Quantity = salesItems.Quantity;
+                    
 
 
                     _context.Add(newItem);
                     _context.SaveChanges();
-                    return Json(newItem);
+
+                    salesItems.uid = newItem.Id;
+                    salesItems.ProductName = newItem.Product.Name;
+
+                    return Json(new MessageVM<SalesItemVM>() { hasError = false, Message = salesItems });
                 }
 
-                return Json(new SalesItems());
+
+                var validation = ModelState.ToList();
+                List<FormField> errorsInForm = new List<FormField>();
+                errorsInForm = FormValidationHelper.processErrorsInForm(validation);
+                return Json(new MessageVM<List<FormField>>() { hasError = true, Message = errorsInForm });
+
+               
 
             }
             catch (Exception ex)
             {
-                throw new Exception("Error When Creating Item" + ex.Message);
+                if (ex.InnerException != null)
+                {
+                    throw new Exception("Error When Creating Item" + ex.InnerException);
+                }
+                else
+                {
+                    throw new Exception("Error When Creating Item" + ex.Message);
+                }  
+                
             }
             
         }

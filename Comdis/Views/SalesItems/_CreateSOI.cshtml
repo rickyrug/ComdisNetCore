@@ -1,0 +1,102 @@
+﻿@model Comdis.Models.VM.SalesItemVM
+
+<form id="newItem" asp-action="Create">
+    <div class="form-group">
+        <label asp-for="ProductId" class="control-label"></label>
+        <select asp-for="ProductId" id="productDropDown" class="select2-container  form-control"></select>
+        <span asp-validation-for="ProductId" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Quantity" class="control-label"></label>
+        <input asp-for="Quantity" class="form-control" />
+        <span asp-validation-for="Quantity" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Price" class="control-label"></label>
+        <input asp-for="Price" class="form-control" />
+        <span asp-validation-for="Price" class="text-danger"></span>
+    </div>
+    <input asp-for="SOId" type="hidden" />
+    <button class="btn btn-primary" id="Savebtn" type="button">Save</button>
+</form>
+
+
+<script>
+
+    $(document).ready(function () {
+        $("#productDropDown").select2({
+            ajax: {
+                url: urlProductList,
+                data: function (params) {
+                    var query = {
+                        search: params.term,
+                        type: 'public'
+                    }
+
+                    return query;
+                },
+                processResults: function (data) {
+                    return {
+                        results: data
+                    };
+                    
+                }
+
+            },
+            placeholder: 'Search for a repository',
+            minimumInputLength: 3,
+        });
+    });
+
+    
+
+    $("#Savebtn").click(function () {
+
+        var $form = $("#newItem");
+
+        $.ajax({
+            type: "POST",
+            url: $form.attr('action'),
+            data: $form.serialize(),
+            error: function (xhr, status, error) {
+                toastr.error(xhr.responseText, error);
+              
+                
+            },
+            success: function (response) {
+
+                if (response.hasError)
+                {
+                    
+                    $.each(response.message, function (index, value) {
+                        $("[data-valmsg-for='Price']").text(value.message);
+                        toastr.error(value.message);
+                    });
+                }
+                else
+                {
+
+                    toastr.success(`Item ${response.message.productName} added!`);
+                    $("#modelView").modal('hide');
+                    var newRow = {
+                        "uid": response.message.uid,
+                        "ProductId": response.message.productId,
+                        "productName": response.message.productName,
+                        "quantity": response.message.quantity,
+                        "price": response.message.price
+                    };
+
+
+                    tableData.row.add(newRow).draw(false);
+
+                }
+                
+
+            }
+        });
+    });
+</script>
+
+
+
