@@ -118,7 +118,71 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Label_Bank" xml:space="preserve">
-    <value>Bank</value>
+    <value>Banco</value>
+    <comment/>
+  </data>
+  <data name="Label_2Decimals" xml:space="preserve">
+    <value>Solo se permiten 2 decimales.</value>
+    <comment/>
+  </data>
+  <data name="Label_SOITitle" xml:space="preserve">
+    <value>Detalles de venta</value>
+    <comment/>
+  </data>
+  <data name="Labe_Add" xml:space="preserve">
+    <value>Agregar</value>
+    <comment/>
+  </data>
+  <data name="Label_Save" xml:space="preserve">
+    <value>Guardar</value>
+    <comment/>
+  </data>
+  <data name="Label_Print" xml:space="preserve">
+    <value>Imprimir</value>
+    <comment/>
+  </data>
+  <data name="Label_Close" xml:space="preserve">
+    <value>Cerrar</value>
+    <comment/>
+  </data>
+  <data name="Label_ModalAdd" xml:space="preserve">
+    <value>Agregar producto</value>
+    <comment/>
+  </data>
+  <data name="Msg_notAvailableItems" xml:space="preserve">
+    <value>No hay productos disponibles.</value>
+    <comment/>
+  </data>
+  <data name="Msg_searchDictionary" xml:space="preserve">
+    <value>Buscar en diccionario</value>
+    <comment/>
+  </data>
+  <data name="Label_Product" xml:space="preserve">
+    <value>Producto</value>
+    <comment/>
+  </data>
+  <data name="Label_Quantity" xml:space="preserve">
+    <value>Cantidad</value>
+    <comment/>
+  </data>
+  <data name="Label_Price" xml:space="preserve">
+    <value>Precio</value>
+    <comment/>
+  </data>
+  <data name="Label_subtotal" xml:space="preserve">
+    <value>Subtotal</value>
+    <comment/>
+  </data>
+  <data name="Label_edit" xml:space="preserve">
+    <value>Editar</value>
+    <comment/>
+  </data>
+  <data name="Label_delete" xml:space="preserve">
+    <value>Borrar</value>
+    <comment/>
+  </data>
+  <data name="Msg_addedItem" xml:space="preserve">
+    <value>Producto {0}, agregado correctamente.</value>
     <comment/>
   </data>
 </root>

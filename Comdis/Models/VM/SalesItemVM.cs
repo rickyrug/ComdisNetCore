@@ -10,13 +10,21 @@ namespace Comdis.Models.VM
         public int uid { get; set; }
         
         public int SOId { get; set; }
+
         [Required]
         [Range(1,999999)]
+        [Display(ResourceType =typeof(Resources.Resources),Name = "Label_Product")]
         public int ProductId { get; set; }
+
         public string ProductName { get; set; }
+
+        [Required]
+        [Display(ResourceType = typeof(Resources.Resources), Name = "Label_Quantity")]
         public decimal Quantity { get; set; }
 
-        [RegularExpression(@"^\d+\.\d{0,2}$")]
+        [Required]
+        [RegularExpression(@"^\d+\.\d{0,2}$", ErrorMessageResourceType = typeof(Resources.Resources),ErrorMessageResourceName = "Label_2Decimals")]
+        [Display(ResourceType = typeof(Resources.Resources), Name = "Label_Price")]
         public decimal Price { get; set; }
 
         public SalesItemVM(){}

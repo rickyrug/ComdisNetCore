@@ -2,7 +2,7 @@
 
 @{ ViewData["Title"] = "Index"; }
 
-<h1>Add Items to SO  @ViewBag.So</h1>
+<h3>@Comdis.Resources.Resources.Label_SOITitle - @ViewBag.So</h3>
 
 <div class="row">
     <div class="col-md-3">
@@ -40,13 +40,13 @@
 </div>
 <div class="row">
     <div class="col-md-3">
-        <button class="btn btn-primary" id="btnAdd">Add</button>
+        <button class="btn btn-primary" id="btnAdd">@Comdis.Resources.Resources.Labe_Add</button>
     </div>
     <div class="col-md-3">
-        <button class="btn btn-success" id="btnSave" type="submit">Save</button>
+        <button class="btn btn-success" id="btnSave" type="submit">@Comdis.Resources.Resources.Label_Save</button>
     </div>
     <div class="col-md-3">
-        <button class="btn btn-info" id="btnPrint">Print</button>
+        <button class="btn btn-info" id="btnPrint">@Comdis.Resources.Resources.Label_Print</button>
     </div>
 </div>
 <div class="row">
@@ -61,7 +61,7 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="modelViewLabel">Producto</h5>
+                <h5 class="modal-title" id="modelViewLabel">@Comdis.Resources.Resources.Label_ModalAdd</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -72,7 +72,7 @@
                  </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">@Comdis.Resources.Resources.Label_Close</button>
             </div>
         </div>
     </div>
@@ -124,18 +124,18 @@
                         buildTableSOI(data.salesItem);
                     } else
                     {
-                        toastr.warning("Not available items!")
+                        toastr.warning("@Comdis.Resources.Resources.Msg_notAvailableItems")
                     }
                 }
 
             }).fail(function (data, res) {
 
                     toastr.error(data.statusText);
-                toastr.error(data.responseText);
+                    toastr.error(data.responseText);
             });
 
             $("#btnAdd").click(function () {
-               
+
 
                 tableData = $("#tblSalesOrderItems").DataTable();
 
@@ -144,10 +144,10 @@
 
                         $("#partialHtml").html(data);
                         $('#modelView').modal('show');
-                        
+
                     });
 
-               
+
             });
 
            $("#btnSave").click(function () {
@@ -245,12 +245,12 @@
                         "title": "",
                         "render": function (data, type, row) {
 
-                            return `<button id="btnEditItem"  type="button" class="btn btn-secondary" >Edit</button>
-                                        <button id="btnDelete" type="button" class="btn btn-secondary ">Delete</button>`;
+                            return `<button id="btnEditItem"  type="button" class="btn btn-secondary" >@Comdis.Resources.Resources.Label_edit </button>
+                                            <button id="btnDelete" type="button" class="btn btn-secondary ">@Comdis.Resources.Resources.Label_delete</button>`;
                         }
-                    }
+                   }
                     ,{
-                        "title": "Product",
+                        "title": "@Comdis.Resources.Resources.Label_Product",
                         "render": function (data, type, row) {
                             var name = row.productName;
                             //return `<input type="text" class="form-control" id="product" name="product" value="${name}">`;
@@ -258,16 +258,16 @@
                         }
                     },
                     {
-                        "title": "Quantity",
+                        "title": "@Comdis.Resources.Resources.Label_Quantity",
                         "render": function (data, type, row) {
                             var quantity = row.quantity;
                             //return `<input type="number" class="form-control" id="quantity" name="quantity" value="${quantity}">`;
-                          
+
                             return quantity.toLocaleString("es-MX");
                         }
                     },
                     {
-                        "title": "Price",
+                        "title": "@Comdis.Resources.Resources.Label_Price",
                         "render": function (data, type, row) {
                             var price = row.price;
                             //return `<input type="number" class="form-control" id="price" name="price" value="${price}">`;
@@ -275,7 +275,7 @@
                         }
                     },
                     {
-                        "title": "SubTotal",
+                        "title": "@Comdis.Resources.Resources.Label_subtotal",
                         "render": function (data, type, row) {
                             var subtotal = row.price * row.quantity;
                             return subtotal.toLocaleString("es-MX", { style: "currency", currency: "MXN", maximumFractionDigits: 2 });

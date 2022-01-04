@@ -6,6 +6,7 @@ namespace Comdis.Models.VM
 
         public bool hasError { get; set; }
         public T Message {get;set;}
+        public string shortMessage { get; set; }
 
         public MessageVM()
         {

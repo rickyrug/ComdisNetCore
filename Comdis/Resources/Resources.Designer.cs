@@ -16,7 +16,7 @@ namespace Comdis.Resources {
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
     [System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class Resources {
+    public class Resources {
         
         private static System.Resources.ResourceManager resourceMan;
         
@@ -27,7 +27,7 @@ namespace Comdis.Resources {
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static System.Resources.ResourceManager ResourceManager {
+        public static System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.Equals(null, resourceMan)) {
                     System.Resources.ResourceManager temp = new System.Resources.ResourceManager("Comdis.Resources.Resources", typeof(Resources).Assembly);
@@ -38,12 +38,114 @@ namespace Comdis.Resources {
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static System.Globalization.CultureInfo Culture {
+        public static System.Globalization.CultureInfo Culture {
             get {
                 return resourceCulture;
             }
             set {
                 resourceCulture = value;
+            }
+        }
+        
+        public static string Label_Bank {
+            get {
+                return ResourceManager.GetString("Label_Bank", resourceCulture);
+            }
+        }
+        
+        public static string Label_2Decimals {
+            get {
+                return ResourceManager.GetString("Label_2Decimals", resourceCulture);
+            }
+        }
+        
+        public static string Label_SOITitle {
+            get {
+                return ResourceManager.GetString("Label_SOITitle", resourceCulture);
+            }
+        }
+        
+        public static string Labe_Add {
+            get {
+                return ResourceManager.GetString("Labe_Add", resourceCulture);
+            }
+        }
+        
+        public static string Label_Save {
+            get {
+                return ResourceManager.GetString("Label_Save", resourceCulture);
+            }
+        }
+        
+        public static string Label_Print {
+            get {
+                return ResourceManager.GetString("Label_Print", resourceCulture);
+            }
+        }
+        
+        public static string Label_Close {
+            get {
+                return ResourceManager.GetString("Label_Close", resourceCulture);
+            }
+        }
+        
+        public static string Label_ModalAdd {
+            get {
+                return ResourceManager.GetString("Label_ModalAdd", resourceCulture);
+            }
+        }
+        
+        public static string Msg_notAvailableItems {
+            get {
+                return ResourceManager.GetString("Msg_notAvailableItems", resourceCulture);
+            }
+        }
+        
+        public static string Msg_searchDictionary {
+            get {
+                return ResourceManager.GetString("Msg_searchDictionary", resourceCulture);
+            }
+        }
+        
+        public static string Label_Product {
+            get {
+                return ResourceManager.GetString("Label_Product", resourceCulture);
+            }
+        }
+        
+        public static string Label_Quantity {
+            get {
+                return ResourceManager.GetString("Label_Quantity", resourceCulture);
+            }
+        }
+        
+        public static string Label_Price {
+            get {
+                return ResourceManager.GetString("Label_Price", resourceCulture);
+            }
+        }
+        
+        public static string Label_subtotal {
+            get {
+                return ResourceManager.GetString("Label_subtotal", resourceCulture);
+            }
+        }
+        
+        public static string Label_edit {
+            get {
+                return ResourceManager.GetString("Label_edit", resourceCulture);
+            }
+        }
+        
+        public static string Label_delete {
+            get {
+                return ResourceManager.GetString("Label_delete", resourceCulture);
+            }
+        }
+        
+        public static string Msg_addedItem {
+            get {
+                return ResourceManager.GetString("Msg_addedItem", resourceCulture);
             }
         }
     }

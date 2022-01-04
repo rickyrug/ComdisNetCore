@@ -87,14 +87,29 @@ namespace Comdis.Controllers
                     salesItems.uid = newItem.Id;
                     salesItems.ProductName = newItem.Product.Name;
 
-                    return Json(new MessageVM<SalesItemVM>() { hasError = false, Message = salesItems });
+                    return Json(new MessageVM<SalesItemVM>()
+                            {
+                                    hasError = false
+                                , Message = salesItems
+                                ,shortMessage = String.Format(Resources.Resources.Msg_addedItem,salesItems.ProductName)
+
+
+                    });
                 }
 
 
                 var validation = ModelState.ToList();
                 List<FormField> errorsInForm = new List<FormField>();
                 errorsInForm = FormValidationHelper.processErrorsInForm(validation);
-                return Json(new MessageVM<List<FormField>>() { hasError = true, Message = errorsInForm });
+                return Json(new MessageVM<List<FormField>>()
+                    {
+                            hasError = true
+                        , Message = errorsInForm
+                        
+                    }
+
+
+                );
 
                
 
