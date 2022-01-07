@@ -148,5 +148,137 @@ namespace Comdis.Resources {
                 return ResourceManager.GetString("Msg_addedItem", resourceCulture);
             }
         }
+        
+        public static string Label_Created {
+            get {
+                return ResourceManager.GetString("Label_Created", resourceCulture);
+            }
+        }
+        
+        public static string Label_CreatedBy {
+            get {
+                return ResourceManager.GetString("Label_CreatedBy", resourceCulture);
+            }
+        }
+        
+        public static string Label_Updated {
+            get {
+                return ResourceManager.GetString("Label_Updated", resourceCulture);
+            }
+        }
+        
+        public static string Label_UpdatedBy {
+            get {
+                return ResourceManager.GetString("Label_UpdatedBy", resourceCulture);
+            }
+        }
+        
+        public static string Label_Name {
+            get {
+                return ResourceManager.GetString("Label_Name", resourceCulture);
+            }
+        }
+        
+        public static string Label_Adress {
+            get {
+                return ResourceManager.GetString("Label_Adress", resourceCulture);
+            }
+        }
+        
+        public static string Label_Adress2 {
+            get {
+                return ResourceManager.GetString("Label_Adress2", resourceCulture);
+            }
+        }
+        
+        public static string Label_Phone {
+            get {
+                return ResourceManager.GetString("Label_Phone", resourceCulture);
+            }
+        }
+        
+        public static string Label_Phone2 {
+            get {
+                return ResourceManager.GetString("Label_Phone2", resourceCulture);
+            }
+        }
+        
+        public static string Label_RFC {
+            get {
+                return ResourceManager.GetString("Label_RFC", resourceCulture);
+            }
+        }
+        
+        public static string Label_Email {
+            get {
+                return ResourceManager.GetString("Label_Email", resourceCulture);
+            }
+        }
+        
+        public static string Label_UOM {
+            get {
+                return ResourceManager.GetString("Label_UOM", resourceCulture);
+            }
+        }
+        
+        public static string Label_Category {
+            get {
+                return ResourceManager.GetString("Label_Category", resourceCulture);
+            }
+        }
+        
+        public static string Label_Code {
+            get {
+                return ResourceManager.GetString("Label_Code", resourceCulture);
+            }
+        }
+        
+        public static string Label_BankAccount {
+            get {
+                return ResourceManager.GetString("Label_BankAccount", resourceCulture);
+            }
+        }
+        
+        public static string Label_Customer {
+            get {
+                return ResourceManager.GetString("Label_Customer", resourceCulture);
+            }
+        }
+        
+        public static string Label_RequestedDeliveryDate {
+            get {
+                return ResourceManager.GetString("Label_RequestedDeliveryDate", resourceCulture);
+            }
+        }
+        
+        public static string Label_DeliveryAdress {
+            get {
+                return ResourceManager.GetString("Label_DeliveryAdress", resourceCulture);
+            }
+        }
+        
+        public static string Label_Comments {
+            get {
+                return ResourceManager.GetString("Label_Comments", resourceCulture);
+            }
+        }
+        
+        public static string Label_Discount1 {
+            get {
+                return ResourceManager.GetString("Label_Discount1", resourceCulture);
+            }
+        }
+        
+        public static string Label_Discount2 {
+            get {
+                return ResourceManager.GetString("Label_Discount2", resourceCulture);
+            }
+        }
+        
+        public static string Label_Discount3 {
+            get {
+                return ResourceManager.GetString("Label_Discount3", resourceCulture);
+            }
+        }
     }
 }

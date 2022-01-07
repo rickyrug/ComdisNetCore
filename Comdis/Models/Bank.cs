@@ -1,5 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
+using System.Security.AccessControl;
 
 namespace Comdis.Models
 {
@@ -8,8 +10,8 @@ namespace Comdis.Models
 
         public int Id { get; set; }
 
-       
-       [DisplayName("Bank Name")] 
+
+        [Display(ResourceType = typeof(Resources.Resources), Name = "Label_Bank")]
         public string Name { get; set; }
 
         public Bank(){}

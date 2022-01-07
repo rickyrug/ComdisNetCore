@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
+using System.Security.AccessControl;
 
 namespace Comdis.Models
 {
@@ -11,10 +13,17 @@ namespace Comdis.Models
         }
 
         public int Id { get; set; }
-        [DisplayName("Category")]
+
+
+        [Display(ResourceType = typeof(Resources.Resources), Name = "Label_Name")]
         public string Name { get; set; }
+
+        [Display(ResourceType = typeof(Resources.Resources), Name = "Label_Code")]
         public string CategoryCode { get; set; }
         //public ICollection<Product> Product { get; set; }
+
+
+
 
 
         public string setProductCode(int pIdProduct, string pCategoryCode)

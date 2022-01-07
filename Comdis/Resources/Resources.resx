@@ -185,4 +185,92 @@
     <value>Producto {0}, agregado correctamente.</value>
     <comment/>
   </data>
+  <data name="Label_Created" xml:space="preserve">
+    <value>Creado en</value>
+    <comment/>
+  </data>
+  <data name="Label_CreatedBy" xml:space="preserve">
+    <value>Creado por</value>
+    <comment/>
+  </data>
+  <data name="Label_Updated" xml:space="preserve">
+    <value>Actualizado en</value>
+    <comment/>
+  </data>
+  <data name="Label_UpdatedBy" xml:space="preserve">
+    <value>Actualizado por</value>
+    <comment/>
+  </data>
+  <data name="Label_Name" xml:space="preserve">
+    <value>Nombre</value>
+    <comment/>
+  </data>
+  <data name="Label_Adress" xml:space="preserve">
+    <value>Dirección</value>
+    <comment/>
+  </data>
+  <data name="Label_Adress2" xml:space="preserve">
+    <value>Dirección 2</value>
+    <comment/>
+  </data>
+  <data name="Label_Phone" xml:space="preserve">
+    <value>Teléfono</value>
+    <comment/>
+  </data>
+  <data name="Label_Phone2" xml:space="preserve">
+    <value>Teléfono2</value>
+    <comment/>
+  </data>
+  <data name="Label_RFC" xml:space="preserve">
+    <value>RFC</value>
+    <comment/>
+  </data>
+  <data name="Label_Email" xml:space="preserve">
+    <value>Mail</value>
+    <comment/>
+  </data>
+  <data name="Label_UOM" xml:space="preserve">
+    <value>Unidad de medida</value>
+    <comment/>
+  </data>
+  <data name="Label_Category" xml:space="preserve">
+    <value>Categoría</value>
+    <comment/>
+  </data>
+  <data name="Label_Code" xml:space="preserve">
+    <value>Código</value>
+    <comment/>
+  </data>
+  <data name="Label_BankAccount" xml:space="preserve">
+    <value>Cuenta de banco</value>
+    <comment/>
+  </data>
+  <data name="Label_Customer" xml:space="preserve">
+    <value>Cliente</value>
+    <comment/>
+  </data>
+  <data name="Label_RequestedDeliveryDate" xml:space="preserve">
+    <value>Fecha de entrega</value>
+    <comment/>
+  </data>
+  <data name="Label_DeliveryAdress" xml:space="preserve">
+    <value>Dirección de entrega</value>
+    <comment/>
+  </data>
+  <data name="Label_Comments" xml:space="preserve">
+    <value>Comentarios</value>
+    <comment/>
+  </data>
+  <data name="Label_Discount1" xml:space="preserve">
+    <value>Descuento</value>
+    <comment/>
+  </data>
+  <data name="Label_Discount2" xml:space="preserve">
+    <value>Descuento 2</value>
+    <comment/>
+  </data>
+  <data name="Label_Discount3" xml:space="preserve">
+    <value>Descuento 3</value>
+    <comment/>
+  </data>
 </root>
