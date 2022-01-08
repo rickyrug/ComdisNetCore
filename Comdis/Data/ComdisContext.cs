@@ -29,4 +29,6 @@ using Comdis.Comdis.Models;
         public DbSet<Comdis.Models.Sales> Sales { get; set; }
 
         public DbSet<Comdis.Models.SalesItems> SalesItems { get; set; }
+
+        public DbSet<Comdis.Models.Configuration> Configuration { get; set; }
     }

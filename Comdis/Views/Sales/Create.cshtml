@@ -38,21 +38,28 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-md-4">
+        <div class="col-md-3">
+            <div class="form-group">
+                <label asp-for="tax" class="control-label"></label>
+                <input asp-for="tax" class="form-control"  type="checkbox"/>
+                <span asp-validation-for="tax" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-md-3">
             <div class="form-group">
                 <label asp-for="discount" class="control-label"></label>
                 <input asp-for="discount" class="form-control" />
                 <span asp-validation-for="discount" class="text-danger"></span>
             </div>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-3">
             <div class="form-group">
                 <label asp-for="discount2" class="control-label"></label>
                 <input asp-for="discount2" class="form-control" />
                 <span asp-validation-for="discount2" class="text-danger"></span>
             </div>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-3">
             <div class="form-group">
                 <label asp-for="discount3" class="control-label"></label>
                 <input asp-for="discount3" class="form-control" />
@@ -61,7 +68,7 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-md-10">
+        <div class="col-md-12">
             <div class="form-group">
                 <label asp-for="Comments" class="control-label"></label>
                 <input asp-for="Comments" class="form-control" />
