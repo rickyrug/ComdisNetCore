@@ -24,10 +24,19 @@ namespace Comdis.Controllers
         // GET: SalesItems
         public IActionResult Index(int id)
         {
+            Sales sales = _context
+                                    .Sales
+                                    .Include(p => p.SalesToParty)
+                                    .Where(s => s.Id == id).
+                                    AsNoTracking().
+                                    FirstOrDefault();
 
             ViewBag.So = id.ToString();
-
-            return View();
+            sales.discount  = sales.discount * 100;
+            sales.discount2 = sales.discount2 * 100;
+            sales.discount3 = sales.discount3 * 100;
+            sales.tax = sales.tax * 100;
+            return View(sales);
         }
 
         // GET: SalesItems/Details/5
@@ -118,11 +127,14 @@ namespace Comdis.Controllers
             {
                 if (ex.InnerException != null)
                 {
-                    throw new Exception("Error When Creating Item" + ex.InnerException);
+
+                    throw new Exception(String.Format(Resources.Resources.MSG_ErrorCreating, salesItems.ProductName + " " + ex.InnerException));
+                    
                 }
                 else
                 {
-                    throw new Exception("Error When Creating Item" + ex.Message);
+                    throw new Exception(String.Format(Resources.Resources.MSG_ErrorCreating, salesItems.ProductName + " " + ex.Message));
+              
                 }  
                 
             }
@@ -150,34 +162,64 @@ namespace Comdis.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Quantity,Price,CreatedBy,Cretead,UpdatedBy,Updated")] SalesItems salesItems)
+        public JsonResult Edit([Bind("Quantity,Price,SOId,ProductId,uid")] SalesItemVM salesItems)
         {
-            if (id != salesItems.Id)
-            {
-                return NotFound();
-            }
 
+          
             if (ModelState.IsValid)
             {
                 try
                 {
-                    _context.Update(salesItems);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!SalesItemsExists(salesItems.Id))
+                    SalesItems editSalesItem = _context.SalesItems.Find(salesItems.uid);
+                    editSalesItem.SalesHeader = _context.Sales.Find(salesItems.SOId);
+                    editSalesItem.Product = _context.Product.Find(salesItems.ProductId);
+                    editSalesItem.Price = salesItems.Price;
+                    editSalesItem.Quantity = salesItems.Quantity;
+
+                    editSalesItem.Updated = DateTime.Now;
+
+                    _context.Update(editSalesItem);
+                    _context.SaveChanges();
+
+                    salesItems.ProductName = editSalesItem.Product.Name;
+
+                    return Json(new MessageVM<SalesItemVM>()
                     {
-                        return NotFound();
+                        hasError = false
+                                ,
+                        Message = salesItems
+                                ,
+                        shortMessage = String.Format(Resources.Resources.MSG_EditedITem, salesItems.ProductName)
+
+
+                    });
+                }
+                catch (Exception ex)
+                {
+                    if (ex.InnerException != null)
+                    {
+                        throw new Exception( String.Format(Resources.Resources.MSG_ErrorEditar,salesItems.ProductName + " "+ ex.InnerException));
                     }
                     else
                     {
-                        throw;
+                        throw new Exception(String.Format(Resources.Resources.MSG_ErrorEditar, salesItems.ProductName + " " + ex.Message));
+                        
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                
             }
-            return View(salesItems);
+            var validation = ModelState.ToList();
+            List<FormField> errorsInForm = new List<FormField>();
+            errorsInForm = FormValidationHelper.processErrorsInForm(validation);
+
+
+            return Json(new MessageVM<List<FormField>>()
+            {
+                hasError = true
+                    ,
+                Message = errorsInForm
+
+            });
         }
 
         // GET: SalesItems/Delete/5
@@ -217,6 +259,13 @@ namespace Comdis.Controllers
             soi.SOId = pSOI;
 
             return PartialView("_CreateSOI", soi);
+        }
+
+        public IActionResult GetEditItemView(SalesItemVM pSOIDetail)
+        {
+
+
+            return PartialView("_EditSOI", pSOIDetail);
         }
 
         
@@ -286,7 +335,43 @@ namespace Comdis.Controllers
         [HttpPost]
         public JsonResult deleteItem(int pId)
         {
-            throw new Exception("Not implemented");
+            try
+            {
+                SalesItems deleteItem = _context.SalesItems
+                                                                .Include(p => p.Product)
+                                                                .Where(item => item.Id == pId)
+                                                                .AsNoTracking().FirstOrDefault();
+
+
+
+                SalesItemVM salesItems = new SalesItemVM()
+                {
+                    uid = deleteItem.Id,
+                    ProductName = deleteItem.Product.Name
+
+                };
+
+                _context.SalesItems.Remove(deleteItem);
+                _context.SaveChanges();
+
+                return Json(new MessageVM<SalesItemVM>()
+                {
+                    hasError = false
+                                ,
+                    Message = salesItems
+                                ,
+                    shortMessage = String.Format(Resources.Resources.MSG_DeletedItem, salesItems.ProductName)
+
+
+                });
+
+            }
+            catch(Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+
+            
         }
 
         private bool SalesItemsExists(int id)

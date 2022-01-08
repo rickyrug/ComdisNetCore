@@ -280,5 +280,83 @@ namespace Comdis.Resources {
                 return ResourceManager.GetString("Label_Discount3", resourceCulture);
             }
         }
+        
+        public static string MSG_ErrorCreating {
+            get {
+                return ResourceManager.GetString("MSG_ErrorCreating", resourceCulture);
+            }
+        }
+        
+        public static string MSG_ErrorEditar {
+            get {
+                return ResourceManager.GetString("MSG_ErrorEditar", resourceCulture);
+            }
+        }
+        
+        public static string MSG_EditedITem {
+            get {
+                return ResourceManager.GetString("MSG_EditedITem", resourceCulture);
+            }
+        }
+        
+        public static string MSG_RequieredProduct {
+            get {
+                return ResourceManager.GetString("MSG_RequieredProduct", resourceCulture);
+            }
+        }
+        
+        public static string MSG_DeletedItem {
+            get {
+                return ResourceManager.GetString("MSG_DeletedItem", resourceCulture);
+            }
+        }
+        
+        public static string MSG_DeleteQuestion {
+            get {
+                return ResourceManager.GetString("MSG_DeleteQuestion", resourceCulture);
+            }
+        }
+        
+        public static string Label_Yes {
+            get {
+                return ResourceManager.GetString("Label_Yes", resourceCulture);
+            }
+        }
+        
+        public static string Label_No {
+            get {
+                return ResourceManager.GetString("Label_No", resourceCulture);
+            }
+        }
+        
+        public static string MSG_DidSave {
+            get {
+                return ResourceManager.GetString("MSG_DidSave", resourceCulture);
+            }
+        }
+        
+        public static string Label_CustomerInformation {
+            get {
+                return ResourceManager.GetString("Label_CustomerInformation", resourceCulture);
+            }
+        }
+        
+        public static string Label_OrderTotals {
+            get {
+                return ResourceManager.GetString("Label_OrderTotals", resourceCulture);
+            }
+        }
+        
+        public static string Label_tax {
+            get {
+                return ResourceManager.GetString("Label_tax", resourceCulture);
+            }
+        }
+        
+        public static string Label_Total {
+            get {
+                return ResourceManager.GetString("Label_Total", resourceCulture);
+            }
+        }
     }
 }

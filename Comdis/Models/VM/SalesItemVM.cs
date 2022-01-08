@@ -12,7 +12,7 @@ namespace Comdis.Models.VM
         public int SOId { get; set; }
 
         [Required]
-        [Range(1,999999)]
+        [Range(1,999999,ErrorMessageResourceType = typeof(Resources.Resources),ErrorMessageResourceName = "MSG_RequieredProduct")]
         [Display(ResourceType =typeof(Resources.Resources),Name = "Label_Product")]
         public int ProductId { get; set; }
 
@@ -23,7 +23,7 @@ namespace Comdis.Models.VM
         public decimal Quantity { get; set; }
 
         [Required]
-        [RegularExpression(@"^\d+\.\d{0,2}$", ErrorMessageResourceType = typeof(Resources.Resources),ErrorMessageResourceName = "Label_2Decimals")]
+      //  [RegularExpression(@"^\d+\.\d{0,2}$", ErrorMessageResourceType = typeof(Resources.Resources),ErrorMessageResourceName = "Label_2Decimals")]
         [Display(ResourceType = typeof(Resources.Resources), Name = "Label_Price")]
         public decimal Price { get; set; }
 

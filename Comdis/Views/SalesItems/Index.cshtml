@@ -1,61 +1,114 @@
-@model int
+@model Comdis.Models.Sales
 
 @{ ViewData["Title"] = "Index"; }
 
-<h3>@Comdis.Resources.Resources.Label_SOITitle - @ViewBag.So</h3>
+<h3>@Comdis.Resources.Resources.Label_SOITitle @ViewBag.So</h3>
 
 <div class="row">
+    <!-- informacion-->
     <div class="col-md-3">
-        <div class="form-group row">
-            <label for="staticEmail" class="col-sm-2 col-form-label">Email</label>
-            <div class="col-sm-10">
-                <input type="text" readonly class="form-control-plaintext" id="staticEmail" value="email@example.com">
+        <div class="card">
+            <div class="card-header">
+                @Comdis.Resources.Resources.Label_CustomerInformation
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6 text-right"><p class="card-text">@Comdis.Resources.Resources.Label_RequestedDeliveryDate : </p></div>
+                    <div class="col-md-6 ">@Model.RequestedDeliveryDate</div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 text-right"><p class="card-text">@Comdis.Resources.Resources.Label_Customer : </p></div>
+                    <div class="col-md-6">@Model.SalesToParty.Name</div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 text-right"><p class="card-text">@Comdis.Resources.Resources.Label_Adress:</p></div>
+                    <div class="col-md-6">@Model.SalesToParty.Adress</div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 text-right"><p class="card-text">@Comdis.Resources.Resources.Label_Comments:</p></div>
+                    <div class="col-md-6"><small>@Model.Comments</small></div>
+                </div>
             </div>
         </div>
-    </div>
-    <div class="col-md-3">
-        <div class="form-group row">
-            <label for="staticEmail" class="col-sm-2 col-form-label">Email</label>
-            <div class="col-sm-10">
-                <input type="text" readonly class="form-control-plaintext" id="staticEmail" value="email@example.com">
+        <div class="card">
+            <div class="card-header">
+                @Comdis.Resources.Resources.Label_OrderTotals
             </div>
-        </div>
-    </div>
-    <div class="col-md-3">
-        <div class="form-group row">
-            <label for="staticEmail" class="col-sm-2 col-form-label">Email</label>
-            <div class="col-sm-10">
-                <input type="text" readonly class="form-control-plaintext" id="staticEmail" value="email@example.com">
-            </div>
-        </div>
-    </div>
-    <div class="col-md-3">
-        <div class="form-group row">
-            <label for="staticEmail" class="col-sm-2 col-form-label">Email</label>
-            <div class="col-sm-10">
-                <input type="text" readonly class="form-control-plaintext" id="staticEmail" value="email@example.com">
-            </div>
-        </div>
-    </div>
-</div>
-<div class="row">
-    <div class="col-md-3">
-        <button class="btn btn-primary" id="btnAdd">@Comdis.Resources.Resources.Labe_Add</button>
-    </div>
-    <div class="col-md-3">
-        <button class="btn btn-success" id="btnSave" type="submit">@Comdis.Resources.Resources.Label_Save</button>
-    </div>
-    <div class="col-md-3">
-        <button class="btn btn-info" id="btnPrint">@Comdis.Resources.Resources.Label_Print</button>
-    </div>
-</div>
-<div class="row">
-    <div class="col-md-12">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6 text-right"><p class="card-text">@Comdis.Resources.Resources.Label_subtotal : </p></div>
+                    <div class="col-md-6"><span id="g_subtotal"></span></div>
+                </div>
+                @if (Model.discount != 0)
+                {
+            <div class="row">
+                <div class="col-md-6 text-right"><p class="card-text">@Comdis.Resources.Resources.Label_Discount1 (@Model.discount %):  </p></div>
+                <div class="col-md-6">-<span class="text-danger" id="g_discount1"></span></div>
+            </div>}
+                @if (Model.discount2 != 0)
+                {
+            <div class="row">
+                <div class="col-md-6 text-right"><p class="card-text">@Comdis.Resources.Resources.Label_Discount2 (@Model.discount2 %):   </p></div>
+                <div class="col-md-6">-<span class="text-danger" id="g_discount2"></span></div>
+            </div>}
 
-        <table class="table table-striped table-bordered" id="tblSalesOrderItems"></table>
+                @if (Model.discount3 != 0)
+                {
+            <div class="row">
+                <div class="col-md-6 text-right"><p class="card-text">@Comdis.Resources.Resources.Label_Discount3 (@Model.discount3 %):  </p></div>
+                <div class="col-md-6">-<span class="text-danger" id="g_discount3"></span></div>
+            </div>}
 
+
+                @if (Model.tax != 0)
+                {
+                            <hr />
+                            <div class="row">
+                                <div class="col-md-6 text-right"><p class="card-text">@Comdis.Resources.Resources.Label_subtotal:  </p></div>
+                                <div class="col-md-6"><span id="g_subtotalBT"></span></div>
+                            </div>
+                                            <div class="row">
+                                                <div class="col-md-6 text-right"><p class="card-text">@Comdis.Resources.Resources.Label_tax:  </p></div>
+                                                <div class="col-md-6"><span id="g_tax"></span></div>
+                                            </div>}
+
+                <hr />
+                <div class="row">
+                    <div class="col-md-6 text-right"><p class="card-text">@Comdis.Resources.Resources.Label_Total:  </p></div>
+                    <div class="col-md-6"><span id="g_total"></span></div>
+                </div>
+
+            </div>
+        </div>
     </div>
+    <!-- END informacion-->
+    <!-- START tabla de detalles -->
+    <div class="col-md-9">
+        <div class="row">
+            <div class="col-md-3">
+                <button class="btn btn-primary" id="btnAdd">@Comdis.Resources.Resources.Labe_Add</button>
+            </div>
+            <div class="col-md-3">
+                <button class="btn btn-success" id="btnSave" type="submit">@Comdis.Resources.Resources.Label_Save</button>
+            </div>
+            <div class="col-md-3">
+                <button class="btn btn-info" id="btnPrint">@Comdis.Resources.Resources.Label_Print</button>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+
+                <table class="table table-striped table-bordered" id="tblSalesOrderItems"></table>
+
+            </div>
+        </div>
+    </div>
+    <!-- END tabla de detalles -->
 </div>
+
+
+
+
 <!-- Modal -->
 <div class="modal fade" id="modelView" tabindex="-1" aria-labelledby="modelViewLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -67,9 +120,9 @@
                 </button>
             </div>
             <div class="modal-body">
-                 <div id="partialHtml">
+                <div id="partialHtml">
 
-                 </div>
+                </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">@Comdis.Resources.Resources.Label_Close</button>
@@ -103,10 +156,18 @@
         var urlGetInformationSOI = "@Url.Action("GetSalesOrderItem", "SalesItems")";
         var urlDeleteItemSOI = "@Url.Action("deleteItem", "SalesItems")";
         var urlPartialCreate = "@Url.Action("GetCreateItemView", "SalesItems")";
+         var urlPartialEdit = "@Url.Action("GetEditItemView", "SalesItems")";
         var urlProductList = "@Url.Action("GetProducts", "Products")";
         var mainInfo;
         var SO = "@ViewBag.So";
         var tableData;
+        var g_subtotal = 0;
+        var g_subtotalBT = 0;
+        var g_discount = 0;
+        var g_discount2 = 0;
+        var g_discount3 = 0;
+        var g_tax = 0;
+        var g_total = 0;
 
         $(document).ready(function () {
 
@@ -136,8 +197,9 @@
 
             $("#btnAdd").click(function () {
 
-
+                $("#partialHtml").html("");
                 tableData = $("#tblSalesOrderItems").DataTable();
+
 
                 $.get(urlPartialCreate, { pSOI: SO})
                     .done(function (data, res) {
@@ -152,72 +214,9 @@
 
            $("#btnSave").click(function () {
 
+               calculateTotal();
 
-                tableData = $("#tblSalesOrderItems").DataTable();
-
-                var var_tableData = tableData.rows().data().toArray();
-                var rowhtml = "";
-                var errorMessage = "";
-                var hasError = false;
-                var globalError = false;
-
-               var serilizeForm = $('#formItems').serializeArray();
-               console.log(serilizeForm);
-
-               var arraySOIItems = [];
-              var soi;
-
-
-
-
-               $.each(serilizeForm, function (key, value) {
-
-
-
-
-
-               });
-               console.log(arraySOIItems);
-                    @*rowhtml = tableData.row(key).node();
-
-                    if (value.ProductId == 0)
-                    {
-
-                        $(rowhtml).find("#product").addClass("border-danger");
-
-
-                        errorMessage += `Row ${key}, Product Missing!</br>`;
-                        hasError = true;
-                    }
-
-                    if (value.price == 0)
-                    {
-                        $(rowhtml).find("#price").addClass("border-danger");
-                        errorMessage += `Row ${key}, Price Missing!</br>`;
-                        hasError = true;
-                    }
-
-                    if (value.quantity == 0)
-                    {
-                        $(rowhtml).find("#quantity").addClass("border-danger");
-                        errorMessage += `Row ${key}, Quantity Missing!</br>`;
-                        hasError = true;
-                    }
-
-                    if (hasError) {
-                        globalError = hasError;
-                        toastr.error(errorMessage, 'Items Validation!');
-                        hasError = false;
-                        errorMessage = "";
-                    }*@
-
-
-               if (globalError) {
-                   toastr.error("Please check Errors!", 'Items Validation!')
-               } else {
-                   toastr.success('SO Saved!', 'Save confirmation!')
-               }
-                });
+            });
 
 
 
@@ -227,16 +226,69 @@
 
 
 
+        function calculateTotal()
+        {
 
+            var datatable = $('#tblSalesOrderItems').DataTable().data();
+            var subtotal = 0;
+
+
+            $.each(datatable, function (index, value) {
+                subtotal = subtotal + (value.quantity * value.price);
+            });
+
+            g_subtotal = subtotal;
+
+            if ("@Model.discount" != 0)
+            {
+                g_discount = g_subtotal * ("@Model.discount" / 100);
+            }
+
+            if ("@Model.discount2" != 0)
+            {
+                g_discount2 = (g_subtotal - g_discount) * ("@Model.discount2" / 100);
+            }
+
+
+            if ("@Model.discount3" != 0)
+            {
+                g_discount3 = (g_subtotal - g_discount - g_discount2) * ("@Model.discount3"/ 100);
+            }
+
+
+
+            g_subtotalBT = g_subtotal - g_discount - g_discount2 - g_discount3;
+
+
+            if ("@Model.tax" != 0)
+            {
+                g_tax = g_subtotalBT * ("@Model.tax"/ 100);
+            }
+
+            g_total = g_subtotalBT + g_tax;
+
+              //paint results
+
+
+            $("#g_subtotal").text(g_subtotal.toLocaleString("es-MX", { style: "currency", currency: "MXN", maximumFractionDigits: 2 }));
+
+            $("#g_discount1").text(g_discount.toLocaleString("es-MX", { style: "currency", currency: "MXN", maximumFractionDigits: 2 }));
+            $("#g_discount2").text(g_discount2.toLocaleString("es-MX", { style: "currency", currency: "MXN", maximumFractionDigits: 2 }));
+            $("#g_discount3").text(g_discount3.toLocaleString("es-MX", { style: "currency", currency: "MXN", maximumFractionDigits: 2 }));
+            $("#g_tax").text(g_tax.toLocaleString("es-MX", { style: "currency", currency: "MXN", maximumFractionDigits: 2 }));
+            $("#g_subtotalBT").text(g_subtotalBT.toLocaleString("es-MX", { style: "currency", currency: "MXN", maximumFractionDigits: 2 }));
+            $("#g_total").text(g_total.toLocaleString("es-MX", { style: "currency", currency: "MXN", maximumFractionDigits: 2 }));
+
+        }
 
 
         function buildTableSOI(dataset)
         {
             tableData = $("#tblSalesOrderItems").DataTable({
-               // destroy: true,
-              //  select: true,
-             //   "processing": true,
-             //   stateSave: true,
+                  destroy: true,
+                  select: true,
+                 "processing": true,
+                   stateSave: true,
 
 
                 data: dataset,
@@ -284,17 +336,34 @@
                 ]
 
             });
-
-        }
+            calculateTotal();
+        };
 
         $("#tblSalesOrderItems").on("click", "#btnEditItem", function () {
+
+            $("#partialHtml").html("");
             var row = $(this).closest('tr');
             var rowData = tableData.row(row).data();
+
+            $.get(urlPartialEdit,
+                {
+                       uid: rowData.uid
+                    , SOId: SO
+                    , ProductId: rowData.productId
+                    , Quantity: rowData.quantity
+                    , Price: rowData.price
+                })
+                .done(function (data, res) {
+
+                    $("#partialHtml").html(data);
+                    $('#modelView').modal('show');
+
+                    var option = new Option(rowData.productName, rowData.productId, true, true);
+                    $("#productDropDown").append(option).trigger('change');
+
+                });
+
             $('#modelView').modal('show');
-
-
-
-            console.log(rowData);
         });
 
 
@@ -302,20 +371,39 @@
             var row = $(this).closest('tr');
             var rowData = tableData.row(row).data();
 
+            Swal.fire({
+                title: "@Comdis.Resources.Resources.MSG_DeleteQuestion",
+                showDenyButton: true,
+                showCancelButton: true,
+                confirmButtonText: "@Comdis.Resources.Resources.Label_Yes",
+                denyButtonText: "@Comdis.Resources.Resources.Label_No",
+            }).then((result) => {
+                /* Read more about isConfirmed, isDenied below */
+                if (result.isConfirmed)
+                {
+                    $.post(urlDeleteItemSOI, { pId: rowData.uid })
+                        .done(function (data, res) {
+                            if (res == "success") {
+
+                                toastr.success(data.shortMessage);
+
+                                tableData.row(row).remove().draw(false);
+                                var index = mainInfo.salesItem.findIndex(({ uid }) => uid === data.message.uid);
+                                delete mainInfo.salesItem[index];
+                                calculateTotal();
+                            }
+                        })
+                        .fail(function (data, res) {
+                            toastr.error(data.statusText);
+                            toastr.error(data.responseText);
+                        });
+                } else if (result.isDenied)
+                {
+                    Swal.fire("@Comdis.Resources.Resources.MSG_DidSave", '', 'info')
+                }
+            })
 
 
-            $.post(urlDeleteItemSOI, { pId: rowData.uid })
-                .done(function (data, res) {
-                    if (res == "success") {
-                        tableData.row(row).remove().draw(false);
-                        toastr.success(`Item ${rowData.productName} Deleted!"`);
-
-                    }
-                })
-           .fail(function (data, res) {
-            toastr.error(data.statusText);
-            toastr.error(data.responseText);
-        });
 
 
         });
@@ -323,5 +411,4 @@
 
 
     </script>
-}
-
+    }

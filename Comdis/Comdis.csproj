@@ -34,6 +34,7 @@
     <Folder Include="wwwroot\lib\datatable\DataTables-1.11.3\" />
     <Folder Include="wwwroot\lib\select2\" />
     <Folder Include="Helpers\" />
+    <Folder Include="wwwroot\lib\sweetalert2\" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Update="Resources\Resources.resx">
@@ -53,5 +54,6 @@
     <Content Remove="wwwroot\lib\datatable\" />
     <Content Remove="wwwroot\lib\datatable\DataTables-1.11.3\" />
     <Content Remove="wwwroot\lib\select2\" />
+    <Content Remove="wwwroot\lib\sweetalert2\" />
   </ItemGroup>
 </Project>

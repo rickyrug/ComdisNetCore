@@ -31,6 +31,11 @@ namespace Comdis.Models
 
         [Display(ResourceType = typeof(Resources.Resources), Name = "Label_Discount3")]
         public decimal discount3 { get; set; }
+
+        [Display(ResourceType = typeof(Resources.Resources), Name = "Label_tax")]
+        public decimal tax { get; set; }
+
+
         public List<SalesItems> SalesItems { get; set; }
 
 

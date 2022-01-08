@@ -126,7 +126,7 @@
     <comment/>
   </data>
   <data name="Label_SOITitle" xml:space="preserve">
-    <value>Detalles de venta</value>
+    <value>Detalles de venta #</value>
     <comment/>
   </data>
   <data name="Labe_Add" xml:space="preserve">
@@ -146,7 +146,7 @@
     <comment/>
   </data>
   <data name="Label_ModalAdd" xml:space="preserve">
-    <value>Agregar producto</value>
+    <value>Agregar / Modificar producto</value>
     <comment/>
   </data>
   <data name="Msg_notAvailableItems" xml:space="preserve">
@@ -262,7 +262,7 @@
     <comment/>
   </data>
   <data name="Label_Discount1" xml:space="preserve">
-    <value>Descuento</value>
+    <value>Descuento 1</value>
     <comment/>
   </data>
   <data name="Label_Discount2" xml:space="preserve">
@@ -271,6 +271,58 @@
   </data>
   <data name="Label_Discount3" xml:space="preserve">
     <value>Descuento 3</value>
+    <comment/>
+  </data>
+  <data name="MSG_ErrorCreating" xml:space="preserve">
+    <value>ERROR al agregar producto {0}.</value>
+    <comment/>
+  </data>
+  <data name="MSG_ErrorEditar" xml:space="preserve">
+    <value>ERROR al editar producto {0}.</value>
+    <comment/>
+  </data>
+  <data name="MSG_EditedITem" xml:space="preserve">
+    <value>Producto {0} actualizado.</value>
+    <comment/>
+  </data>
+  <data name="MSG_RequieredProduct" xml:space="preserve">
+    <value>Debe seleccionar un producto.</value>
+    <comment/>
+  </data>
+  <data name="MSG_DeletedItem" xml:space="preserve">
+    <value>Producto {0} borrado.</value>
+    <comment/>
+  </data>
+  <data name="MSG_DeleteQuestion" xml:space="preserve">
+    <value>¿Desea borrar el producto?</value>
+    <comment/>
+  </data>
+  <data name="Label_Yes" xml:space="preserve">
+    <value>Si</value>
+    <comment/>
+  </data>
+  <data name="Label_No" xml:space="preserve">
+    <value>No</value>
+    <comment/>
+  </data>
+  <data name="MSG_DidSave" xml:space="preserve">
+    <value>No se guardaron cambios.</value>
+    <comment/>
+  </data>
+  <data name="Label_CustomerInformation" xml:space="preserve">
+    <value>Información del Cliente</value>
+    <comment/>
+  </data>
+  <data name="Label_OrderTotals" xml:space="preserve">
+    <value>Totales de la orden</value>
+    <comment/>
+  </data>
+  <data name="Label_tax" xml:space="preserve">
+    <value>IVA (16%)</value>
+    <comment/>
+  </data>
+  <data name="Label_Total" xml:space="preserve">
+    <value>Total</value>
     <comment/>
   </data>
 </root>
