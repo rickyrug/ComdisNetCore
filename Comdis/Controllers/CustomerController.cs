@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Comdis.Comdis.Models;
+using Comdis.Models.VM;
 
 namespace Comdis.Controllers
 {
@@ -149,6 +150,29 @@ namespace Comdis.Controllers
             _context.Customer.Remove(customer);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
+        }
+
+
+        public JsonResult GetCustomerList(QuerySelect pParam)
+        {
+            List<SelectObject> selectObj = new List<SelectObject>();
+            var customerList = _context.Customer
+                                        .Where(c => c.Name.Contains(pParam.search))
+                                        .AsNoTracking()
+                                        .ToList();
+
+            foreach (var customer in customerList)
+            {
+                selectObj.Add(new SelectObject()
+                {
+                    id = customer.Id
+                    ,
+                    text = customer.Name
+                });
+            }
+
+            return Json(selectObj);
+
         }
 
         private bool CustomerExists(int id)

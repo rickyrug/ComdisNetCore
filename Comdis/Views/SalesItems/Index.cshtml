@@ -7,7 +7,7 @@
 <div class="row">
     <!-- informacion-->
     <div class="col-md-3">
-        <div class="card">
+        <div class="card mb-3">
             <div class="card-header">
                 @Comdis.Resources.Resources.Label_CustomerInformation
             </div>
@@ -57,7 +57,8 @@
             <div class="row">
                 <div class="col-md-6 text-right"><p class="card-text">@Comdis.Resources.Resources.Label_Discount3 (@Model.discount3 %):  </p></div>
                 <div class="col-md-6">-<span class="text-danger" id="g_discount3"></span></div>
-            </div>}
+            </div>
+                }
 
 
                 @if (Model.tax != 0)
@@ -84,7 +85,7 @@
     <!-- END informacion-->
     <!-- START tabla de detalles -->
     <div class="col-md-9">
-        <div class="row">
+        <div class="row mb-5">
             <div class="col-md-3">
                 <button class="btn btn-primary" id="btnAdd">@Comdis.Resources.Resources.Labe_Add</button>
             </div>
@@ -181,11 +182,14 @@
 
                     mainInfo = data;
 
-                    if (data.salesItem.length > 0) {
+                    if (data.salesItem.length > 0)
+                    {
                         buildTableSOI(data.salesItem);
                     } else
                     {
-                        toastr.warning("@Comdis.Resources.Resources.Msg_notAvailableItems")
+                        buildTableSOI(null);
+                        toastr.warning("@Comdis.Resources.Resources.Msg_notAvailableItems");
+
                     }
                 }
 
@@ -198,8 +202,8 @@
             $("#btnAdd").click(function () {
 
                 $("#partialHtml").html("");
-                tableData = $("#tblSalesOrderItems").DataTable();
-
+                    tableData = $("#tblSalesOrderItems").DataTable();
+                    
 
                 $.get(urlPartialCreate, { pSOI: SO})
                     .done(function (data, res) {
@@ -353,11 +357,12 @@
                     , Quantity: rowData.quantity
                     , Price: rowData.price
                 })
-                .done(function (data, res) {
-
+                .done(function (data, res)
+                {
+                    
                     $("#partialHtml").html(data);
                     $('#modelView').modal('show');
-
+                    
                     var option = new Option(rowData.productName, rowData.productId, true, true);
                     $("#productDropDown").append(option).trigger('change');
 

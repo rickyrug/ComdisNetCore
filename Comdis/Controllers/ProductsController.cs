@@ -236,7 +236,8 @@ namespace Comdis.Controllers
             var productList = _context.Product
                                             .Include(u => u.Uom)
                                             .Include(c => c.category)
-                                            .AsNoTracking().Where(p=> p.Name.Contains(pParam.search))
+                                            .Where(p=> p.Name.Contains(pParam.search))
+                                            .AsNoTracking()
                                             .ToList();
 
 

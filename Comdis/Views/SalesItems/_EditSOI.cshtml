@@ -76,17 +76,17 @@
             data: $form.serialize(),
             error: function (xhr, status, error) {
                 toastr.error(xhr.responseText, error);
-              
-                
+                buildTableSOI(mainInfo.salesItem);
+                calculateTotal();
             },
             success: function (response) {
 
                 if (response.hasError)
                 {
-                    console.log(response);
+                    
                     $.each(response.message, function (index, value) {
-                        //$("[data-valmsg-for='Price']").text(value.message);
-                       // toastr.error(value.message);
+                        $("[data-valmsg-for='Price']").text(value.message);
+                      //  toastr.error(value.message);
                     });
                 }
                 else

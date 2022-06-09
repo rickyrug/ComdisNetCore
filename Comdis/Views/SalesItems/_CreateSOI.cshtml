@@ -81,7 +81,7 @@
                     $("#modelView").modal('hide');
                     var newRow = {
                         "uid": response.message.uid,
-                        "ProductId": response.message.productId,
+                        "productId": response.message.productId,
                         "productName": response.message.productName,
                         "quantity": response.message.quantity,
                         "price": response.message.price
@@ -89,6 +89,9 @@
 
                     mainInfo.salesItem.push(newRow);
                     tableData.row.add(newRow).draw(false);
+
+                    
+
                     $("#partialHtml").html("");
                     calculateTotal();
 

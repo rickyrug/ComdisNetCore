@@ -1,12 +1,10 @@
 @model Comdis.Models.VM.SalesVM
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = Comdis.Resources.Resources.Label_Create + " - " +Comdis.Resources.Resources.Label_Sale;
 }
 
-<h1>Create</h1>
-
-<h4>Sales</h4>
+<h4>@Comdis.Resources.Resources.Label_Create - @Comdis.Resources.Resources.Label_Sale</h4>
 <hr />
 <form asp-action="Create">
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
@@ -15,8 +13,7 @@
             <div class="form-group">
                 <div class="form-group">
                     <label asp-for="SalesToPartyId" class="control-label"></label>
-                    <select asp-for="SalesToPartyId" class="form-control" asp-items="ViewBag.customerList">
-                        <option value="">-- Select Customer --</option>
+                    <select asp-for="SalesToPartyId" class="form-control" id="SalesToPartyId">
                     </select>
                     <span asp-validation-for="SalesToPartyId" class="text-danger"></span>
                 </div>
@@ -93,4 +90,33 @@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+<script>
+    var urlCustomerList = "@Url.Action("GetCustomerList", "Customer")";
+    $(document).ready(function () {
+
+        $("#SalesToPartyId").select2({
+            ajax: {
+                    url: urlCustomerList,
+                data: function (params) {
+                    var query = {
+                        search: params.term,
+                        type: 'public'
+                    }
+
+                    return query;
+                },
+                processResults: function (data) {
+                    return {
+                        results: data
+                    };
+
+                }
+
+            },
+            placeholder: "@Comdis.Resources.Resources.Msg_searchDictionary",
+            minimumInputLength: 3,
+        });
+    })
+</script>
 }

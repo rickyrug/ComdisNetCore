@@ -87,7 +87,7 @@ namespace Comdis.Controllers
 
                     newItem.Price = salesItems.Price;
                     newItem.Quantity = salesItems.Quantity;
-                    
+                    newItem.Cretead = DateTime.Now;
 
 
                     _context.Add(newItem);
@@ -95,6 +95,7 @@ namespace Comdis.Controllers
 
                     salesItems.uid = newItem.Id;
                     salesItems.ProductName = newItem.Product.Name;
+                    salesItems.ProductId = newItem.Product.Id;
 
                     return Json(new MessageVM<SalesItemVM>()
                             {
@@ -274,6 +275,7 @@ namespace Comdis.Controllers
         public JsonResult GetSalesOrderItem(int id)
         {
             SalesVM SOI = new SalesVM();
+            SOI.salesItem = new List<SalesItemVM>();
 
             try
             {

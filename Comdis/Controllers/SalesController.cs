@@ -27,8 +27,11 @@ namespace Comdis.Controllers
            
 
             return View(await _context.Sales.
-                                        Include(sales => sales.SalesToParty).
-                                        AsNoTracking().ToListAsync());
+                                        Include(sales => sales.SalesToParty)
+                                        .OrderByDescending(x => x.Id)
+                                        .AsNoTracking()
+                                        .ToListAsync()
+                                );
         }
 
         // GET: Sales/Details/5
@@ -52,8 +55,12 @@ namespace Comdis.Controllers
         // GET: Sales/Create
         public IActionResult Create()
         {
-            PopulateCustomerDropDown();
-            return View();
+            SalesVM newsales = new SalesVM();
+            newsales.RequestedDeliveryDate = DateTime.Now;
+            newsales.discount = 0;
+            newsales.discount2 = 0;
+            newsales.discount3 = 0;
+            return View(newsales);
         }
 
         // POST: Sales/Create
@@ -249,6 +256,43 @@ namespace Comdis.Controllers
             }
 
             return View(sales);
+        }
+
+        [HttpPost]
+        public IActionResult SearchFilters([Bind("datefrom,dateto,salesnumber,customerList")]SalesFilterVM filter)
+        {
+            List<Sales> salesList = new List<Sales>();
+            if (filter.salesnumber != 0)
+            {
+                salesList =    _context.Sales
+                               .Include(sales => sales.SalesToParty)
+                               .Where(s => s.Id == filter.salesnumber)
+                               .AsNoTracking()
+                               .ToList();
+                return View("Index", salesList);
+            }
+
+            if (filter.customerList != 0)
+            {
+                salesList = _context.Sales
+                             .Include(sales => sales.SalesToParty)
+                             .Where(s => s.SalesToParty.Id == filter.customerList)
+                             .AsNoTracking()
+                             .ToList();
+                return View("Index", salesList);
+            }
+
+
+            salesList = _context.Sales
+                                .Include(sales => sales.SalesToParty)
+                                .Where(s => s.Cretead >= filter.datefrom && s.Cretead <= filter.dateto.AddHours(23).AddMinutes(59).AddSeconds(59))
+                                .AsNoTracking()
+                                .ToList();
+
+           
+
+
+            return View("Index", salesList);
         }
 
         // POST: Sales/Delete/5

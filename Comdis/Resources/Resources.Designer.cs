@@ -358,5 +358,65 @@ namespace Comdis.Resources {
                 return ResourceManager.GetString("Label_Total", resourceCulture);
             }
         }
+        
+        public static string Label_salesDetail {
+            get {
+                return ResourceManager.GetString("Label_salesDetail", resourceCulture);
+            }
+        }
+        
+        public static string Label_Sales {
+            get {
+                return ResourceManager.GetString("Label_Sales", resourceCulture);
+            }
+        }
+        
+        public static string Label_new {
+            get {
+                return ResourceManager.GetString("Label_new", resourceCulture);
+            }
+        }
+        
+        public static string Label_Search {
+            get {
+                return ResourceManager.GetString("Label_Search", resourceCulture);
+            }
+        }
+        
+        public static string Label_DateTo {
+            get {
+                return ResourceManager.GetString("Label_DateTo", resourceCulture);
+            }
+        }
+        
+        public static string Label_DateFrom {
+            get {
+                return ResourceManager.GetString("Label_DateFrom", resourceCulture);
+            }
+        }
+        
+        public static string Label_SalesNumber {
+            get {
+                return ResourceManager.GetString("Label_SalesNumber", resourceCulture);
+            }
+        }
+        
+        public static string Label_Sale {
+            get {
+                return ResourceManager.GetString("Label_Sale", resourceCulture);
+            }
+        }
+        
+        public static string Label_NewA {
+            get {
+                return ResourceManager.GetString("Label_NewA", resourceCulture);
+            }
+        }
+        
+        public static string Label_Create {
+            get {
+                return ResourceManager.GetString("Label_Create", resourceCulture);
+            }
+        }
     }
 }

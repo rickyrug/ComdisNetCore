@@ -325,4 +325,44 @@
     <value>Total</value>
     <comment/>
   </data>
+  <data name="Label_salesDetail" xml:space="preserve">
+    <value>Detalles de venta.</value>
+    <comment/>
+  </data>
+  <data name="Label_Sales" xml:space="preserve">
+    <value>Ventas</value>
+    <comment/>
+  </data>
+  <data name="Label_new" xml:space="preserve">
+    <value>Nuevo</value>
+    <comment/>
+  </data>
+  <data name="Label_Search" xml:space="preserve">
+    <value>Buscar</value>
+    <comment/>
+  </data>
+  <data name="Label_DateTo" xml:space="preserve">
+    <value>Fecha Desde</value>
+    <comment/>
+  </data>
+  <data name="Label_DateFrom" xml:space="preserve">
+    <value>Fecha Hasta</value>
+    <comment/>
+  </data>
+  <data name="Label_SalesNumber" xml:space="preserve">
+    <value>Numero de venta</value>
+    <comment/>
+  </data>
+  <data name="Label_Sale" xml:space="preserve">
+    <value>Venta</value>
+    <comment/>
+  </data>
+  <data name="Label_NewA" xml:space="preserve">
+    <value>Nueva</value>
+    <comment/>
+  </data>
+  <data name="Label_Create" xml:space="preserve">
+    <value>Crear</value>
+    <comment/>
+  </data>
 </root>
