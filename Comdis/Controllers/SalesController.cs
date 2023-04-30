@@ -306,6 +306,12 @@ namespace Comdis.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        [HttpGet]
+        public ActionResult PrintSalesOrder(int SOId)
+        {
+            return PartialView("_PrintSO");
+        }
+
         private bool SalesExists(int id)
         {
             return _context.Sales.Any(e => e.Id == id);

@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -9,9 +10,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Comdis.Migrations
 {
     [DbContext(typeof(ComdisContext))]
-    partial class ComdisContextModelSnapshot : ModelSnapshot
+    [Migration("20220609223707_20220609_3")]
+    partial class _20220609_3
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "6.0.5");
@@ -223,70 +225,6 @@ namespace Comdis.Migrations
                     b.ToTable("ProductCategory");
                 });
 
-            modelBuilder.Entity("Comdis.Models.Purchase", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("Comments")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("DeliveryAdress")
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTime>("RequestedDeliveryDate")
-                        .HasColumnType("TEXT");
-
-                    b.Property<int?>("VendorId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<decimal>("discount")
-                        .HasColumnType("TEXT");
-
-                    b.Property<decimal>("discount2")
-                        .HasColumnType("TEXT");
-
-                    b.Property<decimal>("discount3")
-                        .HasColumnType("TEXT");
-
-                    b.Property<decimal>("tax")
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("VendorId");
-
-                    b.ToTable("Purchase");
-                });
-
-            modelBuilder.Entity("Comdis.Models.PurchaseItems", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int?>("POHeaderId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<decimal>("Price")
-                        .HasColumnType("TEXT");
-
-                    b.Property<int?>("ProductId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<decimal>("Quantity")
-                        .HasColumnType("TEXT");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("POHeaderId");
-
-                    b.HasIndex("ProductId");
-
-                    b.ToTable("PurchaseItems");
-                });
-
             modelBuilder.Entity("Comdis.Models.Sales", b =>
                 {
                     b.Property<int>("Id")
@@ -428,30 +366,6 @@ namespace Comdis.Migrations
                     b.Navigation("category");
                 });
 
-            modelBuilder.Entity("Comdis.Models.Purchase", b =>
-                {
-                    b.HasOne("Comdis.Comdis.Models.Supplier", "Vendor")
-                        .WithMany()
-                        .HasForeignKey("VendorId");
-
-                    b.Navigation("Vendor");
-                });
-
-            modelBuilder.Entity("Comdis.Models.PurchaseItems", b =>
-                {
-                    b.HasOne("Comdis.Models.Purchase", "POHeader")
-                        .WithMany("PurchaseItems")
-                        .HasForeignKey("POHeaderId");
-
-                    b.HasOne("Comdis.Models.Product", "Product")
-                        .WithMany()
-                        .HasForeignKey("ProductId");
-
-                    b.Navigation("POHeader");
-
-                    b.Navigation("Product");
-                });
-
             modelBuilder.Entity("Comdis.Models.Sales", b =>
                 {
                     b.HasOne("Comdis.Comdis.Models.Customer", "SalesToParty")
@@ -474,11 +388,6 @@ namespace Comdis.Migrations
                     b.Navigation("Product");
 
                     b.Navigation("SalesHeader");
-                });
-
-            modelBuilder.Entity("Comdis.Models.Purchase", b =>
-                {
-                    b.Navigation("PurchaseItems");
                 });
 
             modelBuilder.Entity("Comdis.Models.Sales", b =>

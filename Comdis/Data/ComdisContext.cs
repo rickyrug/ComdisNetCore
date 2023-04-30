@@ -31,4 +31,8 @@ using Comdis.Comdis.Models;
         public DbSet<Comdis.Models.SalesItems> SalesItems { get; set; }
 
         public DbSet<Comdis.Models.Configuration> Configuration { get; set; }
-    }
+
+        public DbSet<Comdis.Models.Purchase> Purchase { get; set; }
+
+        public DbSet<Comdis.Models.PurchaseItems> PurchaseItems { get; set; }
+}
