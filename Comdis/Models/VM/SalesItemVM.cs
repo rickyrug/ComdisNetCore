@@ -1,5 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using DataAccess.Models;
+using DataAccess.Resources;
 
 namespace Comdis.Models.VM
 {
@@ -12,19 +14,19 @@ namespace Comdis.Models.VM
         public int SOId { get; set; }
 
         [Required]
-        [Range(1,999999,ErrorMessageResourceType = typeof(Resources.Resources),ErrorMessageResourceName = "MSG_RequieredProduct")]
-        [Display(ResourceType =typeof(Resources.Resources),Name = "Label_Product")]
+        [Range(1,999999,ErrorMessageResourceType = typeof(Resources),ErrorMessageResourceName = "MSG_RequieredProduct")]
+        [Display(ResourceType =typeof(Resources),Name = "Label_Product")]
         public int ProductId { get; set; }
 
         public string ProductName { get; set; }
 
         [Required]
-        [Display(ResourceType = typeof(Resources.Resources), Name = "Label_Quantity")]
+        [Display(ResourceType = typeof(Resources), Name = "Label_Quantity")]
         public decimal Quantity { get; set; }
 
         [Required]
       //  [RegularExpression(@"^\d+\.\d{0,2}$", ErrorMessageResourceType = typeof(Resources.Resources),ErrorMessageResourceName = "Label_2Decimals")]
-        [Display(ResourceType = typeof(Resources.Resources), Name = "Label_Price")]
+        [Display(ResourceType = typeof(Resources), Name = "Label_Price")]
         public decimal Price { get; set; }
 
         public SalesItemVM(){}

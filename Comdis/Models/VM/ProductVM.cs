@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using DataAccess.Resources;
 
 namespace Comdis.Models.VM
 {
@@ -12,16 +13,16 @@ namespace Comdis.Models.VM
 
         public int Id { get; set; }
 
-        [Display(ResourceType = typeof(Resources.Resources), Name = "Label_Name")]
+        [Display(ResourceType = typeof(Resources), Name = "Label_Name")]
         public string Name { get; set; }
 
-        [Display(ResourceType = typeof(Resources.Resources), Name = "Label_UOM")]
+        [Display(ResourceType = typeof(Resources), Name = "Label_UOM")]
         public int? UomId { get; set; }
 
-        [Display(ResourceType = typeof(Resources.Resources), Name = "Label_Category")]
+        [Display(ResourceType = typeof(Resources), Name = "Label_Category")]
         public int? categoryId { get; set; }
 
-        [Display(ResourceType = typeof(Resources.Resources), Name = "Label_Code")]
+        [Display(ResourceType = typeof(Resources), Name = "Label_Code")]
         public string Code { get; set; }
     }
 }

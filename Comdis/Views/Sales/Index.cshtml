@@ -1,10 +1,10 @@
-@model IEnumerable<Comdis.Models.Sales>
+@model IEnumerable<DataAccess.Models.Sales>
 
 @{
     ViewData["Title"] = "Index";
 }
 
-<h1>@Comdis.Resources.Resources.Label_Sales</h1>
+<h1>@DataAccess.Resources.Resources.Label_Sale</h1>
 
 <div class="row">
 
@@ -16,13 +16,13 @@
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label for="datefrom">@Comdis.Resources.Resources.Label_DateFrom</label>
+                                <label for="datefrom">@DataAccess.Resources.Resources.Label_DateFrom</label>
                                 <input type="date" name="datefrom" value="" class="form-control" id="datefrom" />
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label for="dateto">@Comdis.Resources.Resources.Label_DateTo</label>
+                                <label for="dateto">@DataAccess.Resources.Resources.Label_DateTo</label>
                                 <input type="date" name="dateto" value="" class="form-control" id="dateto" />
                             </div>
                         </div>
@@ -32,7 +32,7 @@
                     <div class="row">
                         <div class="col-md-11">
                             <div class="form-group">
-                                <label for="salesnumber">@Comdis.Resources.Resources.Label_SalesNumber</label>
+                                <label for="salesnumber">@DataAccess.Resources.Resources.Label_SalesNumber</label>
                                 <input type="number" name="salesnumber" value="" class="form-control" id="salesnumber" />
                             </div>
                         </div>
@@ -42,14 +42,14 @@
                     <div class="row">
                         <div class="col-md-11">
                             <div class="form-group">
-                                <label for="customerList">@Comdis.Resources.Resources.Label_Customer</label>
+                                <label for="customerList">@DataAccess.Resources.Resources.Label_Customer</label>
                                 <select name="customerList" class="select2-container  form-control" id="customerList"></select>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="col-md-3 mt-4">
-                    <button class="btn btn-primary">@Comdis.Resources.Resources.Label_Search</button>
+                    <button class="btn btn-primary">@DataAccess.Resources.Resources.Label_Search</button>
                 </div>
             </div>
         </form>
@@ -62,7 +62,7 @@
 
     <div class="col-md-12">
         <div class="col-md-2">
-            <a asp-action="Create" alt="New" title="@Comdis.Resources.Resources.Label_new"><i class="fa fa-plus fa-2x" aria-hidden="true"></i></a>
+            <a asp-action="Create" alt="New" title="@DataAccess.Resources.Resources.Label_new"><i class="fa fa-plus fa-2x" aria-hidden="true"></i></a>
         </div>
         <table class="table table-striped table-bordered table-hover" id="salesItemsTbl">
             <thead>
@@ -115,9 +115,9 @@
                 {
                 <tr>
                     <td>
-                        <a asp-action="Edit" asp-route-id="@item.Id"><i class="fa fa-pencil fa-2x" aria-hidden="true" title="@Comdis.Resources.Resources.Label_edit"></i></a>
-                        <a asp-controller="SalesItems" asp-action="index" asp-route-id="@item.Id"><i class="fa fa-th-list fa-2x" aria-hidden="true" title="@Comdis.Resources.Resources.Label_salesDetail"></i></a>
-                        <a asp-action="Delete" asp-route-id="@item.Id"><i class="fa fa-ban fa-2x" aria-hidden="true" title="@Comdis.Resources.Resources.Label_delete"></i></a>
+                        <a asp-action="Edit" asp-route-id="@item.Id"><i class="fa fa-pencil fa-2x" aria-hidden="true" title="@DataAccess.Resources.Resources.Label_edit"></i></a>
+                        <a asp-controller="SalesItems" asp-action="index" asp-route-id="@item.Id"><i class="fa fa-th-list fa-2x" aria-hidden="true" title="@DataAccess.Resources.Resources.Label_salesDetail"></i></a>
+                        <a asp-action="Delete" asp-route-id="@item.Id"><i class="fa fa-ban fa-2x" aria-hidden="true" title="@DataAccess.Resources.Resources.Label_delete"></i></a>
                     </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.Id)
@@ -202,7 +202,7 @@
                 }
 
             },
-            placeholder: "@Comdis.Resources.Resources.Msg_searchDictionary",
+            placeholder: "@DataAccess.Resources.Resources.Msg_searchDictionary",
             minimumInputLength: 3,
         });
 

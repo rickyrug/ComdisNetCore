@@ -1,61 +1,61 @@
-@model Comdis.Models.Sales
+@model DataAccess.Models.Sales
 
 @{ ViewData["Title"] = "Index"; }
 
-<h3>@Comdis.Resources.Resources.Label_SOITitle @ViewBag.So</h3>
+<h3>@DataAccess.Resources.Resources.Label_SOITitle @ViewBag.So</h3>
 
 <div class="row">
     <!-- informacion-->
     <div class="col-md-3">
         <div class="card mb-3">
             <div class="card-header">
-                @Comdis.Resources.Resources.Label_CustomerInformation
+                @DataAccess.Resources.Resources.Label_CustomerInformation
             </div>
             <div class="card-body">
                 <div class="row">
-                    <div class="col-md-6 text-right"><p class="card-text">@Comdis.Resources.Resources.Label_RequestedDeliveryDate : </p></div>
+                    <div class="col-md-6 text-right"><p class="card-text">@DataAccess.Resources.Resources.Label_RequestedDeliveryDate : </p></div>
                     <div class="col-md-6 ">@Model.RequestedDeliveryDate</div>
                 </div>
                 <div class="row">
-                    <div class="col-md-6 text-right"><p class="card-text">@Comdis.Resources.Resources.Label_Customer : </p></div>
+                    <div class="col-md-6 text-right"><p class="card-text">@DataAccess.Resources.Resources.Label_Customer : </p></div>
                     <div class="col-md-6">@Model.SalesToParty.Name</div>
                 </div>
                 <div class="row">
-                    <div class="col-md-6 text-right"><p class="card-text">@Comdis.Resources.Resources.Label_Adress:</p></div>
+                    <div class="col-md-6 text-right"><p class="card-text">@DataAccess.Resources.Resources.Label_Adress:</p></div>
                     <div class="col-md-6">@Model.SalesToParty.Adress</div>
                 </div>
                 <div class="row">
-                    <div class="col-md-6 text-right"><p class="card-text">@Comdis.Resources.Resources.Label_Comments:</p></div>
+                    <div class="col-md-6 text-right"><p class="card-text">@DataAccess.Resources.Resources.Label_Comments:</p></div>
                     <div class="col-md-6"><small>@Model.Comments</small></div>
                 </div>
             </div>
         </div>
         <div class="card">
             <div class="card-header">
-                @Comdis.Resources.Resources.Label_OrderTotals
+                @DataAccess.Resources.Resources.Label_OrderTotals
             </div>
             <div class="card-body">
                 <div class="row">
-                    <div class="col-md-6 text-right"><p class="card-text">@Comdis.Resources.Resources.Label_subtotal : </p></div>
+                    <div class="col-md-6 text-right"><p class="card-text">@DataAccess.Resources.Resources.Label_subtotal : </p></div>
                     <div class="col-md-6"><span id="g_subtotal"></span></div>
                 </div>
                 @if (Model.discount != 0)
                 {
             <div class="row">
-                <div class="col-md-6 text-right"><p class="card-text">@Comdis.Resources.Resources.Label_Discount1 (@Model.discount %):  </p></div>
+                <div class="col-md-6 text-right"><p class="card-text">@DataAccess.Resources.Resources.Label_Discount1 (@Model.discount %):  </p></div>
                 <div class="col-md-6">-<span class="text-danger" id="g_discount1"></span></div>
             </div>}
                 @if (Model.discount2 != 0)
                 {
             <div class="row">
-                <div class="col-md-6 text-right"><p class="card-text">@Comdis.Resources.Resources.Label_Discount2 (@Model.discount2 %):   </p></div>
+                <div class="col-md-6 text-right"><p class="card-text">@DataAccess.Resources.Resources.Label_Discount2 (@Model.discount2 %):   </p></div>
                 <div class="col-md-6">-<span class="text-danger" id="g_discount2"></span></div>
             </div>}
 
                 @if (Model.discount3 != 0)
                 {
             <div class="row">
-                <div class="col-md-6 text-right"><p class="card-text">@Comdis.Resources.Resources.Label_Discount3 (@Model.discount3 %):  </p></div>
+                <div class="col-md-6 text-right"><p class="card-text">@DataAccess.Resources.Resources.Label_Discount3 (@Model.discount3 %):  </p></div>
                 <div class="col-md-6">-<span class="text-danger" id="g_discount3"></span></div>
             </div>
                 }
@@ -65,17 +65,17 @@
                 {
                             <hr />
                             <div class="row">
-                                <div class="col-md-6 text-right"><p class="card-text">@Comdis.Resources.Resources.Label_subtotal:  </p></div>
+                                <div class="col-md-6 text-right"><p class="card-text">@DataAccess.Resources.Resources.Label_subtotal:  </p></div>
                                 <div class="col-md-6"><span id="g_subtotalBT"></span></div>
                             </div>
                                             <div class="row">
-                                                <div class="col-md-6 text-right"><p class="card-text">@Comdis.Resources.Resources.Label_tax:  </p></div>
+                                                <div class="col-md-6 text-right"><p class="card-text">@DataAccess.Resources.Resources.Label_tax:  </p></div>
                                                 <div class="col-md-6"><span id="g_tax"></span></div>
                                             </div>}
 
                 <hr />
                 <div class="row">
-                    <div class="col-md-6 text-right"><p class="card-text">@Comdis.Resources.Resources.Label_Total:  </p></div>
+                    <div class="col-md-6 text-right"><p class="card-text">@DataAccess.Resources.Resources.Label_Total:  </p></div>
                     <div class="col-md-6"><span id="g_total"></span></div>
                 </div>
 
@@ -87,13 +87,13 @@
     <div class="col-md-9">
         <div class="row mb-5">
             <div class="col-md-3">
-                <button class="btn btn-primary" id="btnAdd">@Comdis.Resources.Resources.Labe_Add</button>
+                <button class="btn btn-primary" id="btnAdd">@DataAccess.Resources.Resources.Labe_Add</button>
             </div>
             <div class="col-md-3">
-                <button class="btn btn-success" id="btnSave" type="submit">@Comdis.Resources.Resources.Label_Save</button>
+                <button class="btn btn-success" id="btnSave" type="submit">@DataAccess.Resources.Resources.Label_Save</button>
             </div>
             <div class="col-md-3">
-                <button class="btn btn-info" id="btnPrint">@Comdis.Resources.Resources.Label_Print</button>
+                <button class="btn btn-info" id="btnPrint">@DataAccess.Resources.Resources.Label_Print</button>
             </div>
         </div>
         <div class="row">
@@ -115,7 +115,7 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="modelViewLabel">@Comdis.Resources.Resources.Label_ModalAdd</h5>
+                <h5 class="modal-title" id="modelViewLabel">@DataAccess.Resources.Resources.Label_ModalAdd</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -126,7 +126,7 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">@Comdis.Resources.Resources.Label_Close</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">@DataAccess.Resources.Resources.Label_Close</button>
             </div>
         </div>
     </div>
@@ -188,7 +188,7 @@
                     } else
                     {
                         buildTableSOI(null);
-                        toastr.warning("@Comdis.Resources.Resources.Msg_notAvailableItems");
+                        toastr.warning("@DataAccess.Resources.Resources.Msg_notAvailableItems");
 
                     }
                 }
@@ -301,12 +301,12 @@
                         "title": "",
                         "render": function (data, type, row) {
 
-                            return `<button id="btnEditItem"  type="button" class="btn btn-secondary" >@Comdis.Resources.Resources.Label_edit </button>
-                                            <button id="btnDelete" type="button" class="btn btn-secondary ">@Comdis.Resources.Resources.Label_delete</button>`;
+                            return `<button id="btnEditItem"  type="button" class="btn btn-secondary" >@DataAccess.Resources.Resources.Label_edit </button>
+                                            <button id="btnDelete" type="button" class="btn btn-secondary ">@DataAccess.Resources.Resources.Label_delete</button>`;
                         }
                    }
                     ,{
-                        "title": "@Comdis.Resources.Resources.Label_Product",
+                        "title": "@DataAccess.Resources.Resources.Label_Product",
                         "render": function (data, type, row) {
                             var name = row.productName;
                             //return `<input type="text" class="form-control" id="product" name="product" value="${name}">`;
@@ -314,7 +314,7 @@
                         }
                     },
                     {
-                        "title": "@Comdis.Resources.Resources.Label_Quantity",
+                        "title": "@DataAccess.Resources.Resources.Label_Quantity",
                         "render": function (data, type, row) {
                             var quantity = row.quantity;
                             //return `<input type="number" class="form-control" id="quantity" name="quantity" value="${quantity}">`;
@@ -323,7 +323,7 @@
                         }
                     },
                     {
-                        "title": "@Comdis.Resources.Resources.Label_Price",
+                        "title": "@DataAccess.Resources.Resources.Label_Price",
                         "render": function (data, type, row) {
                             var price = row.price;
                             //return `<input type="number" class="form-control" id="price" name="price" value="${price}">`;
@@ -331,7 +331,7 @@
                         }
                     },
                     {
-                        "title": "@Comdis.Resources.Resources.Label_subtotal",
+                        "title": "@DataAccess.Resources.Resources.Label_subtotal",
                         "render": function (data, type, row) {
                             var subtotal = row.price * row.quantity;
                             return subtotal.toLocaleString("es-MX", { style: "currency", currency: "MXN", maximumFractionDigits: 2 });
@@ -377,11 +377,11 @@
             var rowData = tableData.row(row).data();
 
             Swal.fire({
-                title: "@Comdis.Resources.Resources.MSG_DeleteQuestion",
+                title: "@DataAccess.Resources.Resources.MSG_DeleteQuestion",
                 showDenyButton: true,
                 showCancelButton: true,
-                confirmButtonText: "@Comdis.Resources.Resources.Label_Yes",
-                denyButtonText: "@Comdis.Resources.Resources.Label_No",
+                confirmButtonText: "@DataAccess.Resources.Resources.Label_Yes",
+                denyButtonText: "@DataAccess.Resources.Resources.Label_No",
             }).then((result) => {
                 /* Read more about isConfirmed, isDenied below */
                 if (result.isConfirmed)
@@ -404,7 +404,7 @@
                         });
                 } else if (result.isDenied)
                 {
-                    Swal.fire("@Comdis.Resources.Resources.MSG_DidSave", '', 'info')
+                    Swal.fire("@DataAccess.Resources.Resources.MSG_DidSave", '', 'info')
                 }
             })
 

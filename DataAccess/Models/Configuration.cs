@@ -1,5 +1,5 @@
 ﻿using System;
-namespace Comdis.Models
+namespace DataAccess.Models
 {
     public class Configuration
     {

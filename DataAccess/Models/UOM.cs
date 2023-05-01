@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
-namespace Comdis.Models
+namespace DataAccess.Models
 {
     public class UOM: AuditFields
     {

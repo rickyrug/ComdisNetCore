@@ -22,7 +22,7 @@
     </div>
     <input asp-for="SOId" type="hidden" />
     <input asp-for="uid" type="hidden"/>
-    <button class="btn btn-primary" id="Savebtn" type="button">@Comdis.Resources.Resources.Label_Save</button>
+    <button class="btn btn-primary" id="Savebtn" type="button">@DataAccess.Resources.Resources.Label_Save</button>
 </form>
 
 
@@ -30,7 +30,7 @@
 
     $(function () {
 
-       
+
 
         $("#productDropDown").select2({
             ajax: {
@@ -45,26 +45,26 @@
                 },
                 processResults: function (data) {
 
-                
+
 
                     return {
-                       
+
                         results: data
                     };
-                    
+
                 }
 
             },
-            placeholder: "@Comdis.Resources.Resources.Msg_searchDictionary",
+            placeholder: "@DataAccess.Resources.Resources.Msg_searchDictionary",
             minimumInputLength: 3,
         });
 
 
-        
-        
+
+
     });
 
-    
+
 
     $("#Savebtn").click(function () {
 
@@ -83,7 +83,7 @@
 
                 if (response.hasError)
                 {
-                    
+
                     $.each(response.message, function (index, value) {
                         $("[data-valmsg-for='Price']").text(value.message);
                       //  toastr.error(value.message);
@@ -91,11 +91,11 @@
                 }
                 else
                 {
-                    
+
                     toastr.success(response.shortMessage);
                     $("#modelView").modal('hide');
 
-                    
+
                     var index = mainInfo.salesItem.findIndex(({ uid }) => uid === response.message.uid);
 
 
@@ -110,7 +110,7 @@
                     calculateTotal();
 
                 }
-                
+
 
             }
         });

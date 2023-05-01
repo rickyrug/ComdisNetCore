@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Security.AccessControl;
-using Comdis.Models;
 
-namespace Comdis.Comdis.Models
+
+namespace DataAccess.Models
 {
 
     public class Customer: AuditFields

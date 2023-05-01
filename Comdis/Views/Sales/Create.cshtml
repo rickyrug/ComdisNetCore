@@ -1,10 +1,10 @@
 @model Comdis.Models.VM.SalesVM
 
 @{
-    ViewData["Title"] = Comdis.Resources.Resources.Label_Create + " - " +Comdis.Resources.Resources.Label_Sale;
+    ViewData["Title"] = DataAccess.Resources.Resources.Label_Create + " - " + DataAccess.Resources.Resources.Label_Sale;
 }
 
-<h4>@Comdis.Resources.Resources.Label_Create - @Comdis.Resources.Resources.Label_Sale</h4>
+<h4>@DataAccess.Resources.Resources.Label_Create - @DataAccess.Resources.Resources.Label_Sale</h4>
 <hr />
 <form asp-action="Create">
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
@@ -114,7 +114,7 @@
                 }
 
             },
-            placeholder: "@Comdis.Resources.Resources.Msg_searchDictionary",
+            placeholder: "@DataAccess.Resources.Resources.Msg_searchDictionary",
             minimumInputLength: 3,
         });
     })

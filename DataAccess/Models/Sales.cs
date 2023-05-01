@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using Comdis.Comdis.Models;
 
-namespace Comdis.Models
+
+namespace DataAccess.Models
 {
     public class Sales : AuditFields
     {

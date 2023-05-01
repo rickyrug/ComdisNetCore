@@ -10,7 +10,6 @@
     <None Remove="Microsoft.EntityFrameworkCore.SqlServer" />
     <None Remove="Microsoft.EntityFrameworkCore.Design" />
     <None Remove="Models\VM\" />
-    <None Remove="Resources\" />
     <None Remove="Commands\" />
     <None Remove="Helpers\" />
     <None Remove="Microsoft.EntityFrameworkCore.Tools" />
@@ -35,7 +34,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Models\VM\" />
-    <Folder Include="Resources\" />
     <Folder Include="Commands\" />
     <Folder Include="wwwroot\js\Views\" />
     <Folder Include="wwwroot\js\Views\SalesItems\" />
@@ -49,17 +47,6 @@
     <Folder Include="Migrations\" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Update="Resources\Resources.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Update="Resources\Resources.Designer.cs">
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
     <Content Remove="wwwroot\js\Views\" />
     <Content Remove="wwwroot\js\Views\SalesItems\" />
     <Content Remove="wwwroot\lib\toastr\" />
@@ -68,5 +55,20 @@
     <Content Remove="wwwroot\lib\select2\" />
     <Content Remove="wwwroot\lib\sweetalert2\" />
     <Content Remove="wwwroot\lib\font-awesome\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DataAccess\DataAccess.csproj">
+      <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Remove="Controllers\UOMController.cs" />
+    <Compile Remove="Controllers\SupplierController.cs" />
+    <Compile Remove="Controllers\ProductsController.cs" />
+    <Compile Remove="Controllers\SalesItemsController.cs" />
+    <Compile Remove="Controllers\PurchaseController.cs" />
+    <Compile Remove="Controllers\SalesController.cs" />
+    <Compile Remove="Controllers\CustomerController.cs" />
+    <Compile Remove="Controllers\ProductCategoryController.cs" />
   </ItemGroup>
 </Project>

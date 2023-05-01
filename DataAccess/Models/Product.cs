@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Security.AccessControl;
 
-namespace Comdis.Models
+namespace DataAccess.Models
 {
     public class Product : AuditFields
     {
