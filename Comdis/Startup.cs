@@ -9,6 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.EntityFrameworkCore;
 
+
 namespace Comdis
 {
     public class Startup
@@ -23,12 +24,13 @@ namespace Comdis
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            var serverVersion = new MySqlServerVersion(new Version(8, 0, 28));
             services.AddControllersWithViews();
 
             services.AddDbContext<ComdisContext>(options =>
-                    options.UseSqlite(Configuration.GetConnectionString("ComdisContext"))
+                    //options.UseSqlite(Configuration.GetConnectionString("ComdisContext"))
                     
-
+                    options.UseMySql(Configuration.GetConnectionString("ComdisContext"), serverVersion)
                     );
         }
 

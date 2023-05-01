@@ -9,7 +9,7 @@ namespace Comdis.Models
     {
         public int Id { get; set; }
 
-        [Display(ResourceType = typeof(Resources.Resources), Name = "Label_Bank")]
+        [Display(ResourceType = typeof(Resources.Resources), Name = "Label_Name")]
         public string Name { get; set; }
 
         [Display(ResourceType = typeof(Resources.Resources), Name = "Label_Code")]

@@ -59,8 +59,8 @@ namespace Comdis.Controllers
             if (ModelState.IsValid)
             {
                 productCategory.CreatedBy = "";
-                productCategory.Cretead = DateTime.Now;
-                productCategory.Updated = DateTime.Now;
+                productCategory.Cretead = DateTime.UtcNow;
+                productCategory.Updated = DateTime.UtcNow;
                 productCategory.UpdatedBy = "";
 
                 _context.Add(productCategory);
