@@ -68,7 +68,6 @@
     <Compile Remove="Controllers\SalesItemsController.cs" />
     <Compile Remove="Controllers\PurchaseController.cs" />
     <Compile Remove="Controllers\SalesController.cs" />
-    <Compile Remove="Controllers\CustomerController.cs" />
     <Compile Remove="Controllers\ProductCategoryController.cs" />
   </ItemGroup>
 </Project>

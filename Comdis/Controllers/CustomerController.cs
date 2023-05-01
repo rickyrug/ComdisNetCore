@@ -7,34 +7,36 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Comdis.Comdis.Models;
 using Comdis.Models.VM;
+using DataAccess.UnitOfWork;
+using DataAccess.Models;
 
 namespace Comdis.Controllers
 {
     public class CustomerController : Controller
     {
-        private readonly ComdisContext _context;
+        private readonly UnitOfWork unitOfWork;
 
         public CustomerController(ComdisContext context)
         {
-            _context = context;
+            this.unitOfWork = new UnitOfWork(context);
         }
 
         // GET: Customer
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
-            return View(await _context.Customer.ToListAsync());
+            var items = unitOfWork.Customer.Get();
+            return View(items);
         }
 
         // GET: Customer/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public IActionResult Details(int? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var customer = await _context.Customer
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var customer = this.unitOfWork.Customer.GetByID(id);
             if (customer == null)
             {
                 return NotFound();
@@ -54,7 +56,7 @@ namespace Comdis.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Adress,Adress2,Phone1,Phone2,RFC,email")] Customer customer)
+        public IActionResult Create([Bind("Id,Name,Adress,Adress2,Phone1,Phone2,RFC,email")] Customer customer)
         {
             if (ModelState.IsValid)
             {
@@ -63,22 +65,23 @@ namespace Comdis.Controllers
                 customer.Updated   = DateTime.Now;
                 customer.UpdatedBy = "";
 
-                _context.Add(customer);
-                await _context.SaveChangesAsync();
+                this.unitOfWork.Customer.Insert(customer);
+
+                this.unitOfWork.Save();
                 return RedirectToAction(nameof(Index));
             }
             return View(customer);
         }
 
         // GET: Customer/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public IActionResult Edit(int? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var customer = await _context.Customer.FindAsync(id);
+            var customer = this.unitOfWork.Customer.GetByID(id);
             if (customer == null)
             {
                 return NotFound();
@@ -91,7 +94,7 @@ namespace Comdis.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Adress,Adress2,Phone1,Phone2,RFC,email,CreatedBy,Cretead")] Customer customer)
+        public IActionResult Edit(int id, [Bind("Id,Name,Adress,Adress2,Phone1,Phone2,RFC,email,CreatedBy,Cretead")] Customer customer)
         {
             if (id != customer.Id)
             {
@@ -104,8 +107,10 @@ namespace Comdis.Controllers
                 {
                      customer.Updated   = DateTime.Now;
                         customer.UpdatedBy = "";
-                    _context.Update(customer);
-                    await _context.SaveChangesAsync();
+
+                    this.unitOfWork.Customer.Update(customer);
+                    this.unitOfWork.Save();
+             
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -124,15 +129,14 @@ namespace Comdis.Controllers
         }
 
         // GET: Customer/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public IActionResult Delete(int? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var customer = await _context.Customer
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var customer = this.unitOfWork.Customer.GetByID(id);
             if (customer == null)
             {
                 return NotFound();
@@ -144,11 +148,11 @@ namespace Comdis.Controllers
         // POST: Customer/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public IActionResult DeleteConfirmed(int id)
         {
-            var customer = await _context.Customer.FindAsync(id);
-            _context.Customer.Remove(customer);
-            await _context.SaveChangesAsync();
+            var customer = this.unitOfWork.Customer.GetByID(id);
+            this.unitOfWork.Customer.Delete(customer);
+            this.unitOfWork.Save();
             return RedirectToAction(nameof(Index));
         }
 
@@ -156,10 +160,7 @@ namespace Comdis.Controllers
         public JsonResult GetCustomerList(QuerySelect pParam)
         {
             List<SelectObject> selectObj = new List<SelectObject>();
-            var customerList = _context.Customer
-                                        .Where(c => c.Name.Contains(pParam.search))
-                                        .AsNoTracking()
-                                        .ToList();
+            var customerList = this.unitOfWork.Customer.GetByPatern(pParam.search);
 
             foreach (var customer in customerList)
             {
@@ -177,7 +178,7 @@ namespace Comdis.Controllers
 
         private bool CustomerExists(int id)
         {
-            return _context.Customer.Any(e => e.Id == id);
+            return this.unitOfWork.Customer.Exist(id);
         }
     }
 }

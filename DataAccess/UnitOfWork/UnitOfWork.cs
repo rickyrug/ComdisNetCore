@@ -12,11 +12,22 @@ namespace DataAccess.UnitOfWork
 		private ComdisContext _context;
         private IBank _bank;
         private IConfiguration _configuration;
+        private ICustomer _customer;
 
 		public UnitOfWork(ComdisContext context)
 		{
 			this._context = context;
 		}
+
+        public ICustomer Customer
+        {
+            get
+            {
+                if (_customer == null)
+                    _customer = new CustomerRepository(this._context);
+                return _customer;
+            }
+        }
 
         public IConfiguration Configuration
         {
