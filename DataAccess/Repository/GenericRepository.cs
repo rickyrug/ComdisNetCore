@@ -18,8 +18,8 @@ namespace DataAccess.Repository
         }
 
         public virtual IEnumerable<TEntity> Get(
-            Expression<Func<TEntity, bool>> filter = null,
-            Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null,
+            Expression<Func<TEntity, bool>> filter ,
+            Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy ,
             string includeProperties = "")
         {
             IQueryable<TEntity> query = dbSet;
@@ -57,7 +57,8 @@ namespace DataAccess.Repository
 
         public virtual TEntity GetByID(object id)
         {
-            return dbSet.Find(id);
+            
+            return  dbSet.Find(id);
         }
 
         public virtual void Insert(TEntity entity)

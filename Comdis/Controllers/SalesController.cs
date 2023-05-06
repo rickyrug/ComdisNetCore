@@ -8,42 +8,38 @@ using Comdis.Models;
 using Comdis.Models.VM;
 using Comdis.Helpers;
 using System.Collections.Generic;
+using DataAccess.UnitOfWork;
+using DataAccess.Models;
 
 namespace Comdis.Controllers
 {
     public class SalesController : Controller
     {
-        private readonly ComdisContext _context;
+        private readonly UnitOfWork unitOfWork;
 
         public SalesController(ComdisContext context)
         {
-            _context = context;
+            this.unitOfWork = new UnitOfWork(context);
         }
 
         // GET: Sales
-        public async Task<IActionResult>  Index()
+        public IActionResult  Index()
         {
 
-           
+            var items = this.unitOfWork.Sales.Get();
 
-            return View(await _context.Sales.
-                                        Include(sales => sales.SalesToParty)
-                                        .OrderByDescending(x => x.Id)
-                                        .AsNoTracking()
-                                        .ToListAsync()
-                                );
+            return View(items);
         }
 
         // GET: Sales/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public IActionResult Details(int? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var sales = await _context.Sales
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var sales = this.unitOfWork.Sales.GetByID(id);
             if (sales == null)
             {
                 return NotFound();
@@ -68,7 +64,7 @@ namespace Comdis.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,SalesToPartyId,RequestedDeliveryDate,DeliveryAdress,Comments,discount,discount2,discount3,SalesToPartyId,productID,quantity,price,tax")] SalesVM sales)
+        public IActionResult Create([Bind("Id,SalesToPartyId,RequestedDeliveryDate,DeliveryAdress,Comments,discount,discount2,discount3,SalesToPartyId,productID,quantity,price,tax")] SalesVM sales)
         {
             decimal var_iva = 0;
             decimal var_desc1 = 0;
@@ -81,7 +77,7 @@ namespace Comdis.Controllers
 
                 if (sales.tax)
                 {
-                    var taxvalue = _context.Configuration.Where(c => c.code == "iva").AsNoTracking().FirstOrDefault();
+                    var taxvalue = this.unitOfWork.Configuration.Get(c => c.code == "iva",null).FirstOrDefault(); //_context.Configuration.Where(c => c.code == "iva").AsNoTracking().FirstOrDefault();
                     var_iva = CounterHelper.CalculatePercentage(taxvalue.value);
                 }
 
@@ -93,7 +89,7 @@ namespace Comdis.Controllers
                 var_desc3 = CounterHelper.CalculatePercentage(sales.discount3.ToString());
 
 
-                var var_customer = _context.Customer.Find(sales.SalesToPartyId);
+                var var_customer = this.unitOfWork.Customer.GetByID(sales.SalesToPartyId); // _context.Customer.Find(sales.SalesToPartyId);
 
                 Sales newSales = new Sales() {
                     Comments = sales.Comments
@@ -110,9 +106,9 @@ namespace Comdis.Controllers
                     , tax = var_iva
                 };
 
+                this.unitOfWork.Sales.Insert(newSales);
+                this.unitOfWork.Save();
 
-                _context.Add(newSales);
-                await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
 
@@ -129,10 +125,7 @@ namespace Comdis.Controllers
                 return NotFound();
             }
 
-            var sales =_context.Sales.
-                                        Include(sales => sales.SalesToParty).
-                                        AsNoTracking().
-                                        FirstOrDefault(header => header.Id == id);
+            var sales =this.unitOfWork.Sales.GetByID(id);
 
 
             if (sales == null)
@@ -172,7 +165,7 @@ namespace Comdis.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,SalesToPartyId,RequestedDeliveryDate,DeliveryAdress,Comments,discount,discount2,discount3,CreatedBy,Cretead,UpdatedBy,Updated,tax")] SalesVM sales)
+        public IActionResult Edit(int id, [Bind("Id,SalesToPartyId,RequestedDeliveryDate,DeliveryAdress,Comments,discount,discount2,discount3,CreatedBy,Cretead,UpdatedBy,Updated,tax")] SalesVM sales)
         {
             if (id != sales.Id)
             {
@@ -191,7 +184,7 @@ namespace Comdis.Controllers
 
                     if (sales.tax)
                     {
-                        var taxvalue = _context.Configuration.Where(c => c.code == "iva").AsNoTracking().FirstOrDefault();
+                        var taxvalue = this.unitOfWork.Configuration.Get(c => c.code == "iva", null).FirstOrDefault();  //_context.Configuration.Where(c => c.code == "iva").AsNoTracking().FirstOrDefault();
                         var_iva = CounterHelper.CalculatePercentage(taxvalue.value);
                     }
 
@@ -199,9 +192,9 @@ namespace Comdis.Controllers
                     var_desc1 = CounterHelper.CalculatePercentage(sales.discount.ToString());
                     var_desc2 = CounterHelper.CalculatePercentage(sales.discount2.ToString());
                     var_desc3 = CounterHelper.CalculatePercentage(sales.discount3.ToString());
- 
 
-                    var var_salesHeader = _context.Sales.Where(s => s.Id == sales.Id).FirstOrDefault();
+
+                    var var_salesHeader = this.unitOfWork.Sales.GetByID(id);//_context.Sales.Where(s => s.Id == sales.Id).FirstOrDefault();
 
                    if(var_salesHeader != null)
                     {
@@ -211,14 +204,13 @@ namespace Comdis.Controllers
                         var_salesHeader.discount3 = var_desc3;
                         var_salesHeader.Comments = sales.Comments;
                         var_salesHeader.RequestedDeliveryDate = sales.RequestedDeliveryDate;
-                        var_salesHeader.SalesToParty = _context.Customer.Find(sales.SalesToPartyId);
+                        var_salesHeader.SalesToParty = this.unitOfWork.Customer.GetByID(sales.SalesToPartyId);// _context.Customer.Find(sales.SalesToPartyId);
                         var_salesHeader.Updated = DateTime.Now;
                         var_salesHeader.UpdatedBy = "";
                         var_salesHeader.tax = var_iva;
 
-
-                        _context.Update(var_salesHeader);
-                        await _context.SaveChangesAsync();
+                        this.unitOfWork.Sales.Update(var_salesHeader);
+                        this.unitOfWork.Save();
 
                     }
 
@@ -241,15 +233,14 @@ namespace Comdis.Controllers
         }
 
         // GET: Sales/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public IActionResult Delete(int? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var sales = await _context.Sales
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var sales = this.unitOfWork.Sales.GetByID(id);
             if (sales == null)
             {
                 return NotFound();
@@ -264,30 +255,20 @@ namespace Comdis.Controllers
             List<Sales> salesList = new List<Sales>();
             if (filter.salesnumber != 0)
             {
-                salesList =    _context.Sales
-                               .Include(sales => sales.SalesToParty)
-                               .Where(s => s.Id == filter.salesnumber)
-                               .AsNoTracking()
-                               .ToList();
+                salesList = this.unitOfWork.Sales.Get(s => s.Id == filter.salesnumber, null).ToList();
+
                 return View("Index", salesList);
             }
 
             if (filter.customerList != 0)
             {
-                salesList = _context.Sales
-                             .Include(sales => sales.SalesToParty)
-                             .Where(s => s.SalesToParty.Id == filter.customerList)
-                             .AsNoTracking()
-                             .ToList();
+                salesList = this.unitOfWork.Sales.Get(s => s.Id == filter.salesnumber, null).ToList();
+
                 return View("Index", salesList);
             }
 
 
-            salesList = _context.Sales
-                                .Include(sales => sales.SalesToParty)
-                                .Where(s => s.Cretead >= filter.datefrom && s.Cretead <= filter.dateto.AddHours(23).AddMinutes(59).AddSeconds(59))
-                                .AsNoTracking()
-                                .ToList();
+            salesList = this.unitOfWork.Sales.Get(s => s.Cretead >= filter.datefrom && s.Cretead <= filter.dateto.AddHours(23).AddMinutes(59).AddSeconds(59),null).ToList();
 
            
 
@@ -298,11 +279,12 @@ namespace Comdis.Controllers
         // POST: Sales/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public IActionResult DeleteConfirmed(int id)
         {
-            var sales = await _context.Sales.FindAsync(id);
-            _context.Sales.Remove(sales);
-            await _context.SaveChangesAsync();
+            var sales = this.unitOfWork.Sales.GetByID(id); //await _context.Sales.FindAsync(id);
+            this.unitOfWork.Sales.Delete(sales);
+            this.unitOfWork.Save();
+            
             return RedirectToAction(nameof(Index));
         }
 
@@ -314,12 +296,12 @@ namespace Comdis.Controllers
 
         private bool SalesExists(int id)
         {
-            return _context.Sales.Any(e => e.Id == id);
+            return this.unitOfWork.Sales.Exist(id);
         }
 
         private void PopulateCustomerDropDown(object selectedItem = null)
         {
-            var customerList = _context.Customer.AsNoTracking().ToList();
+            var customerList = this.unitOfWork.Customer.Get();
             ViewBag.customerList = new SelectList(customerList, "Id", "Name", selectedItem);
 
         }

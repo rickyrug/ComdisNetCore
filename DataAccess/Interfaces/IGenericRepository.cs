@@ -6,9 +6,9 @@ namespace DataAccess.Interfaces
 	public interface IGenericRepository<TEntity> where TEntity : class
 	{
         IEnumerable<TEntity> Get(
-            Expression<Func<TEntity, bool>> filter = null,
-            Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null,
-            string includeProperties = "");
+        Expression<Func<TEntity, bool>> filter ,
+        Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy,
+        string includeProperties = "");
         IEnumerable<TEntity> Get();
         TEntity GetByID(object id);
         void Insert(TEntity entity);

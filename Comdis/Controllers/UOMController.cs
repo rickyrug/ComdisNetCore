@@ -6,34 +6,36 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Comdis.Models;
+using DataAccess.UnitOfWork;
+using DataAccess.Models;
 
 namespace Comdis.Controllers
 {
     public class UOMController : Controller
     {
-        private readonly ComdisContext _context;
+        private readonly UnitOfWork unitOfWork;
 
         public UOMController(ComdisContext context)
         {
-            _context = context;
+            this.unitOfWork = new UnitOfWork(context);
         }
 
         // GET: UOM
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
-            return View(await _context.UOM.ToListAsync());
+            var items = this.unitOfWork.Uom.Get();
+            return View(items);
         }
 
         // GET: UOM/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public IActionResult Details(int? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var uOM = await _context.UOM
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var uOM = this.unitOfWork.Uom.GetByID(id);
             if (uOM == null)
             {
                 return NotFound();
@@ -53,7 +55,7 @@ namespace Comdis.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Code")] UOM uOM)
+        public IActionResult Create([Bind("Id,Name,Code")] UOM uOM)
         {
             if (ModelState.IsValid)
             {
@@ -63,22 +65,22 @@ namespace Comdis.Controllers
                 uOM.Cretead = DateTime.Now;
                 uOM.Updated = DateTime.Now;
 
-                _context.Add(uOM);
-                await _context.SaveChangesAsync();
+                this.unitOfWork.Uom.Insert(uOM);
+                this.unitOfWork.Save();
                 return RedirectToAction(nameof(Index));
             }
             return View(uOM);
         }
 
         // GET: UOM/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public IActionResult Edit(int? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var uOM = await _context.UOM.FindAsync(id);
+            var uOM = this.unitOfWork.Uom.GetByID(id);
             if (uOM == null)
             {
                 return NotFound();
@@ -91,7 +93,7 @@ namespace Comdis.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Code")] UOM uOM)
+        public IActionResult Edit(int id, [Bind("Id,Name,Code")] UOM uOM)
         {
             if (id != uOM.Id)
             {
@@ -105,8 +107,9 @@ namespace Comdis.Controllers
                     uOM.Updated = DateTime.Now;
                     uOM.UpdatedBy = "";
 
-                    _context.Update(uOM);
-                    await _context.SaveChangesAsync();
+                    
+                    this.unitOfWork.Uom.Update(uOM);
+                    this.unitOfWork.Save();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -125,15 +128,14 @@ namespace Comdis.Controllers
         }
 
         // GET: UOM/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public IActionResult Delete(int? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var uOM = await _context.UOM
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var uOM = this.unitOfWork.Uom.GetByID(id);
             if (uOM == null)
             {
                 return NotFound();
@@ -145,17 +147,18 @@ namespace Comdis.Controllers
         // POST: UOM/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public IActionResult DeleteConfirmed(int id)
         {
-            var uOM = await _context.UOM.FindAsync(id);
-            _context.UOM.Remove(uOM);
-            await _context.SaveChangesAsync();
+            var uOM = this.unitOfWork.Uom.GetByID(id);
+            this.unitOfWork.Uom.Delete(uOM);
+            this.unitOfWork.Save();
+           
             return RedirectToAction(nameof(Index));
         }
 
         private bool UOMExists(int id)
         {
-            return _context.UOM.Any(e => e.Id == id);
+            return this.unitOfWork.Uom.Exist(id);
         }
     }
 }

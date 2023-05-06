@@ -6,35 +6,36 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Comdis.Models;
+using DataAccess.UnitOfWork;
+using DataAccess.Models;
 
 namespace Comdis.Controllers
 {
     public class ProductCategoryController : Controller
     {
-        private readonly ComdisContext _context;
+        private readonly UnitOfWork unitOfWork;
 
         public ProductCategoryController(ComdisContext context)
         {
-            _context = context;
+            this.unitOfWork = new UnitOfWork(context);
         }
 
         // GET: ProductCategory
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
-            return View(await _context.ProductCategory.AsNoTracking().ToListAsync());
+            var items = this.unitOfWork.ProductCategory.Get();
+            return View(items);
         }
 
         // GET: ProductCategory/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public IActionResult Details(int? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var productCategory = await _context.ProductCategory
-                .AsNoTracking()
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var productCategory = this.unitOfWork.ProductCategory.GetByID(id);
             if (productCategory == null)
             {
                 return NotFound();
@@ -54,31 +55,31 @@ namespace Comdis.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,CategoryCode")] ProductCategory productCategory)
+        public IActionResult Create([Bind("Id,Name,CategoryCode")] ProductCategory productCategory)
         {
             if (ModelState.IsValid)
             {
                 productCategory.CreatedBy = "";
-                productCategory.Cretead = DateTime.UtcNow;
-                productCategory.Updated = DateTime.UtcNow;
+                productCategory.Cretead = DateTime.Now;
+                productCategory.Updated = DateTime.Now;
                 productCategory.UpdatedBy = "";
 
-                _context.Add(productCategory);
-                await _context.SaveChangesAsync();
+                this.unitOfWork.ProductCategory.Insert(productCategory);
+                this.unitOfWork.Save();
                 return RedirectToAction(nameof(Index));
             }
             return View(productCategory);
         }
 
         // GET: ProductCategory/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public IActionResult Edit(int? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var productCategory = await _context.ProductCategory.AsNoTracking().FirstOrDefaultAsync(pc => pc.Id == id);
+            var productCategory = this.unitOfWork.ProductCategory.GetByID(id);
             if (productCategory == null)
             {
                 return NotFound();
@@ -91,7 +92,7 @@ namespace Comdis.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,CategoryCode")] ProductCategory productCategory)
+        public IActionResult Edit(int id, [Bind("Id,Name,CategoryCode")] ProductCategory productCategory)
         {
             if (id != productCategory.Id)
             {
@@ -102,17 +103,16 @@ namespace Comdis.Controllers
             {
                 try
                 {
-                    ProductCategory editedProductCategory = _context.ProductCategory.AsNoTracking().FirstOrDefault(pc => pc.Id == productCategory.Id);
+                    ProductCategory editedProductCategory = this.unitOfWork.ProductCategory.GetByID(id);
 
-                    productCategory.Name = productCategory.Name;
-                    productCategory.CategoryCode = productCategory.CategoryCode;
-                    productCategory.Updated     = DateTime.Now;
-                    productCategory.UpdatedBy = "";
-                    productCategory.CreatedBy = editedProductCategory.CreatedBy;
-                    productCategory.Cretead     = editedProductCategory.Cretead;
+                    editedProductCategory.Name =              productCategory.Name;
+                    editedProductCategory.CategoryCode = productCategory.CategoryCode;
+                    editedProductCategory.Updated     = DateTime.Now;
+                    editedProductCategory.UpdatedBy = "";
 
-                    _context.Update(productCategory);
-                    await _context.SaveChangesAsync();
+
+                    this.unitOfWork.ProductCategory.Update(editedProductCategory);
+                    this.unitOfWork.Save();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -131,15 +131,14 @@ namespace Comdis.Controllers
         }
 
         // GET: ProductCategory/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public IActionResult Delete(int? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var productCategory = await _context.ProductCategory
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var productCategory = this.unitOfWork.ProductCategory.GetByID(id);
             if (productCategory == null)
             {
                 return NotFound();
@@ -151,17 +150,18 @@ namespace Comdis.Controllers
         // POST: ProductCategory/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public IActionResult DeleteConfirmed(int id)
         {
-            var productCategory = await _context.ProductCategory.FindAsync(id);
-            _context.ProductCategory.Remove(productCategory);
-            await _context.SaveChangesAsync();
+            var productCategory = this.unitOfWork.ProductCategory.GetByID(id);
+            this.unitOfWork.ProductCategory.Delete(productCategory);
+            this.unitOfWork.Save();
+      
             return RedirectToAction(nameof(Index));
         }
 
         private bool ProductCategoryExists(int id)
         {
-            return _context.ProductCategory.Any(e => e.Id == id);
+            return this.unitOfWork.ProductCategory.Exist(id);
         }
     }
 }

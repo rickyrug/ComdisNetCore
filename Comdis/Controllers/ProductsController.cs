@@ -5,45 +5,40 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using Comdis.Models;
+
 using Comdis.Models.VM;
+using DataAccess.UnitOfWork;
+using DataAccess.Models;
 
 namespace Comdis.Controllers
 {
     public class ProductsController : Controller
     {
-        private readonly ComdisContext _context;
+        private readonly UnitOfWork unitOfWork;
 
         public ProductsController(ComdisContext context)
         {
-           // context.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
-            _context = context;
+            this.unitOfWork = new UnitOfWork(context);
            
         }
 
         // GET: Products
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
-              return View(await _context.Product
-                            
-                                .Include(u => u.Uom)
-                              
-                                .Include(pc => pc.category)
-                                .AsNoTracking()
-                                .ToListAsync());
+            var items = this.unitOfWork.Product.Get();
+              return View(items);
            // return View(await _context.Product.ToListAsync());
         }
 
         // GET: Products/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public IActionResult Details(int? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var product = await _context.Product
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var product = this.unitOfWork.Product.GetByID(id);
             if (product == null)
             {
                 return NotFound();
@@ -57,9 +52,7 @@ namespace Comdis.Controllers
         {
           
                 PopulateUomDropDown();
-          
-          
-            
+
             PopulateProdCatDropDown();
             return View();
         }
@@ -76,8 +69,8 @@ namespace Comdis.Controllers
 
                
                 Product newproduct = new Product();
-                var var_uom = _context.UOM.Find(product.UomId);
-                var var_cat = _context.ProductCategory.Find(product.categoryId);
+                var var_uom = this.unitOfWork.Uom.GetByID(product.UomId);
+                var var_cat = this.unitOfWork.ProductCategory.GetByID(product.categoryId);
 
               
 
@@ -95,10 +88,9 @@ namespace Comdis.Controllers
                 newproduct.Updated = DateTime.Now;
                 newproduct.UpdatedBy = "";
 
+                this.unitOfWork.Product.Insert(newproduct);
+                this.unitOfWork.Save();
 
-                _context.Product.Add(newproduct);
-                
-                 _context.SaveChanges();
                 return RedirectToAction(nameof(Index));
             }
             return View(product);
@@ -112,11 +104,7 @@ namespace Comdis.Controllers
                 return NotFound();
             }
 
-            var product = _context.Product.
-                                    Include(u => u.Uom).
-                                    Include(pc => pc.category).
-                                    AsNoTracking().
-                                    FirstOrDefault(p => p.Id == id);
+            var product = this.unitOfWork.Product.GetByID(id);
             
             if (product == null)
             {
@@ -155,7 +143,7 @@ namespace Comdis.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,UomId,categoryId,Code")] ProductVM product)
+        public IActionResult Edit(int id, [Bind("Id,Name,UomId,categoryId,Code")] ProductVM product)
         {
             if (id != product.Id)
             {
@@ -168,21 +156,22 @@ namespace Comdis.Controllers
                 {
 
 
-                    Product editedProduct = _context.Product.Where(p => p.Id == product.Id).FirstOrDefault();
+                    Product editedProduct = this.unitOfWork.Product.GetByID(id);
 
 
                     editedProduct.Name = product.Name;
                     editedProduct.Code = product.Code;
 
-                    editedProduct.Uom       = _context.UOM.Find(product.UomId);
-                    editedProduct.category = _context.ProductCategory.Find( product.categoryId);
+                    editedProduct.Uom = this.unitOfWork.Uom.GetByID(product.UomId);//_context.UOM.Find(product.UomId);
+                    editedProduct.category = this.unitOfWork.ProductCategory.GetByID(product.categoryId);//_context.ProductCategory.Find( product.categoryId);
 
                     editedProduct.Updated = DateTime.Now;
                     editedProduct.UpdatedBy = "";
 
+                    this.unitOfWork.Product.Update(editedProduct);
+                    this.unitOfWork.Save();
 
-                    _context.Product.Update(editedProduct);
-                    await _context.SaveChangesAsync();
+
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -201,15 +190,14 @@ namespace Comdis.Controllers
         }
 
         // GET: Products/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public IActionResult Delete(int? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var product = await _context.Product
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var product = this.unitOfWork.Product.GetByID(id);
             if (product == null)
             {
                 return NotFound();
@@ -221,11 +209,11 @@ namespace Comdis.Controllers
         // POST: Products/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public IActionResult DeleteConfirmed(int id)
         {
-            var product = await _context.Product.FindAsync(id);
-            _context.Product.Remove(product);
-            await _context.SaveChangesAsync();
+            var product = this.unitOfWork.Product.GetByID(id);
+            this.unitOfWork.Product.Delete(product);
+            this.unitOfWork.Save();
             return RedirectToAction(nameof(Index));
         }
 
@@ -233,12 +221,7 @@ namespace Comdis.Controllers
         {
 
             List<SelectObject> selectObj = new List<SelectObject>();
-            var productList = _context.Product
-                                            .Include(u => u.Uom)
-                                            .Include(c => c.category)
-                                            .Where(p=> p.Name.Contains(pParam.search))
-                                            .AsNoTracking()
-                                            .ToList();
+            var productList = this.unitOfWork.Product.Get();
 
 
             
@@ -256,19 +239,19 @@ namespace Comdis.Controllers
 
         private bool ProductExists(int id)
         {
-            return _context.Product.Any(e => e.Id == id);
+            return this.unitOfWork.Product.Exist(id);
         }
 
         private void PopulateUomDropDown(object selectedUom = null)
         {
-            var uomList =  _context.UOM.AsNoTracking().ToList(); 
+            var uomList =  this.unitOfWork.Uom.Get(); 
             ViewBag.uomList = new SelectList(uomList,"Id","Name" ,selectedUom);
 
         }
 
         private void PopulateProdCatDropDown(object selectedItem = null)
         {
-            var prodCatList = _context.ProductCategory.AsNoTracking().ToList();
+            var prodCatList = this.unitOfWork.ProductCategory.Get();
             ViewBag.pcList = new SelectList(prodCatList, "Id", "Name", selectedItem);
 
         }

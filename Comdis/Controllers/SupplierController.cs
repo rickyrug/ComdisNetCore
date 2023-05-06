@@ -7,36 +7,36 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Comdis.Comdis.Models;
 using Comdis.Comdis.Models.VM;
+using DataAccess.UnitOfWork;
+using DataAccess.Models;
 
 namespace Comdis.Controllers
 {
     public class SupplierController : Controller
     {
-        private readonly ComdisContext _context;
+        private readonly UnitOfWork unitOfWork;
 
         public SupplierController(ComdisContext context)
         {
-            _context = context;
+            this.unitOfWork = new UnitOfWork(context);
         }
 
         // GET: Supplier
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
-            return View(await _context.Supplier
-                               .Include(s => s.SuscribedBank)
-                               .ToListAsync());
+            var items = this.unitOfWork.Supplier.Get();
+            return View(items);
         }
 
         // GET: Supplier/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public IActionResult Details(int? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var supplier = await _context.Supplier.Include(s => s.SuscribedBank)
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var supplier = this.unitOfWork.Supplier.GetByID(id);
             if (supplier == null)
             {
                 return NotFound();
@@ -57,43 +57,60 @@ namespace Comdis.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Adress,Adress2,Phone1,Phone2,RFC,email,BankAccount,SuscribedBankId")] SupplierVM supplier)
+        public IActionResult Create([Bind("Id,Name,Adress,Adress2,Phone1,Phone2,RFC,email,BankAccount,SuscribedBankId")] SupplierVM supplier)
         {
             if (ModelState.IsValid)
             {
                 
-                var var_suscribedBank = _context.Bank.Find(supplier.SuscribedBankId);
+                var var_suscribedBank = this.unitOfWork.Bank.GetByID(supplier.SuscribedBankId);
 
-                _context.Add(new Supplier(){
-                        Adress = supplier.Adress
-                    ,   Adress2 = supplier.Adress2
-                    ,   BankAccount = supplier.BankAccount
-                    ,   CreatedBy   = ""
-                    ,   Cretead     = DateTime.Now
-                    ,   email       = supplier.email
-                    ,   Name        = supplier.Name
-                    ,   Phone1      = supplier.Phone1
-                    ,   Phone2      = supplier.Phone2
-                    ,   RFC         = supplier.RFC
-                    ,   SuscribedBank   = var_suscribedBank
-                    ,   Updated         = DateTime.Now
-                    ,   UpdatedBy       = ""
-                });
-                await _context.SaveChangesAsync();
+                this.unitOfWork.Supplier.Insert(
+                     new Supplier()
+                     {
+                         Adress = supplier.Adress
+                    ,
+                         Adress2 = supplier.Adress2
+                    ,
+                         BankAccount = supplier.BankAccount
+                    ,
+                         CreatedBy = ""
+                    ,
+                         Cretead = DateTime.Now
+                    ,
+                         email = supplier.email
+                    ,
+                         Name = supplier.Name
+                    ,
+                         Phone1 = supplier.Phone1
+                    ,
+                         Phone2 = supplier.Phone2
+                    ,
+                         RFC = supplier.RFC
+                    ,
+                         SuscribedBank = var_suscribedBank
+                    ,
+                         Updated = DateTime.Now
+                    ,
+                         UpdatedBy = ""
+                     }
+                    );
+
+
+                this.unitOfWork.Save();
                 return RedirectToAction(nameof(Index));
             }
             return View(supplier);
         }
 
         // GET: Supplier/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public IActionResult Edit(int? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var var_supplier = await _context.Supplier.Include(s => s.SuscribedBank).FirstOrDefaultAsync(s => s.Id == id);
+            var var_supplier = this.unitOfWork.Supplier.GetByID(id);
             if (var_supplier == null)
             {
                 return NotFound();
@@ -123,9 +140,9 @@ namespace Comdis.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Adress,Adress2,Phone1,Phone2,RFC,email,BankAccount,SuscribedBankId,CreatedBy,Cretead")] SupplierVM supplier)
+        public IActionResult Edit(int id, [Bind("Id,Name,Adress,Adress2,Phone1,Phone2,RFC,email,BankAccount,SuscribedBankId,CreatedBy,Cretead")] SupplierVM supplier)
         {
-            var var_editSupplier = _context.Supplier.Find(supplier.Id);
+            var var_editSupplier = unitOfWork.Supplier.GetByID(id);
             
             if (var_editSupplier == null)
             {
@@ -136,7 +153,7 @@ namespace Comdis.Controllers
             {
                 try
                 {
-                    var var_suscribedBank = _context.Bank.Find(supplier.SuscribedBankId);
+                    var var_suscribedBank = var_editSupplier.SuscribedBank;
 
                         var_editSupplier.Adress  = supplier.Adress;
                         var_editSupplier.Adress2 = supplier.Adress2;
@@ -153,8 +170,8 @@ namespace Comdis.Controllers
                         var_editSupplier.UpdatedBy      = "";
 
 
-                    _context.Update(var_editSupplier);
-                    await _context.SaveChangesAsync();
+                    this.unitOfWork.Supplier.Update(var_editSupplier);
+                    this.unitOfWork.Save();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -173,15 +190,14 @@ namespace Comdis.Controllers
         }
 
         // GET: Supplier/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public IActionResult Delete(int? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var supplier = await _context.Supplier
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var supplier = this.unitOfWork.Supplier.GetByID(id);
             if (supplier == null)
             {
                 return NotFound();
@@ -193,22 +209,23 @@ namespace Comdis.Controllers
         // POST: Supplier/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public IActionResult DeleteConfirmed(int id)
         {
-            var supplier = await _context.Supplier.FindAsync(id);
-            _context.Supplier.Remove(supplier);
-            await _context.SaveChangesAsync();
+            var supplier = this.unitOfWork.Supplier.GetByID(id);
+            this.unitOfWork.Supplier.Delete(supplier);
+            this.unitOfWork.Save();
+         
             return RedirectToAction(nameof(Index));
         }
 
         private bool SupplierExists(int id)
         {
-            return _context.Supplier.Any(e => e.Id == id);
+            return this.unitOfWork.Supplier.Exist(id);
         }
 
         private void PopulateBankDropDown(object selectedItem = null)
         {
-            var bankList = _context.Bank.AsNoTracking().ToList();
+            var bankList = this.unitOfWork.Bank.Get();
             ViewBag.bankList = new SelectList(bankList, "Id", "Name", selectedItem);
 
         }

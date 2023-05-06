@@ -41,37 +41,37 @@
                 </div>
                 @if (Model.discount != 0)
                 {
-            <div class="row">
-                <div class="col-md-6 text-right"><p class="card-text">@DataAccess.Resources.Resources.Label_Discount1 (@Model.discount %):  </p></div>
-                <div class="col-md-6">-<span class="text-danger" id="g_discount1"></span></div>
-            </div>}
+                    <div class="row">
+                        <div class="col-md-6 text-right"><p class="card-text">@DataAccess.Resources.Resources.Label_Discount1 (@Model.discount %):  </p></div>
+                        <div class="col-md-6">-<span class="text-danger" id="g_discount1"></span></div>
+                    </div>}
                 @if (Model.discount2 != 0)
                 {
-            <div class="row">
-                <div class="col-md-6 text-right"><p class="card-text">@DataAccess.Resources.Resources.Label_Discount2 (@Model.discount2 %):   </p></div>
-                <div class="col-md-6">-<span class="text-danger" id="g_discount2"></span></div>
-            </div>}
+                    <div class="row">
+                        <div class="col-md-6 text-right"><p class="card-text">@DataAccess.Resources.Resources.Label_Discount2 (@Model.discount2 %):   </p></div>
+                        <div class="col-md-6">-<span class="text-danger" id="g_discount2"></span></div>
+                    </div>}
 
                 @if (Model.discount3 != 0)
                 {
-            <div class="row">
-                <div class="col-md-6 text-right"><p class="card-text">@DataAccess.Resources.Resources.Label_Discount3 (@Model.discount3 %):  </p></div>
-                <div class="col-md-6">-<span class="text-danger" id="g_discount3"></span></div>
-            </div>
+                    <div class="row">
+                        <div class="col-md-6 text-right"><p class="card-text">@DataAccess.Resources.Resources.Label_Discount3 (@Model.discount3 %):  </p></div>
+                        <div class="col-md-6">-<span class="text-danger" id="g_discount3"></span></div>
+                    </div>
                 }
 
 
                 @if (Model.tax != 0)
                 {
-                            <hr />
-                            <div class="row">
-                                <div class="col-md-6 text-right"><p class="card-text">@DataAccess.Resources.Resources.Label_subtotal:  </p></div>
-                                <div class="col-md-6"><span id="g_subtotalBT"></span></div>
-                            </div>
-                                            <div class="row">
-                                                <div class="col-md-6 text-right"><p class="card-text">@DataAccess.Resources.Resources.Label_tax:  </p></div>
-                                                <div class="col-md-6"><span id="g_tax"></span></div>
-                                            </div>}
+                    <hr />
+                    <div class="row">
+                        <div class="col-md-6 text-right"><p class="card-text">@DataAccess.Resources.Resources.Label_subtotal:  </p></div>
+                        <div class="col-md-6"><span id="g_subtotalBT"></span></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 text-right"><p class="card-text">@DataAccess.Resources.Resources.Label_tax:  </p></div>
+                        <div class="col-md-6"><span id="g_tax"></span></div>
+                    </div>}
 
                 <hr />
                 <div class="row">
@@ -93,7 +93,7 @@
                 <button class="btn btn-success" id="btnSave" type="submit">@DataAccess.Resources.Resources.Label_Save</button>
             </div>
             <div class="col-md-3">
-                <button class="btn btn-info" id="btnPrint">@DataAccess.Resources.Resources.Label_Print</button>
+                <button class="btn btn-info" id="btnPrint" onclick="print()">@DataAccess.Resources.Resources.Label_Print</button>
             </div>
         </div>
         <div class="row">
@@ -135,6 +135,8 @@
 
 @section Scripts
 {
+    <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>-->
+    <script src="~/lib/jsPDF/jspdf.umd.js"></script>
     <script>
         toastr.options = {
             "closeButton": true,
@@ -203,7 +205,7 @@
 
                 $("#partialHtml").html("");
                     tableData = $("#tblSalesOrderItems").DataTable();
-                    
+
 
                 $.get(urlPartialCreate, { pSOI: SO})
                     .done(function (data, res) {
@@ -359,10 +361,10 @@
                 })
                 .done(function (data, res)
                 {
-                    
+
                     $("#partialHtml").html(data);
                     $('#modelView').modal('show');
-                    
+
                     var option = new Option(rowData.productName, rowData.productId, true, true);
                     $("#productDropDown").append(option).trigger('change');
 
@@ -413,7 +415,21 @@
 
         });
 
-
+        function print()
+        {
+            window.jsPDF = window.jspdf.jsPDF;
+            var pdf = new jsPDF({
+                orientation: 'p',
+                unit: 'mm',
+                format: 'a5',
+                putOnlyUsedFonts: true
+            });
+            pdf.text("Generate a PDF with JavaScript", 20, 20);
+            pdf.text("published on APITemplate.io", 20, 30);
+            pdf.addPage();
+            pdf.text(20, 20, 'The second page');
+            pdf.save('jsPDF_2Pages.pdf');
+        }
 
     </script>
-    }
+}

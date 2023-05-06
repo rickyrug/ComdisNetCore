@@ -61,13 +61,4 @@
       <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Compile Remove="Controllers\UOMController.cs" />
-    <Compile Remove="Controllers\SupplierController.cs" />
-    <Compile Remove="Controllers\ProductsController.cs" />
-    <Compile Remove="Controllers\SalesItemsController.cs" />
-    <Compile Remove="Controllers\PurchaseController.cs" />
-    <Compile Remove="Controllers\SalesController.cs" />
-    <Compile Remove="Controllers\ProductCategoryController.cs" />
-  </ItemGroup>
 </Project>

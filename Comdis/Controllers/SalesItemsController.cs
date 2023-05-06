@@ -9,27 +9,26 @@ using Comdis.Models;
 using Comdis.Models.VM;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Comdis.Helpers;
+using DataAccess.UnitOfWork;
+using DataAccess.Models;
+using DataAccess.Resources;
 
 namespace Comdis.Controllers
 {
     public class SalesItemsController : Controller
     {
-        private readonly ComdisContext _context;
+        private readonly UnitOfWork unitOfWork;
 
         public SalesItemsController(ComdisContext context)
         {
-            _context = context;
+            this.unitOfWork = new UnitOfWork(context);
         }
 
         // GET: SalesItems
         public IActionResult Index(int id)
         {
-            Sales sales = _context
-                                    .Sales
-                                    .Include(p => p.SalesToParty)
-                                    .Where(s => s.Id == id).
-                                    AsNoTracking().
-                                    FirstOrDefault();
+            Sales sales = this.unitOfWork.Sales.GetByID(id);
+                               
 
             ViewBag.So = id.ToString();
             sales.discount  = sales.discount * 100;
@@ -40,15 +39,14 @@ namespace Comdis.Controllers
         }
 
         // GET: SalesItems/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public IActionResult Details(int? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var salesItems = await _context.SalesItems
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var salesItems = this.unitOfWork.Sales.GetByID(id);
             if (salesItems == null)
             {
                 return NotFound();
@@ -81,17 +79,17 @@ namespace Comdis.Controllers
                    // var var_so = _context.Sales.AsNoTracking().Where(so => so.Id == ).FirstOrDefault();
                    // var var_product = _context.Product.AsNoTracking().Where(pro => pro.Id == salesItems.ProductId).FirstOrDefault();
                     SalesItems newItem = new SalesItems();
-                    newItem.SalesHeader = _context.Sales.Find(salesItems.SOId);
-                    newItem.Product = _context.Product.Find(salesItems.ProductId);
+                    newItem.SalesHeader = this.unitOfWork.Sales.GetByID(salesItems.SOId); 
+                    newItem.Product = this.unitOfWork.Product.GetByID(salesItems.ProductId); 
 
 
                     newItem.Price = salesItems.Price;
                     newItem.Quantity = salesItems.Quantity;
                     newItem.Cretead = DateTime.Now;
 
-
-                    _context.Add(newItem);
-                    _context.SaveChanges();
+                    this.unitOfWork.SalesItems.Insert(newItem);
+                    this.unitOfWork.Save();
+                    
 
                     salesItems.uid = newItem.Id;
                     salesItems.ProductName = newItem.Product.Name;
@@ -101,7 +99,7 @@ namespace Comdis.Controllers
                             {
                                     hasError = false
                                 , Message = salesItems
-                                ,shortMessage = String.Format(Resources.Resources.Msg_addedItem,salesItems.ProductName)
+                                ,shortMessage = String.Format(Resources.Msg_addedItem,salesItems.ProductName)
 
 
                     });
@@ -129,12 +127,12 @@ namespace Comdis.Controllers
                 if (ex.InnerException != null)
                 {
 
-                    throw new Exception(String.Format(Resources.Resources.MSG_ErrorCreating, salesItems.ProductName + " " + ex.InnerException));
+                    throw new Exception(String.Format(Resources.MSG_ErrorCreating, salesItems.ProductName + " " + ex.InnerException));
                     
                 }
                 else
                 {
-                    throw new Exception(String.Format(Resources.Resources.MSG_ErrorCreating, salesItems.ProductName + " " + ex.Message));
+                    throw new Exception(String.Format(Resources.MSG_ErrorCreating, salesItems.ProductName + " " + ex.Message));
               
                 }  
                 
@@ -143,14 +141,14 @@ namespace Comdis.Controllers
         }
 
         // GET: SalesItems/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public IActionResult Edit(int? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var salesItems = await _context.SalesItems.FindAsync(id);
+            var salesItems = this.unitOfWork.SalesItems.GetByID(id);//await _context.SalesItems.FindAsync(id);
             if (salesItems == null)
             {
                 return NotFound();
@@ -171,16 +169,17 @@ namespace Comdis.Controllers
             {
                 try
                 {
-                    SalesItems editSalesItem = _context.SalesItems.Find(salesItems.uid);
-                    editSalesItem.SalesHeader = _context.Sales.Find(salesItems.SOId);
-                    editSalesItem.Product = _context.Product.Find(salesItems.ProductId);
+                    SalesItems editSalesItem = this.unitOfWork.SalesItems.GetByID(salesItems.uid);// _context.SalesItems.Find(salesItems.uid);
+                    editSalesItem.SalesHeader = this.unitOfWork.Sales.GetByID(salesItems.SOId);//_context.Sales.Find(salesItems.SOId);
+                    editSalesItem.Product = this.unitOfWork.Product.GetByID(salesItems.ProductId);//_context.Product.Find(salesItems.ProductId);
                     editSalesItem.Price = salesItems.Price;
                     editSalesItem.Quantity = salesItems.Quantity;
 
                     editSalesItem.Updated = DateTime.Now;
 
-                    _context.Update(editSalesItem);
-                    _context.SaveChanges();
+                    this.unitOfWork.SalesItems.Update(editSalesItem);
+                    this.unitOfWork.Save();
+                   
 
                     salesItems.ProductName = editSalesItem.Product.Name;
 
@@ -190,7 +189,7 @@ namespace Comdis.Controllers
                                 ,
                         Message = salesItems
                                 ,
-                        shortMessage = String.Format(Resources.Resources.MSG_EditedITem, salesItems.ProductName)
+                        shortMessage = String.Format(Resources.MSG_EditedITem, salesItems.ProductName)
 
 
                     });
@@ -199,11 +198,11 @@ namespace Comdis.Controllers
                 {
                     if (ex.InnerException != null)
                     {
-                        throw new Exception( String.Format(Resources.Resources.MSG_ErrorEditar,salesItems.ProductName + " "+ ex.InnerException));
+                        throw new Exception( String.Format(Resources.MSG_ErrorEditar,salesItems.ProductName + " "+ ex.InnerException));
                     }
                     else
                     {
-                        throw new Exception(String.Format(Resources.Resources.MSG_ErrorEditar, salesItems.ProductName + " " + ex.Message));
+                        throw new Exception(String.Format(Resources.MSG_ErrorEditar, salesItems.ProductName + " " + ex.Message));
                         
                     }
                 }
@@ -224,15 +223,15 @@ namespace Comdis.Controllers
         }
 
         // GET: SalesItems/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public IActionResult Delete(int? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var salesItems = await _context.SalesItems
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var salesItems = this.unitOfWork.SalesItems.GetByID(id);//await _context.SalesItems
+                
             if (salesItems == null)
             {
                 return NotFound();
@@ -244,11 +243,12 @@ namespace Comdis.Controllers
         // POST: SalesItems/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public IActionResult DeleteConfirmed(int id)
         {
-            var salesItems = await _context.SalesItems.FindAsync(id);
-            _context.SalesItems.Remove(salesItems);
-            await _context.SaveChangesAsync();
+            var salesItems = this.unitOfWork.SalesItems.GetByID(id); //await _context.SalesItems.FindAsync(id);
+            this.unitOfWork.SalesItems.Delete(salesItems);
+            this.unitOfWork.Save();
+           
             return RedirectToAction(nameof(Index));
         }
 
@@ -279,12 +279,13 @@ namespace Comdis.Controllers
 
             try
             {
-                var SO = _context.Sales
-                                .Include(soi => soi.SalesItems)
-                                .ThenInclude(soi => soi.Product)
-                                .Include(cu => cu.SalesToParty)
-                                .AsNoTracking()
-                                .Where(sa => sa.Id == id).FirstOrDefault();
+                var SO = this.unitOfWork.Sales.GetByID(id);
+                                //_context.Sales
+                                //.Include(soi => soi.SalesItems)
+                                //.ThenInclude(soi => soi.Product)
+                                //.Include(cu => cu.SalesToParty)
+                                //.AsNoTracking()
+                                //.Where(sa => sa.Id == id).FirstOrDefault();
 
                 if (SO != null)
                 {
@@ -339,10 +340,9 @@ namespace Comdis.Controllers
         {
             try
             {
-                SalesItems deleteItem = _context.SalesItems
-                                                                .Include(p => p.Product)
-                                                                .Where(item => item.Id == pId)
-                                                                .AsNoTracking().FirstOrDefault();
+                SalesItems deleteItem = this.unitOfWork.SalesItems.GetByID(pId);
+
+                 
 
 
 
@@ -353,8 +353,9 @@ namespace Comdis.Controllers
 
                 };
 
-                _context.SalesItems.Remove(deleteItem);
-                _context.SaveChanges();
+                this.unitOfWork.SalesItems.Delete(deleteItem);
+                this.unitOfWork.Save();
+                
 
                 return Json(new MessageVM<SalesItemVM>()
                 {
@@ -362,7 +363,7 @@ namespace Comdis.Controllers
                                 ,
                     Message = salesItems
                                 ,
-                    shortMessage = String.Format(Resources.Resources.MSG_DeletedItem, salesItems.ProductName)
+                    shortMessage = String.Format(Resources.MSG_DeletedItem, salesItems.ProductName)
 
 
                 });
@@ -378,7 +379,7 @@ namespace Comdis.Controllers
 
         private bool SalesItemsExists(int id)
         {
-            return _context.SalesItems.Any(e => e.Id == id);
+            return this.unitOfWork.SalesItems.Exist(id);
         }
     }
 }
