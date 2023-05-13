@@ -15,6 +15,7 @@
     <None Remove="Microsoft.EntityFrameworkCore.Tools" />
     <None Remove="Swashbuckle.AspNetCore" />
     <None Remove="Migrations\" />
+    <None Remove="Views\Documents\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="6.0.5" />
@@ -45,6 +46,7 @@
     <Folder Include="wwwroot\lib\sweetalert2\" />
     <Folder Include="wwwroot\lib\font-awesome\" />
     <Folder Include="Migrations\" />
+    <Folder Include="Views\Documents\" />
   </ItemGroup>
   <ItemGroup>
     <Content Remove="wwwroot\js\Views\" />

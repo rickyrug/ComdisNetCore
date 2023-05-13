@@ -421,9 +421,10 @@
             var pdf = new jsPDF({
                 orientation: 'p',
                 unit: 'mm',
-                format: 'a5',
+                format: 'a4',
                 putOnlyUsedFonts: true
             });
+            pdf.
             pdf.text("Generate a PDF with JavaScript", 20, 20);
             pdf.text("published on APITemplate.io", 20, 30);
             pdf.addPage();
