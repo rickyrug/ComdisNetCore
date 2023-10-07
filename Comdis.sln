@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Comdis", "Comdis\Comdis.csp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataAccess", "DataAccess\DataAccess.csproj", "{3498A416-7370-40E8-B32A-A89805F87718}"
 EndProject
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{1BA59C35-6DBD-408B-9CAB-1965675F9985}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{3498A416-7370-40E8-B32A-A89805F87718}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3498A416-7370-40E8-B32A-A89805F87718}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3498A416-7370-40E8-B32A-A89805F87718}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1BA59C35-6DBD-408B-9CAB-1965675F9985}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1BA59C35-6DBD-408B-9CAB-1965675F9985}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1BA59C35-6DBD-408B-9CAB-1965675F9985}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1BA59C35-6DBD-408B-9CAB-1965675F9985}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

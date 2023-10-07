@@ -1,9 +1,11 @@
-﻿<html lang="en">
+﻿@model Comdis.Models.VM.SalesVM
+
+<html lang="en">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>A simple, clean, and responsive HTML invoice template</title>
+    <title>Invoice - @Model.Id</title>
 
     <!-- Favicon -->
     <link rel="icon" href="./images/favicon.png" type="image/x-icon" />
@@ -95,7 +97,7 @@
 				border-bottom: none;
 			}
 
-			.invoice-box table tr.total td:nth-child(2) {
+			.invoice-box table tr.total td {
 				border-top: 2px solid #eee;
 				font-weight: bold;
 			}
@@ -107,6 +109,10 @@
 					display: block;
 					text-align: center;
 				}
+			.textrightdocument
+			{
+				text-align:right;
+
 			}
     </style>
 </head>
@@ -116,83 +122,75 @@
     <div class="invoice-box">
         <table>
             <tr class="top">
-                <td colspan="2">
+                <td colspan="5">
                     <table>
                         <tr>
                             <td>
-                                Invoice #: 123
+                                Invoice #: @Model.Id 
                             </td>
 
                             <td>
-                                Created: January 1, 2015
-                                <!--    <br/>
-        Due: February 1, 2015--->
+                                Created: @Model.Cretead 
+                            </td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>
+                                <p class="text-right">
+                                    @Model.CustomerName
+                                    <br />
+                                    @Model.DeliveryAdress
+                                   
+                                </p>
                             </td>
                         </tr>
                     </table>
                 </td>
             </tr>
-
-            <tr class="information">
-                <td colspan="2">
-                    <table>
-                        <tr>
-                            <td>
-                                Sparksuite, Inc.<br />
-                                12345 Sunny Road<br />
-                                Sunnyville, TX 12345
-                            </td>
-
-                            <td>
-                                Acme Corp.<br />
-                                John Doe<br />
-                                john@example.com
-                            </td>
-                        </tr>
-                    </table>
-                </td>
-            </tr>
-
-            <tr class="heading">
-                <td>Payment Method</td>
-
-                <td>Check #</td>
-            </tr>
-
-            <tr class="details">
-                <td>Check</td>
-
-                <td>1000</td>
-            </tr>
-
             <tr class="heading">
                 <td>Item</td>
-
-                <td>Price</td>
+                <td class="textrightdocument">Quantity</td>
+                <td class="textrightdocument">UOM</td>
+                <td class="textrightdocument">Price</td>
+                <td class="textrightdocument">SubTotal</td>
             </tr>
 
             <tr class="item">
                 <td>Website design</td>
-
-                <td>$300.00</td>
+                <td class="textrightdocument">1</td>
+                <td class="textrightdocument">Design</td>
+                <td class="textrightdocument">$300.00</td>
+                <td class="textrightdocument">$300.00</td>
             </tr>
 
             <tr class="item">
-                <td>Hosting (3 months)</td>
-
-                <td>$75.00</td>
+                <td>Hosting</td>
+                <td class="textrightdocument">3</td>
+                <td class="textrightdocument">Months</td>
+                <td class="textrightdocument">$75.00</td>
+                <td class="textrightdocument">$235.00</td>
             </tr>
 
             <tr class="item last">
-                <td>Domain name (1 year)</td>
-
-                <td>$10.00</td>
+                <td>Domain name</td>
+                <td class="textrightdocument">1</td>
+                <td class="textrightdocument">year</td>
+                <td class=" textrightdocument">$10.00</td>
+                <td class="textrightdocument">$10.00</td>
             </tr>
-
             <tr class="total">
-                <td></td>
-
-                <td>Total: $385.00</td>
+                <td class="textrightdocument"></td>
+                <td class="textrightdocument"></td>
+                <td class="textrightdocument">Descuento1</td>
+                <td class="textrightdocument">35%</td>
+                <td class="textrightdocument">-$385.00</td>
+            </tr>
+            <tr class="total">
+                <td class="textrightdocument"></td>
+                <td class="textrightdocument"></td>
+                <td class="textrightdocument">Total</td>
+                <td class="textrightdocument"></td>
+                <td class="textrightdocument">$385.00</td>
             </tr>
         </table>
     </div>

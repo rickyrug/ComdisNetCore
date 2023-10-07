@@ -23,7 +23,7 @@ namespace DataAccess.Models
         public string Comments { get; set; }
 
         [Display(ResourceType = typeof(Resources.Resources), Name = "Label_Discount1")]
-        [DisplayFormat(DataFormatString ="{0:P}",ApplyFormatInEditMode =true)]
+        [DisplayFormat(DataFormatString ="{0:N3}",ApplyFormatInEditMode =true)]
         public decimal discount { get; set; }
 
         [Display(ResourceType = typeof(Resources.Resources), Name = "Label_Discount2")]

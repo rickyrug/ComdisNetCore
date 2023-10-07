@@ -208,6 +208,7 @@ namespace Comdis.Controllers
                         var_salesHeader.Updated = DateTime.Now;
                         var_salesHeader.UpdatedBy = "";
                         var_salesHeader.tax = var_iva;
+                        var_salesHeader.DeliveryAdress = sales.DeliveryAdress;
 
                         this.unitOfWork.Sales.Update(var_salesHeader);
                         this.unitOfWork.Save();

@@ -2,6 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
+    <DockerComposeProjectPath>../docker-compose.dcproj</DockerComposeProjectPath>
   </PropertyGroup>
 
   <ItemGroup>
@@ -16,6 +17,7 @@
     <None Remove="Swashbuckle.AspNetCore" />
     <None Remove="Migrations\" />
     <None Remove="Views\Documents\" />
+    <None Remove="BusinessRules\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="6.0.5" />
@@ -32,6 +34,7 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.3.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="6.0.5" />
     <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="6.0.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="6.0.22" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Models\VM\" />
@@ -47,6 +50,7 @@
     <Folder Include="wwwroot\lib\font-awesome\" />
     <Folder Include="Migrations\" />
     <Folder Include="Views\Documents\" />
+    <Folder Include="BusinessRules\" />
   </ItemGroup>
   <ItemGroup>
     <Content Remove="wwwroot\js\Views\" />

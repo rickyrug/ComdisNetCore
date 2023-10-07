@@ -1,0 +1,8 @@
+version: '3.4'
+
+services:
+  comdis:
+    image: ${DOCKER_REGISTRY-}comdis
+    build:
+      context: .
+      dockerfile: Comdis/Dockerfile
