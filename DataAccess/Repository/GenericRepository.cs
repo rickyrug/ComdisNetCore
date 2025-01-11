@@ -52,6 +52,8 @@ namespace DataAccess.Repository
 
             query.Take(50);
 
+            
+
             return query.ToList();
         }
 

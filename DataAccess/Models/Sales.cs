@@ -20,10 +20,10 @@ namespace DataAccess.Models
         public string DeliveryAdress { get; set; }
 
         [Display(ResourceType = typeof(Resources.Resources), Name = "Label_Comments")]
-        public string Comments { get; set; }
+        public string? Comments { get; set; }
 
         [Display(ResourceType = typeof(Resources.Resources), Name = "Label_Discount1")]
-        [DisplayFormat(DataFormatString ="{0:N3}",ApplyFormatInEditMode =true)]
+        [DisplayFormat(DataFormatString ="{0:P}",ApplyFormatInEditMode =true)]
         public decimal discount { get; set; }
 
         [Display(ResourceType = typeof(Resources.Resources), Name = "Label_Discount2")]

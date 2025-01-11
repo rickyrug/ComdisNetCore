@@ -19,13 +19,13 @@ namespace DataAccess.Models
         public string Adress {get;set;}
 
         [Display(ResourceType = typeof(Resources.Resources), Name = "Label_Adress2")]
-        public string Adress2 {get;set;}
+        public  string? Adress2 {get;set;}
 
         [Display(ResourceType = typeof(Resources.Resources), Name = "Label_Phone")]
         public string Phone1 {get;set;}
 
         [Display(ResourceType = typeof(Resources.Resources), Name = "Label_Phone2")]
-        public string Phone2 {get;set;}
+        public string? Phone2 {get;set;}
 
         [Display(ResourceType = typeof(Resources.Resources), Name = "Label_RFC")]
         public string RFC {get;set;}

@@ -28,9 +28,9 @@ namespace Comdis
             services.AddControllersWithViews();
 
             services.AddDbContext<ComdisContext>(options =>
-                    //options.UseSqlite(Configuration.GetConnectionString("ComdisContext"))
+                    options.UseSqlite(Configuration.GetConnectionString("ComdisContext"))
                     
-                    options.UseMySql(Configuration.GetConnectionString("ComdisContext"), serverVersion)
+                   // options.UseMySql(Configuration.GetConnectionString("ComdisContext"), serverVersion)
                     );
         }
 

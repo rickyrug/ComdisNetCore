@@ -32,10 +32,10 @@ namespace Comdis.Controllers
                                
 
             ViewBag.So = id.ToString();
-            sales.discount  = sales.discount * 100;
-            sales.discount2 = sales.discount2 * 100;
-            sales.discount3 = sales.discount3 * 100;
-            sales.tax = sales.tax * 100;
+            //sales.discount  = sales.discount * 100;
+            //sales.discount2 = sales.discount2 * 100;
+            //sales.discount3 = sales.discount3 * 100;
+            //sales.tax = sales.tax * 100;
             return View(sales);
         }
 

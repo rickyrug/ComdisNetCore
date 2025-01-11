@@ -42,7 +42,7 @@
                 @if (Model.discount != 0)
                 {
                     <div class="row">
-                        <div class="col-md-6 text-right"><p class="card-text">@DataAccess.Resources.Resources.Label_Discount1 (@Model.discount %):  </p></div>
+                        <div class="col-md-6 text-right"><p class="card-text">@Html.DisplayNameFor(model => model.discount) @Html.DisplayFor(model => model.discount)  %:  </p></div>
                         <div class="col-md-6">-<span class="text-danger" id="g_discount1"></span></div>
                     </div>}
                 @if (Model.discount2 != 0)
@@ -247,18 +247,18 @@
 
             if ("@Model.discount" != 0)
             {
-                g_discount = g_subtotal * ("@Model.discount" / 100);
+                g_discount = g_subtotal * ("@Model.discount" );
             }
 
             if ("@Model.discount2" != 0)
             {
-                g_discount2 = (g_subtotal - g_discount) * ("@Model.discount2" / 100);
+                g_discount2 = (g_subtotal - g_discount) * ("@Model.discount2");
             }
 
 
             if ("@Model.discount3" != 0)
             {
-                g_discount3 = (g_subtotal - g_discount - g_discount2) * ("@Model.discount3"/ 100);
+                g_discount3 = (g_subtotal - g_discount - g_discount2) * ("@Model.discount3");
             }
 
 
