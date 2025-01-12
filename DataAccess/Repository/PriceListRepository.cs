@@ -21,6 +21,16 @@ namespace DataAccess.Repository
 			return list;
 		}
 
+		public override	PriceList GetByID(object id)
+		{
+			var item = _context.PriceList
+				.Include(p => p.Product)
+				.Include(c => c.Customer)
+				.FirstOrDefault(x => x.Id == (int)id);
+
+			return item;
+		}
+
 
 	}
 }
