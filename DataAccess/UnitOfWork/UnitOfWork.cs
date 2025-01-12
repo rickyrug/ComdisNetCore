@@ -20,11 +20,22 @@ namespace DataAccess.UnitOfWork
         private IPurchase _purchase;
         private ISales _sales;
         private ISalesItem _salesItems;
+        private IPriceList _PriceList;
 
 		public UnitOfWork(ComdisContext context)
 		{
 			this._context = context;
 		}
+
+        public IPriceList PriceList
+        {
+            get
+            {
+                if (_PriceList == null)
+                    _PriceList = new PriceListRepository(this._context);
+                return _PriceList;
+            }
+        }
 
         public ISalesItem SalesItems
         {

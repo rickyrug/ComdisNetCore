@@ -14,7 +14,12 @@ using Microsoft.EntityFrameworkCore;
             
         }
 
-        public DbSet<Product> Product { get; set; }
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    {
+        optionsBuilder.UseSqlite("Data Source=ComdisDB.db", b => b.MigrationsAssembly("Comdis"));
+    }
+
+    public DbSet<Product> Product { get; set; }
 
         public DbSet<UOM> UOM { get; set; }
 
@@ -35,4 +40,6 @@ using Microsoft.EntityFrameworkCore;
         public DbSet<Purchase> Purchase { get; set; }
 
         public DbSet<PurchaseItems> PurchaseItems { get; set; }
+
+        public DbSet<PriceList> PriceList { get; set; }
 }

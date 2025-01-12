@@ -51,7 +51,7 @@ namespace Comdis.Controllers
         public IActionResult Create()
         {
           
-                PopulateUomDropDown();
+            PopulateUomDropDown();
 
             PopulateProdCatDropDown();
             return View();
