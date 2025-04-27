@@ -9,17 +9,16 @@ using Microsoft.EntityFrameworkCore;
 using Comdis.Models.VM;
 using DataAccess.UnitOfWork;
 using DataAccess.Models;
+using Comdis.DataAccess.UnitOfWork;
+using Comdis.Comdis.Controllers;
 
 namespace Comdis.Controllers
 {
-    public class ProductsController : Controller
+    public class ProductsController : GenericController
     {
-        private readonly UnitOfWork unitOfWork;
 
-        public ProductsController(ComdisContext context)
+        public ProductsController(IUnitOfWork punitOfWork) : base(punitOfWork)
         {
-            this.unitOfWork = new UnitOfWork(context);
-           
         }
 
         // GET: Products

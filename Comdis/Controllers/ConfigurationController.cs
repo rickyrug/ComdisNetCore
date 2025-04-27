@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Comdis.Models;
 using DataAccess.UnitOfWork;
 using DataAccess.Models;
+using Comdis.DataAccess.UnitOfWork;
 
 namespace Comdis.Controllers
 {
@@ -15,12 +16,13 @@ namespace Comdis.Controllers
     {
 
 
-        private readonly UnitOfWork unitOfWork;
+        private readonly IUnitOfWork unitOfWork;
 
-        public ConfigurationController(ComdisContext context)
+        public ConfigurationController(IUnitOfWork punitOfWork)
         {
-            this.unitOfWork = new UnitOfWork( context);
+            this.unitOfWork = punitOfWork;
         }
+
 
         // GET: Configuration
         public IActionResult Index()

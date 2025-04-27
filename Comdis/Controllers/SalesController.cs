@@ -1,25 +1,21 @@
 using System;
 using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using Comdis.Models;
 using Comdis.Models.VM;
 using Comdis.Helpers;
 using System.Collections.Generic;
-using DataAccess.UnitOfWork;
 using DataAccess.Models;
+using Comdis.Comdis.Controllers;
+using Comdis.DataAccess.UnitOfWork;
 
 namespace Comdis.Controllers
 {
-    public class SalesController : Controller
+    public class SalesController : GenericController
     {
-        private readonly UnitOfWork unitOfWork;
-
-        public SalesController(ComdisContext context)
+        public SalesController(IUnitOfWork punitOfWork) : base(punitOfWork)
         {
-            this.unitOfWork = new UnitOfWork(context);
         }
 
         // GET: Sales

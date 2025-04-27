@@ -1,24 +1,20 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using Comdis.Comdis.Models;
 using Comdis.Models.VM;
-using DataAccess.UnitOfWork;
 using DataAccess.Models;
+using Comdis.DataAccess.UnitOfWork;
 
 namespace Comdis.Controllers
 {
     public class CustomerController : Controller
     {
-        private readonly UnitOfWork unitOfWork;
+        private readonly IUnitOfWork unitOfWork;
 
-        public CustomerController(ComdisContext context)
+        public CustomerController(IUnitOfWork punitOfWork)
         {
-            this.unitOfWork = new UnitOfWork(context);
+            this.unitOfWork = punitOfWork;
         }
 
         // GET: Customer

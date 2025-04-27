@@ -5,11 +5,11 @@ namespace DataAccess.Interfaces
 {
 	public interface IGenericRepository<TEntity> where TEntity : class
 	{
-        IEnumerable<TEntity> Get(
+        IQueryable<TEntity> Get(
         Expression<Func<TEntity, bool>> filter ,
-        Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy,
+        Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null,
         string includeProperties = "");
-        IEnumerable<TEntity> Get();
+        IQueryable<TEntity> Get();
         TEntity GetByID(object id);
         void Insert(TEntity entity);
         void Delete(object id);

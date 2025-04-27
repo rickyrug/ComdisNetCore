@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Comdis.DataAccess.UnitOfWork;
 using Comdis.Models.VM;
 using DataAccess.UnitOfWork;
 
@@ -7,9 +8,9 @@ namespace Comdis.BusinessRules
 {
 	public class SalesOrdersBusinessRules
 	{
-        private readonly UnitOfWork unitOfWork;
+        private readonly IUnitOfWork unitOfWork;
 
-        public SalesOrdersBusinessRules(UnitOfWork punitOfWork)
+        public SalesOrdersBusinessRules(IUnitOfWork punitOfWork)
 		{
             this.unitOfWork = punitOfWork;
 		}

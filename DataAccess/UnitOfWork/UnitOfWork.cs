@@ -1,171 +1,70 @@
 ﻿using System;
+using Comdis.DataAccess.UnitOfWork;
 using DataAccess.Interfaces;
 using DataAccess.Models;
 using DataAccess.Repository;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Concurrent;
 
 namespace DataAccess.UnitOfWork
 {
-	public class UnitOfWork: IDisposable
+	public class UnitOfWork : IUnitOfWork
 	{
 
-		private ComdisContext _context;
-        private IBank _bank;
-        private IConfiguration _configuration;
+        private readonly ComdisContext _context;
+        private readonly ConcurrentDictionary<Type, object> _repositories = new();
+        public UnitOfWork(ComdisContext context)
+        {
+            _context = context;
+        }
+
+        private IGenericRepository<Bank> _bank;
+        public IGenericRepository<Bank> Bank => _bank ??= new GenericRepository<Bank>(_context);
+
         private ICustomer _customer;
-        private ISupplier _supplier;
-        private IProductCategory _productCategory;
-        private IProduct _product;
-        private IUom _uom;
-        private IPurchase _purchase;
-        private ISales _sales;
-        private ISalesItem _salesItems;
-        private IPriceList _PriceList;
+        public ICustomer Customer => _customer ??= new CustomerRepository(_context);
 
-		public UnitOfWork(ComdisContext context)
-		{
-			this._context = context;
-		}
+        private IGenericRepository<Supplier> _supplier;
+        public IGenericRepository<Supplier> Supplier => _supplier ??= new GenericRepository<Supplier>(_context);
 
-        public IPriceList PriceList
+        private IGenericRepository<ProductCategory> _productCategory;
+        public IGenericRepository<ProductCategory> ProductCategory => _productCategory ??= new GenericRepository<ProductCategory>(_context);
+
+        private IGenericRepository<Product> _product;
+        public IGenericRepository<Product> Product => _product ??= new GenericRepository<Product>(_context);
+
+        private IGenericRepository<UOM> _uom;
+        public IGenericRepository<UOM> Uom => _uom ??= new GenericRepository<UOM>(_context);
+
+        private IGenericRepository<Purchase> _purchase;
+        public IGenericRepository<Purchase> Purchase => _purchase ??= new GenericRepository<Purchase>(_context);
+
+        private IGenericRepository<Sales> _sales;
+        public IGenericRepository<Sales> Sales => _sales ??= new GenericRepository<Sales>(_context);
+
+        private IGenericRepository<SalesItems> _salesItems;
+        public IGenericRepository<SalesItems> SalesItems => _salesItems ??= new GenericRepository<SalesItems>(_context);
+
+        private IGenericRepository<PriceList> _priceList;
+        public IGenericRepository<PriceList> PriceList => _priceList ??= new GenericRepository<PriceList>(_context);
+
+        private IGenericRepository<Configuration> _configuration;
+        public IGenericRepository<Configuration> Configuration => _configuration ??= new GenericRepository<Configuration>(_context);
+        public IGenericRepository<T> GetRepository<T>() where T : class
         {
-            get
-            {
-                if (_PriceList == null)
-                    _PriceList = new PriceListRepository(this._context);
-                return _PriceList;
-            }
+            return (IGenericRepository<T>)_repositories.GetOrAdd(typeof(T), _ => new GenericRepository<T>(_context));
         }
-
-        public ISalesItem SalesItems
-        {
-            get
-            {
-                if (_salesItems == null)
-                    _salesItems = new SalesItemsRepository(this._context);
-                return _salesItems;
-            }
-        }
-
-        public ISales Sales
-        {
-            get
-            {
-                if (_sales == null)
-                    _sales = new SalesRepository(this._context);
-                return _sales;
-            }
-        }
-
-        public IPurchase Purchase
-        {
-            get
-            {
-                if (_purchase == null)
-                    _purchase = new PurchaseRepository(this._context);
-                return _purchase;
-            }
-        }
-
-        public IUom Uom
-        {
-            get
-            {
-                if (_uom == null)
-                    _uom = new UOMRepository(this._context);
-                return _uom;
-            }
-        }
-
-        public IProduct Product
-        {
-
-            get
-            {
-                if (_product == null)
-                    _product = new ProductRepository(this._context);
-                return _product;
-            }
-        }
-
-        public IProductCategory ProductCategory
-        {
-            get
-            {
-                if (_productCategory == null)
-                    _productCategory = new ProductCategoryRepository(this._context);
-                return _productCategory;
-            }
-        }
-
-        public ISupplier Supplier
-        {
-            get
-            {
-                if (_supplier == null)
-                    _supplier = new SupplierRepository(this._context);
-                return _supplier;
-            }
-        }
-
-        public ICustomer Customer
-        {
-            get
-            {
-                if (_customer == null)
-                    _customer = new CustomerRepository(this._context);
-                return _customer;
-            }
-        }
-
-        public IConfiguration Configuration
-        {
-            get
-            {
-                if(_configuration == null)
-                {
-                    _configuration = new ConfigurationRepository(this._context);
-                }
-                return _configuration;
-            }
-        }
-
-        public IBank Bank {
-            get
-            {
-                if(_bank == null)
-                {
-                    _bank = new BankRepository(this._context);
-                }
-                return _bank;
-            }
-        }
-
 
         public void Save()
         {
             _context.SaveChanges();
         }
 
-        private bool disposed = false;
-
-        protected virtual void Dispose(bool disposing)
-        {
-            if (!this.disposed)
-            {
-                if (disposing)
-                {
-                    _context.Dispose();
-                }
-            }
-            this.disposed = true;
-        }
-
         public void Dispose()
         {
-            Dispose(true);
-            GC.SuppressFinalize(this);
+            _context.Dispose();
         }
+        
     }
 }
 

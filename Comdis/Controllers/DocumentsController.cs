@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Comdis.BusinessRules;
+﻿using Comdis.BusinessRules;
+using Comdis.Comdis.Controllers;
+using Comdis.DataAccess.UnitOfWork;
 using Comdis.Models.VM;
 using DataAccess.UnitOfWork;
 using Microsoft.AspNetCore.Mvc;
@@ -11,14 +9,12 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Comdis.Controllers
 {
-    public class DocumentsController : Controller
+    public class DocumentsController : GenericController
     {
-        private readonly UnitOfWork unitOfWork;
-
-        public DocumentsController(ComdisContext context)
+        public DocumentsController(IUnitOfWork punitOfWork) : base(punitOfWork)
         {
-            this.unitOfWork = new UnitOfWork(context);
         }
+
 
         // GET: /<controller>/
         public IActionResult Index()
