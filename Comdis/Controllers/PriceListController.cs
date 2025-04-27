@@ -2,31 +2,25 @@ using System;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-
-using DataAccess.UnitOfWork;
 using Comdis.Models.VM;
 using DataAccess.Models;
+using Comdis.DataAccess.UnitOfWork;
+using Comdis.Comdis.Controllers;
+using System.Linq;
 
 
 namespace Comdis.Controllers
 {
-    public class PriceListController : Controller
+    public class PriceListController : GenericController
     {
-
-        private readonly UnitOfWork unitOfwork;
-
-      
-
-        public PriceListController(ComdisContext context)
+        public PriceListController(IUnitOfWork punitOfWork) : base(punitOfWork)
         {
-            this.unitOfwork = new UnitOfWork(context);
-            
         }
 
         // GET: PriceList
         public  ActionResult Index()
         {
-           var items =  this.unitOfwork.PriceList.Get();
+           var items =  this.unitOfWork.PriceList.Get().Include(p => p.Customer).Include(p => p.Product).ToList();
             return View(items);
         }
 
@@ -38,7 +32,7 @@ namespace Comdis.Controllers
                 return NotFound();
             }
 
-            var priceList = this.unitOfwork.PriceList.GetByID(id);
+            var priceList = this.unitOfWork.PriceList.GetByID(id);
 
            
             if (priceList == null)
@@ -69,10 +63,10 @@ namespace Comdis.Controllers
                 {
 
                 
-                var var_customer = this.unitOfwork.Customer.GetByID(priceList.CustomerId);
-                var var_product = this.unitOfwork.Product.GetByID(priceList.ProductId);
+                var var_customer = this.unitOfWork.Customer.GetByID(priceList.CustomerId);
+                var var_product = this.unitOfWork.Product.GetByID(priceList.ProductId);
 
-                this.unitOfwork.PriceList.Insert(new PriceList
+                this.unitOfWork.PriceList.Insert(new PriceList
                 {
                     Id = priceList.Id,
                     Product = var_product,
@@ -82,7 +76,7 @@ namespace Comdis.Controllers
                     Updated = DateTime.Now
                 
                 });
-                this.unitOfwork.Save();
+                this.unitOfWork.Save();
                 return RedirectToAction(nameof(Index));
                 }
                 catch (DbUpdateException ex)
@@ -118,12 +112,17 @@ namespace Comdis.Controllers
                 return NotFound();
             }
 
-            var priceList = this.unitOfwork.PriceList.GetByID(id);
+            var priceList = this.unitOfWork.PriceList.Get(a => a.Id == id).Include(p => p.Customer).Include(p => p.Product).FirstOrDefault();
             if (priceList == null)
             {
                 return NotFound();
             }
             
+            
+            if (priceList == null)
+            {
+                return NotFound();
+            }
             this.PopulateCustomersDropDown(priceList.Customer.Id);
             this.PopulateProductsDropDown(priceList.Product.Id);
             
@@ -149,17 +148,17 @@ namespace Comdis.Controllers
 
             if (ModelState.IsValid)
             {
-                var var_customer = this.unitOfwork.Customer.GetByID(priceList.CustomerId);
-                var var_product = this.unitOfwork.Product.GetByID(priceList.ProductId);
+                var var_customer = this.unitOfWork.Customer.GetByID(priceList.CustomerId);
+                var var_product = this.unitOfWork.Product.GetByID(priceList.ProductId);
 
-                var priceListEntity = this.unitOfwork.PriceList.GetByID(id);
+                var priceListEntity = this.unitOfWork.PriceList.GetByID(id);
                 priceListEntity.Product = var_product;
                 priceListEntity.Price = priceList.Price;
                 priceListEntity.Customer = var_customer;
                 priceListEntity.Updated = DateTime.Now;
 
-                this.unitOfwork.PriceList.Update(priceListEntity);
-                this.unitOfwork.Save();
+                this.unitOfWork.PriceList.Update(priceListEntity);
+                this.unitOfWork.Save();
                 return RedirectToAction(nameof(Index));
             }
             return View(priceList);
@@ -173,7 +172,7 @@ namespace Comdis.Controllers
                 return NotFound();
             }
 
-            var priceList = this.unitOfwork.PriceList.GetByID(id);
+            var priceList = this.unitOfWork.PriceList.GetByID(id);
             if (priceList == null)
             {
                 return NotFound();
@@ -187,21 +186,21 @@ namespace Comdis.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult DeleteConfirmed(int id)
         {
-            var priceList = this.unitOfwork.PriceList.GetByID(id);
-            this.unitOfwork.PriceList.Delete(priceList);
-            this.unitOfwork.Save();
+            var priceList = this.unitOfWork.PriceList.GetByID(id);
+            this.unitOfWork.PriceList.Delete(priceList);
+            this.unitOfWork.Save();
             return RedirectToAction(nameof(Index));
         }
 
         private void PopulateCustomersDropDown(object selectedCustomer = null)
         {
-            var customers = this.unitOfwork.Customer.Get();
+            var customers = this.unitOfWork.Customer.Get();
             ViewBag.CustomerList = new SelectList(customers, "Id", "Name", selectedCustomer);
         }
 
         private void PopulateProductsDropDown(object selectedProduct = null)
         {
-            var products = this.unitOfwork.Product.Get();
+            var products = this.unitOfWork.Product.Get();
             ViewBag.ProductList = new SelectList(products, "Id", "Name", selectedProduct);
         }
     }

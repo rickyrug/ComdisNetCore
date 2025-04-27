@@ -8,7 +8,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.EntityFrameworkCore;
-
+using Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation;
+using Comdis.DataAccess.UnitOfWork;
+using DataAccess.UnitOfWork;
 
 namespace Comdis
 {
@@ -25,13 +27,17 @@ namespace Comdis
         public void ConfigureServices(IServiceCollection services)
         {
             //var serverVersion = new MySqlServerVersion(new Version(8, 0, 28));
-            services.AddControllersWithViews();
-
+            
+            services.AddControllersWithViews(
+                 // Enable runtime compilation
+            ).AddRazorRuntimeCompilation();
+            
             services.AddDbContext<ComdisContext>(options =>
                     options.UseSqlite(Configuration.GetConnectionString("ComdisContext"))
                     
                    // options.UseMySql(Configuration.GetConnectionString("ComdisContext"), serverVersion)
                     );
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

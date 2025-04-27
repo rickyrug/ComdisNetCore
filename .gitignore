@@ -404,3 +404,6 @@ ASALocalRun/
 # Local History for Visual Studio
 .localhistory/
 *.db
+Comdis/ComdisDB2.db-shm
+Comdis/ComdisDB2.db-wal
+Comdis/Migrations

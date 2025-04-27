@@ -1,23 +1,21 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using Comdis.Models;
 using DataAccess.UnitOfWork;
 using DataAccess.Models;
+using DataAccess.Resources;
+using Comdis.Comdis.Controllers;
+using Comdis.DataAccess.UnitOfWork;
 
 namespace Comdis.Controllers
 {
-    public class UOMController : Controller
+    public class UOMController : GenericController
     {
-        private readonly UnitOfWork unitOfWork;
+        
 
-        public UOMController(ComdisContext context)
+        public UOMController(IUnitOfWork punitOfWork) : base(punitOfWork)
         {
-            this.unitOfWork = new UnitOfWork(context);
+            
         }
 
         // GET: UOM
@@ -104,11 +102,16 @@ namespace Comdis.Controllers
             {
                 try
                 {
-                    uOM.Updated = DateTime.Now;
-                    uOM.UpdatedBy = "";
+                    var uOMDB = this.unitOfWork.Uom.GetByID(id);
+                    uOMDB.Name = uOM.Name;
+                    uOMDB.Code = uOM.Code;
+                    uOMDB.Updated = DateTime.Now;
+                    uOMDB.UpdatedBy = "";
+                    uOMDB.Cretead = uOMDB.Cretead;
+                    uOMDB.CreatedBy = uOMDB.CreatedBy;
 
                     
-                    this.unitOfWork.Uom.Update(uOM);
+                    this.unitOfWork.Uom.Update(uOMDB);
                     this.unitOfWork.Save();
                 }
                 catch (DbUpdateConcurrencyException)

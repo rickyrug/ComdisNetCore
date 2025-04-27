@@ -1,6 +1,4 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations;
-using System.Security.AccessControl;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace DataAccess.Models
 {

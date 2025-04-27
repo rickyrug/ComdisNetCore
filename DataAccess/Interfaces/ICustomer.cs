@@ -5,7 +5,7 @@ namespace DataAccess.Interfaces
 {
 	public interface ICustomer:IGenericRepository<Customer>
 	{
-		IList<Customer> GetByPatern(string patern);
+		IQueryable<Customer> GetByPatern(string patern);
 	}
 }
 

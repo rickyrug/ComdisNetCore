@@ -1,23 +1,16 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using Comdis.Models;
 using DataAccess.UnitOfWork;
 using DataAccess.Models;
+using Comdis.Comdis.Controllers;
+using Comdis.DataAccess.UnitOfWork;
 
 namespace Comdis.Controllers
 {
-    public class PurchaseController : Controller
+    public class PurchaseController : GenericController
     {
-        private readonly UnitOfWork unitOfWork;
-
-        public PurchaseController(ComdisContext context)
+        public PurchaseController(IUnitOfWork punitOfWork) : base(punitOfWork)
         {
-            this.unitOfWork = new UnitOfWork(context);
         }
 
         // GET: Purchase

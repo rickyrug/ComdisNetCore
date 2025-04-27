@@ -10,10 +10,10 @@ namespace DataAccess.Repository
 		{
 		}
 
-        public IList<Customer> GetByPatern(string patern)
+        public IQueryable<Customer> GetByPatern(string patern)
         {
-                  var list = _context.Customer.Where(c => c.Name.Contains(patern)).ToList();
-                    return list;
+                  var list = _context.Customer.Where(c => c.Name.Contains(patern)).AsQueryable();
+                  return list;
         }
     }
 }

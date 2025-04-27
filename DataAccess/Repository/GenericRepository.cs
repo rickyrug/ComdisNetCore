@@ -17,9 +17,9 @@ namespace DataAccess.Repository
             this.dbSet = context.Set<TEntity>();
         }
 
-        public virtual IEnumerable<TEntity> Get(
+        public virtual IQueryable<TEntity> Get(
             Expression<Func<TEntity, bool>> filter ,
-            Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy ,
+            Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null,
             string includeProperties = "")
         {
             IQueryable<TEntity> query = dbSet;
@@ -37,15 +37,15 @@ namespace DataAccess.Repository
 
             if (orderBy != null)
             {
-                return orderBy(query).ToList();
+                return orderBy(query).AsQueryable();
             }
             else
             {
-                return query.ToList();
+                return query.AsQueryable();
             }
         }
 
-        public virtual IEnumerable<TEntity> Get()
+        public virtual IQueryable<TEntity> Get()
         {
 
             IQueryable<TEntity> query = dbSet;
@@ -54,7 +54,7 @@ namespace DataAccess.Repository
 
             
 
-            return query.ToList();
+            return query.AsQueryable();
         }
 
         public virtual TEntity GetByID(object id)

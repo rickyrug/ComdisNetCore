@@ -1,47 +1,36 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 
 using DataAccess.UnitOfWork;
 using DataAccess.Models;
+using Comdis.DataAccess.UnitOfWork;
+using Comdis.Comdis.Controllers;
 
 namespace Comdis.Controllers
 {
-    public class BankController : Controller
+    public class BankController : GenericController
     {
-
-        private readonly UnitOfWork unitOfwork;
-
-      
-
-        public BankController(ComdisContext context)
+        public BankController(IUnitOfWork punitOfWork) : base(punitOfWork)
         {
-            this.unitOfwork = new UnitOfWork(context);
-            
         }
 
         // GET: Bank
-        public  ActionResult Index()
+        public IActionResult Index()
         {
-           var items =  this.unitOfwork.Bank.Get();
-            return View(items);
+            var banks = unitOfWork.Bank.Get();
+            return View(banks);
         }
 
         // GET: Bank/Details/5
-        public  ActionResult Details(int? id)
+        public IActionResult Details(int? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var bank = this.unitOfwork.Bank.GetByID(id);
-
-           
+            var bank = unitOfWork.Bank.GetByID(id.Value);
             if (bank == null)
             {
                 return NotFound();
@@ -51,29 +40,24 @@ namespace Comdis.Controllers
         }
 
         // GET: Bank/Create
-        public ActionResult Create()
+        public IActionResult Create()
         {
             return View();
         }
 
         // POST: Bank/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind("Id,Name")] Bank bank)
+        public IActionResult Create([Bind("Id,Name,AccountNumber,BranchCode")] Bank bank)
         {
             if (ModelState.IsValid)
             {
-                bank.Cretead = DateTime.Now;
-                bank.CreatedBy = "";
-                bank.Updated = DateTime.Now;
-                bank.UpdatedBy = "";
-
-
-                this.unitOfwork.Bank.Insert(bank);
-                this.unitOfwork.Save();
-               
+                bank.GetType().GetProperty("Cretead").SetValue(bank, DateTime.Now);
+                bank.GetType().GetProperty("CreatedBy").SetValue(bank, User.Identity.Name);
+                bank.GetType().GetProperty("Updated").SetValue(bank, DateTime.Now);
+                bank.GetType().GetProperty("UpdatedBy").SetValue(bank, User.Identity.Name);
+                unitOfWork.Bank.Insert(bank);
+                unitOfWork.Save();
                 return RedirectToAction(nameof(Index));
             }
             return View(bank);
@@ -87,7 +71,7 @@ namespace Comdis.Controllers
                 return NotFound();
             }
 
-            var bank = this.unitOfwork.Bank.GetByID(id);
+            var bank = unitOfWork.Bank.GetByID(id.Value);
             if (bank == null)
             {
                 return NotFound();
@@ -96,11 +80,9 @@ namespace Comdis.Controllers
         }
 
         // POST: Bank/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit(int id, [Bind("Id,Name,Cretead,CreatedBy")] Bank bank)
+        public IActionResult Edit(int id, [Bind("Id,Name,AccountNumber,BranchCode")] Bank bank)
         {
             if (id != bank.Id)
             {
@@ -111,12 +93,8 @@ namespace Comdis.Controllers
             {
                 try
                 {
-
-                    bank.Updated = DateTime.Now;
-                    bank.UpdatedBy = "";
-
-                    this.unitOfwork.Bank.Update(bank);
-                    this.unitOfwork.Save();
+                    unitOfWork.Bank.Update(bank);
+                    unitOfWork.Save();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -142,13 +120,14 @@ namespace Comdis.Controllers
                 return NotFound();
             }
 
-            var bank = this.unitOfwork.Bank.GetByID(id);
+            var bank = unitOfWork.Bank.GetByID(id.Value);   
             if (bank == null)
             {
                 return NotFound();
             }
+            return View(bank);  
+        
 
-            return View(bank);
         }
 
         // POST: Bank/Delete/5
@@ -156,15 +135,18 @@ namespace Comdis.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult DeleteConfirmed(int id)
         {
-            var bank = unitOfwork.Bank.GetByID(id);
-            unitOfwork.Bank.Delete(bank);
-            unitOfwork.Save();
+            var bank = unitOfWork.Bank.GetByID(id);
+            if (bank != null)
+            {
+                unitOfWork.Bank.Delete(bank);
+                unitOfWork.Save();
+            }
             return RedirectToAction(nameof(Index));
         }
 
         private bool BankExists(int id)
         {
-            return this.unitOfwork.Bank.Exist(id);
+            return unitOfWork.Bank.GetByID(id) != null;    
         }
     }
 }
